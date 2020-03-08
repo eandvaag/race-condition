@@ -1,0 +1,480 @@
+
+
+/*
+html, body {
+  height: 100%;
+}
+
+.content {
+  flex: 1 0 auto;
+}
+.footer {
+  flex-shrink: 0;
+}
+*/
+
+
+html,
+body {
+   margin:0;
+   padding:0;
+   height:100%;
+}
+#container {
+   min-height:100%;
+   position:relative;
+}
+#header {
+   padding:10px;
+}
+#body {
+   padding:10px;
+   padding-bottom:75px;   /* Height of the footer */
+}
+#footer {
+  position:absolute;
+  bottom:0;
+  width:100%;
+  height:75px;   /* Height of the footer */
+  /* padding-top: -50px; */
+  /* margin-top: 15px; */
+  text-align: center;
+  font-size: 12px;
+}
+/*
+.CodeMirror {
+  border: 2px solid blue;
+}
+*/
+
+
+
+body {
+  /*
+  display: flex;
+  flex-direction: column;*/
+
+  background-color: #1d112f;
+  color: white; 
+  font-family: 'Montserrat', sans-serif;
+}
+
+
+
+p {
+
+  padding: 18px;
+
+}
+
+hr {
+  color: white;
+}
+
+
+
+
+h1, h2, h3, h4 {
+  font-family: 'Bebas Neue', cursive;
+  color: #cc9923;
+  /* text-shadow: 2px 2px #773322;*/
+  /*text-shadow: 2px 2px black;*/
+  /*color: #70db70;*/
+}
+
+
+.code_label {
+  font-family: 'Bebas Neue', cursive;
+  color: #cc9923;
+}
+#fadeDIV {
+  animation: mymove 3s infinite;
+}
+
+@keyframes mymove {
+  50% {text-shadow: 2px 2px 40px #cc9923;}/*#aa7701;}*/
+}
+
+.imageCenter {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  /*width: 50%;*/
+}
+
+.imageRight {
+  float: right;
+  padding-bottom: 5px;
+  padding-left: 15px;
+}
+
+.imageLeft {
+  float: left;
+  padding-bottom: 5px;
+  padding-right: 15px;
+}
+
+/*
+header {
+  padding: 50px;
+  background-color: green;
+}
+*/
+section:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/*
+footer {
+  padding-top: 50px;
+  text-align: center;
+  font-size: 12px;
+}
+*/
+
+table, th, td {
+  border: 1px solid transparent;
+}
+
+th {
+  color: #cc9923;
+  text-shadow: 1px 1px black;
+  background: #7d7165; /*#6d616f;*/
+}
+
+th,td{
+
+  text-align:center;
+  padding:5px 0;
+}
+
+tbody tr:nth-child(odd){
+  background:#887755;
+}
+tbody tr:nth-child(even){
+  background:#aa9977;
+}
+
+.slidecontainer {
+  width: 100%;
+}
+
+.slider {
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  width: 100%; /* Full-width */
+  height: 5px; /* Specified height */
+  background: #998866; /* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  transition: opacity .2s;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 16px; /* Set a specific slider handle width */
+  height: 16px; /* Slider handle height */
+  background: #cc9923; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+  border-radius: 16px;
+}
+
+.slider::-moz-range-thumb {
+  width: 16px; /* Set a specific slider handle width */
+  height: 16px; /* Slider handle height */
+  background: #cc9923; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+  border-radius: 16px;
+}
+/*
+tbody tr:hover{
+background:#BDC3C7;
+  color:#FFFFFF;
+}
+
+*/
+/* Style navigation bar */
+ul.nav {
+  width: 100%;
+  float: left;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background: #998866; /* none; /*#111111f5;*/ /*black; */
+  overflow: hidden;
+}
+
+li.nav {
+  float: left;
+}
+
+li.nav a {
+  text-align:center;
+  display: block;
+  padding: 8px 16px;
+  outline: none;
+  color: inherit;
+  text-decoration: none;
+  transition: 0.5s;
+}
+
+/* Hovering mouse over nagivation bar changes style */
+li.nav a:hover {
+  /*background-color: #333333f5; /*grey; */
+  color: white;
+  transition: 0.5s;
+  background-color:  #cc9923;
+}
+
+
+
+.sign_in {
+  background-color: #172027;
+  width: 300px;
+  border: 1px solid white;
+  border-style: solid;
+  padding-top: 10px;
+  padding-bottom: 30px;
+  padding-right: 70px;
+  padding-left: 70px;
+  margin: auto;
+  text-align:left;
+}
+
+
+.play {
+  background-color: #172027;
+  /* width: 600px;*/
+  border: 1px solid white;
+  border-style: solid;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  padding-right: 70px;
+  padding-left: 70px;
+  margin: auto;
+  text-align:left;
+}
+
+.panel {
+  position: block-inline;
+  background-color: #172027;
+  width: 200px;
+  border: 1px solid white;
+  border-style: solid;
+  
+  padding-top: 30px;
+  padding-bottom: 30px;
+  padding-right: 20px;
+  padding-left: 20px;
+  text-align:left;
+
+}
+
+.code {
+  width: 700px;
+  font-size: 16px;
+}
+
+
+.panel_style {
+  background-color: #172027;
+  border: 1px solid white;
+  border-style: solid;
+}
+
+
+a {
+  color: #eeddbb;
+}
+
+input[type=text], input[type=password] {
+  /*background-color: #222255;*/
+  background-color: #1d112f;
+  opacity: 0.85;
+  color: white;
+  width: 100%;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Add a background color when the inputs get focus */
+input[type=text]:focus, input[type=password]:focus {
+  opacity: 1;
+/*
+  background-color: #333366;
+*/
+  outline: none;
+  border: 2px solid #eeeeee;
+}
+
+
+.button {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #998866;
+  border: none;
+  color: white;
+  text-align: center;
+  font-size: 18px;
+  padding: 5px;
+  width: 100%;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;  
+}
+
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 25px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+.button:hover {
+  background-color:  #cc9923;
+}
+
+.label {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: left;
+  font-family: 'Arial', cursive;
+  color: #cc9923;
+}
+
+
+input[type="radio"]{
+  margin: 0 10px 0 40px;
+}
+
+
+
+.round-button {
+  box-sizing: border-box;
+  display:block;
+  width:40px;
+  height:40px;
+  padding-top: 0px;
+  padding-left: 9px;
+  line-height: 20px;
+  border: 2px solid lightgreen;
+  border-radius: 50%;
+  /*color:#f5f5f5;*/
+  color:lightgreen;
+  text-align:center;
+  text-decoration:none;
+  background-color: rgba(0,0,0,0.5);
+  font-size:20px;
+  font-weight:bold;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.round-button:hover {
+  background-color: rgba(0,0,0,0.8);
+  box-shadow: 0px 0px 10px rgba(255,255,100,1);
+  text-shadow: 0px 0px 10px rgba(255,255,100,1);
+}
+
+
+
+
+ /* The container must be positioned relative: */
+.custom-select {
+  position: relative;
+
+}
+
+.custom-select select {
+  display: none; /*hide original SELECT element: */
+}
+
+.select-selected {
+  border-radius: 4px;
+  background-color: #998866;
+  border: none;
+  color: white;
+}
+
+/* Style the arrow inside the select element: */
+.select-selected:after {
+  position: absolute;
+  content: "";
+  top: 14px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-color: #fff transparent transparent transparent;
+}
+
+/* Point the arrow upwards when the select box is open (active): */
+.select-selected.select-arrow-active:after {
+  border-color: transparent transparent #fff transparent;
+  top: 7px;
+}
+
+/* style the items (options), including the selected item: */
+.select-items div,.select-selected {
+  color: #ffffff;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+  cursor: pointer;
+}
+
+/* Style items (options): */
+.select-items {
+  position: absolute;
+  background-color: #998866;;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+
+/* Hide the items when the select box is closed: */
+.select-hide {
+  display: none;
+}
+
+.select-items div:hover, .same-as-selected {
+  background-color: #cc9923;
+
+} 
+
+
+
+.chart_text {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 14px;
+  fill: ghostwhite;
+}

@@ -1,0 +1,18 @@
+doctype html
+
+html
+	head
+	body
+		//img(src='/images/logo.png', alt='race_condition logo', width="450px" class="imageLeft")
+		div(id="header")
+			div(align="right")
+				a(href="/logout") Log Out
+			section
+				ul.nav
+					li.nav
+						a(href='/user') #{user.username}
+					li.nav
+						a(href='/play') Play
+					li.nav
+						a(href='/leaderboards') Leaderboards
+			hr

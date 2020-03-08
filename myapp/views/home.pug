@@ -1,0 +1,47 @@
+doctype html
+
+html
+	head
+		title="race_condition"
+		link(href='/stylesheets/main.css' rel='stylesheet')
+
+	body
+
+		div(id="container")
+
+			div(id="body")
+				br
+				br
+				br
+
+				img(src='/images/logo.png', alt='race_condition logo', width="450px", class="imageCenter", style="border:1px solid white")
+
+				br
+				br
+				br
+
+				div(class="sign_in")
+
+					
+					h3(style="text-align: center") Welcome to race_condition! A game of algorithmic artistry.
+
+
+					//a(href='/sign-in') Sign In.
+
+					//a(href='/sign-up') Sign Up.
+
+					button(class="button", style="vertical-align:middle", onclick="window.location.href = '/sign-in'")
+							span Sign In
+
+					br
+					br
+
+					button(class="button", style="vertical-align:middle", onclick="window.location.href = '/sign-up'")
+							span Sign Up
+
+
+				
+
+
+
+			include ./footer.pug

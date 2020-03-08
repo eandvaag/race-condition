@@ -1,0 +1,40 @@
+doctype html
+
+html
+	head
+		title="race_condition"
+		link(href='/stylesheets/main.css' rel='stylesheet')
+		script(type='text/javascript' src='https://d3js.org/d3.v5.min.js')
+		//script(type='text/javascript' src='/javascripts/leaderboards.js')
+	body
+
+		div(id="container")
+			include ./header.pug
+			
+			div(id="body")
+
+				div(id="chart", align="center")
+
+				//-var jsonObj = JSON.parse(high_scorers)
+				//p jsonObj
+
+				//for high_scorer in high_scorers
+				//	p #{high_scorer.username}
+					//script.
+					//	console.log(JSON.stringify(high_scorer));
+
+				script(type='text/javascript' src='/javascripts/leaderboards.js')
+				script.
+					
+					console.log("#{user.username}");
+
+
+					var high_scorers = !{JSON.stringify(high_scorers)};
+					var user = !{JSON.stringify(user)};
+					console.log(high_scorers);
+					console.log(user);
+					drawPlot(high_scorers, user);
+
+
+
+			include ./footer.pug

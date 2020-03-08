@@ -1,0 +1,92 @@
+doctype html
+
+html
+	head
+		title="race_condition"
+		link(href='/stylesheets/main.css' rel='stylesheet')
+		link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css")
+	body
+
+		div(id="container")
+			include ./header.pug
+			
+			div(id="body")
+				//p Your score is #{user.score}
+				h2 My Profile
+
+
+				p(style="margin-top: -10px")
+					em
+						font(color="#cc9923") Name: 
+					| #{user.username}
+
+					br
+
+				p(style="margin-top: -40px")
+					em
+						font(color="#cc9923") Total Score: 
+					| #{user.score}
+
+					br
+
+				p(style="margin-top: -40px")
+					em
+						font(color="#cc9923") Number of Puzzles Solved: 
+					| #{user.num_solved}
+
+
+				//p Number of Puzzles Solved: #{user.num_solved}
+				//br
+				//p Favourite Language: #{user.favourite_language}
+				//br
+				hr
+
+
+				h2 Solved Puzzles
+
+
+				if user.num_solved == 0
+					p You haven't solved any puzzles yet!
+				else
+					table(style="width:100%")
+						tr
+							th Name
+							th Languages
+							th Statistics
+							th Work on it!
+						each langs, puzzle in lang_lookup
+							tr
+								td #{puzzle}
+								td
+									//for lang in langs
+									each lang in ['c', 'java', 'python', 'javascript', 'scheme', 'haskell']
+										if langs.includes(lang)
+
+											img(src="/images/" + lang + ".svg", alt='logo', width="25px", class="imageLeft")
+										else
+											img(src="/images/transparent.png", alt="empty", width="25px", class="imageLeft")
+								
+								td
+									button(onclick="window.location.href = '/puzzle/" + puzzle + "'")
+										i(class="fa fa-arrow-circle-right")
+									
+								td
+									//button(onclick="window.location.href = '/" + user.username + "'")
+									//	i(class="fa fa-arrow-circle-right")
+									button(onclick="window.location.href = '/puzzle/" + puzzle + "/" + user.username + "'")
+										i(class="fa fa-arrow-circle-right")
+									// a(href='/puzzle/' + puzzle + '/' + user.username)
+
+
+
+				// a(href='/puzzle/' + puzzle)
+					// text
+				//for puzzle in puzzles
+				//	p
+				//		span #{puzzle.name}
+				//		|
+				//		a(href="/puzzle" + puzzle.id) Statistics
+				//		|
+				//		a(href="/puzzle" + puzzle.id + "/" + user.username) Work on it!
+			
+			include ./footer.pug

@@ -1,0 +1,53 @@
+doctype html
+
+html
+	head
+		title="race_condition"
+		link(href='/stylesheets/main.css' rel='stylesheet')
+	body
+
+		div(id="container")
+
+
+			div(id="body")
+
+				br
+				br
+				br
+
+				div(class="sign_in")
+
+					div(id="fadeDIV")
+						h2(align="center") Sign In
+
+
+
+					p(align="center") Welcome to 
+						em race_condition!
+
+					form(action="/sign-in", method="POST")
+
+						div(id="fadeDIV")
+							label(for="username", class="label") Username
+
+						input(name="username", type="text", required)
+
+						div(id="fadeDIV")
+							label(for="password", class="label") Password
+
+						input(name="password", type="password", required)
+
+						button(class="button", style="vertical-align:middle")
+							span Sign In
+
+					br
+					hr
+					br
+
+
+					span New user? 
+					|
+					a(href='/sign-up') Create an account.
+
+
+			include ./footer.pug

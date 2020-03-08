@@ -1,0 +1,55 @@
+doctype html
+
+html
+	head
+		title="race_condition"
+		link(href='/stylesheets/main.css' rel='stylesheet')
+		//script(type='text/javascript' src='/javascripts/validate.js')
+
+	body
+
+
+		div(id="container")
+
+
+			div(id="body")
+			
+				br
+				br
+				br
+
+				div(class="sign_in")
+
+					div(id="fadeDIV")
+						h2(align="center") Sign Up
+
+					p(align="center") Welcome to 
+						em race_condition!
+
+					form(action="/sign-up" method="POST" id="sign_up")
+						
+						div(id="fadeDIV")
+							label(for="username" class="label") Username
+						
+						input(id="username" name="username" type="text" required)
+
+						div(id="fadeDIV")
+							label(for="password" class="label") Password
+						
+						input(id="password" name="password" type="password" required)
+
+						button(class="button" style="vertical-align:middle")
+							span Sign Up
+
+					br
+					hr
+					br
+
+					span Returning user? 
+					|
+					a(href='/sign-in') Log in.
+
+
+			include ./footer.pug
+
+		script(type='text/javascript' src='/javascripts/validate.js')

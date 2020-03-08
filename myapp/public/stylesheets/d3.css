@@ -1,0 +1,25 @@
+.axis path,
+.axis line{
+	fill: none;
+	stroke: black;
+	shape-rendering: crispEdges;
+}
+
+.axis text {
+	font-family: sans-serif;
+	font-size: 11px;
+}
+
+text {
+	fill: white
+}
+
+.tooltip {
+	position: absolute;
+	font-size: 14px;
+	width:  auto;
+	height: auto;
+	pointer-events: none;
+	background-color: #172027;
+	color: white;
+}
