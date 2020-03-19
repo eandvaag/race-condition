@@ -1,0 +1,7 @@
+#!/bin/bash
+
+docker stop rc-python
+docker stop rc-racket
+docker stop rc-node
+docker stop rc-haskell
+

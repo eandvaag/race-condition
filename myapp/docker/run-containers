@@ -1,0 +1,10 @@
+#!/bin/bash
+
+tests_dir=/home/erik/Documents/2020_winter/CMPT_350/prj/race-condition/myapp/tests
+container_dir=/usr/src/app/tests
+
+sudo docker run --read-only --network none --name=rc-python -d -v $tests_dir:$container_dir:ro -it rc/python
+sudo docker run --read-only --network none --name=rc-racket -d -v $tests_dir:$container_dir:ro -it rc/racket
+sudo docker run --read-only --network none --name=rc-node -d -v $tests_dir:$container_dir:ro -it rc/node
+sudo docker run --read-only --network none --name=rc-haskell --tmpfs /tmp -d -v $tests_dir:$container_dir:ro -it rc/haskell
+

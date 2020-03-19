@@ -19,7 +19,7 @@ module.exports = {
       updatedAt: new Date()
     },
     {
-      username: 'ian',
+      username: 'arvid',
       puzzle_name: 'fibonacci',
       language: 'python',
       time: 0.01,
@@ -87,7 +87,7 @@ module.exports = {
     {
       username: 'erik',
       puzzle_name: 'sort',
-      language: 'python',
+      language: 'scheme',
       time: 0.84,
       length: 461,
       solution: '(define (sort e)\n'+
@@ -141,7 +141,7 @@ module.exports = {
       language: 'javascript',
       time: 0.03,
       length: 50,
-      solution: 'function (c,s) {\n'+
+      solution: 'function char_count(c,s) {\n'+
       'return s.split(c).length - 1\n' +
       '}',
       createdAt: new Date(),
@@ -163,7 +163,7 @@ module.exports = {
       language: 'haskell',
       time: 0.39,
       length: 86,
-      solution: 'char_count x xs = foldl (\count char -> if char == x then (count + 1) else count) 0 xs',
+      solution: 'char_count x xs = foldl (\\count char -> if char == x then (count + 1) else count) 0 xs',
       createdAt: new Date(),
       updatedAt: new Date()
     },
@@ -178,7 +178,7 @@ module.exports = {
       updatedAt: new Date()
     },   
     {
-      username: 'ian',
+      username: 'arvid',
       puzzle_name: 'collatz',
       language: 'python',
       time: 0.2,

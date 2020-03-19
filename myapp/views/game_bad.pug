@@ -1,0 +1,114 @@
+doctype html
+
+html
+	head
+		meta(name="viewport" content="width=device-width, initial-scale=1.0")
+		title="race_condition"
+
+		link(href='/stylesheets/codemirror.css' rel='stylesheet')
+		link(href='/theme/dracula.css' rel='stylesheet')
+		link(href='/theme/base16-dark.css' rel='stylesheet')
+		link(href='/stylesheets/main.css' rel='stylesheet')
+		script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
+		script(type='text/javascript' src='/javascripts/lib/codemirror.js')
+		script(type='text/javascript' src='/javascripts/mode/python/python.js')
+		script(type='text/javascript' src='/javascripts/mode/scheme/scheme.js')
+		script(type='text/javascript' src='/javascripts/mode/javascript/javascript.js')
+		script(type='text/javascript' src='/javascripts/mode/haskell/haskell.js')
+		script(type='text/javascript' src='/javascripts/lang_color.js')
+		script(type='text/javascript' src='/javascripts/game.js')
+	body
+
+
+		div(id="container")
+
+			include ./header.pug
+			div(id="body")
+
+
+				//h2 #{game.creator} vs #{game.invitee}
+
+
+				//p #{easy_puzzles}
+
+				//div(id="fadeDIV")
+				//	h2(id="puzzle_name")
+				
+				//if puzzle.difficulty === "easy"
+				//	-var diff_color = "green";
+				//else if puzzle.difficulty === "moderate"
+				//	-var diff_color = "yellow";
+				//else
+				//	-var diff_color = "red";
+
+				//p
+				//	em
+				//		font(color="#cc9923") Difficulty: 
+				//	font(color="#{diff_color}") #{puzzle.difficulty}
+
+				//div(class="progress-container" style="height: 150px")
+				//	div(class="progress")
+				//		div(class="progress-name") #{game.creator}
+				//		div(class="progress-bar")
+				//			div(id="progress_" + game.creator class="progress-per" per="0%")
+				//
+				//	div(class="progress")
+				//		div(class="progress-name") #{game.invitee}
+				//		div(class="progress-bar")
+				//			div(id="progress_" + game.invitee class="progress-per" per="0%")
+
+				hr
+
+
+
+				div
+					div(class="code-container")
+						div(class="codebar-item" id="code_panel")
+							div(class="cell")
+							//	select(id="language_select" name="language_select")
+							//
+							//	img(id="logo" src="/images/" + "python" + ".svg" alt='logo' width="50px" height="50px" style="float:left; margin: 0 20px")
+							//
+							//div(class="cell")
+							//	button(id="run_button" class="round-button" style="margin 0 auto")
+							//		i(class="fa fa-play")
+											
+						div(class="codebar-item" id="stats")
+
+							//div(class="cell")
+							//	select(id="puzzle_select" name="puzzle_select")
+
+						div(style="text-align:left")
+							div.input(style="font-size:15px;")
+								textarea(id="codeeditor")
+						div(style="text-align:left")
+							div.input(style="font-size:15px")
+								textarea(id="codeoutput")
+
+				//div(id="fadeDIV")
+				//	h2(id="puzzle_name")
+
+
+				//p(style="margin-top: -30px")
+				//	em
+				//		font(color="#cc9923") Description:
+					
+				//p(style="margin-left:60px; margin-right:60px; margin-top: -50px; text-align: justify;" id="puzzle_description")
+
+
+				script.
+					var game = !{JSON.stringify(game)};
+					var user = !{JSON.stringify(user)};
+					var cur_easy_puzzles = !{JSON.stringify(easy_puzzles)};
+					var cur_moderate_puzzles = !{JSON.stringify(moderate_puzzles)};
+					var cur_challenging_puzzles = !{JSON.stringify(challenging_puzzles)};
+					var cur_puzzles = cur_easy_puzzles.concat(cur_moderate_puzzles.concat(cur_challenging_puzzles));
+					var points_needed = cur_easy_puzzles.length + 
+										(cur_moderate_puzzles.length * 3) + 
+										(cur_challenging_puzzles.length * 5);
+					//var solutions = !{JSON.stringify(solutions)};
+					//console.log(solutions);
+
+
+
+			include ./footer.pug

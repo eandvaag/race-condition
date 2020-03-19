@@ -6,11 +6,19 @@ var users = {};
 var usernames = [];
 var width = 800;
 var height = 600;
-var legend_width = 200;
-var legend_height = 200;
-
+var legend_width = 150;
+var legend_height = 160;
+var legend_svg;
 
 var padding = 40;
+
+
+$(function() {
+    var div = $('#chart');
+    var width = div.width();
+    
+    div.css('height', width);
+});
 /*
 d3.csv("../sample_data/sample_scores.csv").then(function(data) {
 	console.log("LEADERBOARDS.js");
@@ -30,9 +38,35 @@ d3.csv("../sample_data/sample_scores.csv").then(function(data) {
 })
 */
 //drawPlot()
+window.addEventListener("resize", drawPlot);
 
-function drawPlot(puzzle, fastest_solutions, shortest_solutions) {
+function updateSize() {
+
+	/*
+	let chart_div = document.getElementById("chart");
+	width = chart_div.clientWidth;
+	height
+	svg.attr("width", chart_div.clientWidth);
+	svg.attr("height", chart_div.clientHeight);*/
+	drawPlot();
+}
+
+
+
+function drawPlot() {
 //function drawPlot(puzzle) {
+
+	var div = $('#chart');
+    var width = div.width();
+    
+    div.css('height', (3/4) * width );
+
+
+	if (svg) {
+		svg.remove();
+		//chart_bg.remove()
+		legend_svg.remove();
+	}
 
 	console.log('fastest_solutions', fastest_solutions);
 	console.log('shortest_solutions', shortest_solutions);
@@ -60,17 +94,29 @@ function drawPlot(puzzle, fastest_solutions, shortest_solutions) {
 
 
 
+
 	console.log('drawPlot()');
 	console.log('puzzle', puzzle);
 	console.log('puzzle name', puzzle.name);
 	//console.log('solutions', solutions);
 
+	//let chart_div = document.getElementById("chart");
+
+	width = div.width();
+	height = div.height();/*
+	console.log("chart width:", chart_div.clientWidth);
+	console.log("chart height:", chart_div.clientHeight);*/
+
 	svg = d3.select("#chart")
 			.append("svg")
 			.attr("width", width)
 			.attr("height", height);
+			//.attr("preserveAspectRatio", "xMinYMin meet")
+			//.attr("viewBox", "0 0 height width");
+			//.attr("width", chart_div.clientWidth)
+			//.attr("height", chart_div.clientHeight);
 
-	var legend_svg = d3.select("#legend")
+	legend_svg = d3.select("#legend")
 			.append("svg")
 			.attr("width", legend_width)
 			.attr("height", legend_height);
@@ -78,6 +124,11 @@ function drawPlot(puzzle, fastest_solutions, shortest_solutions) {
 	chart_bg = d3.select("#chart").select("svg").append("g");
 	legend_bg = d3.select("#legend").select("svg").append("g");
 
+
+
+	//var dropdown = d3.select("#legend").select("svg")
+    //.insert("select", "svg")
+    //.on("change", dropdownChange);
 	//subchart = d3.select("#chart").select("svg").append("g");
 	//legend = d3.select("#chart").select("svg").append("g");
 	//var dropdown = d3.select("#chart").insert("select", "svg").style("top", "400px").style("left", "250px");//.on("change", drowdownChange);
@@ -106,10 +157,10 @@ function drawPlot(puzzle, fastest_solutions, shortest_solutions) {
 					.range([height-2*padding, 2*padding]);
 
 	var xAxis = d3.axisBottom(xScale)
-					.ticks(15);
+					.ticks(width / 100);
 
 	var yAxis = d3.axisLeft(yScale)
-					.ticks(15);
+					.ticks(height / 100);
 
 
 

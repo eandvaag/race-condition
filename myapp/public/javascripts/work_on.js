@@ -16,18 +16,26 @@ function dropdown_update()  {
 
   myCodeMirror.setValue("");
   myOutput.setValue("");
-  $('p').remove(".stats")
+  //$('p').remove(".stats")
+  $("#time_stats").html("");
+  $("#length_stats").html("");
   //myCodeMirror.style.border = "2px solid " + lang_color(new_lang);
   $('.CodeMirror').css("border", "2px solid " + lang_color(new_lang));
   $('#code_panel').css("border", "2px solid " + lang_color(new_lang));
+  $('#stats').css("border", "2px solid " + lang_color(new_lang));
+  /*
+  $("#run_button").css("color", lang_color(new_lang));
+  $("#run_button").css("border", "2px solid " + lang_color(new_lang));*/
   //document.getElementById("codeeditor").style.border = "2px solid " + lang_color(new_lang);
   document.getElementById("logo").src = "/images/" + new_lang + ".svg";
 
   for (var i = 0; i < solutions.length; i++) {
     if (solutions[i].language == new_lang) {
       myCodeMirror.setValue(solutions[i].solution);
-      $('#code_panel').append("<p class='stats'><br><br><br><strong>My saved time:<br></strong>" + solutions[i].time + " seconds </p>");
-      $('#code_panel').append("<p class='stats'><strong>My saved length:<br></strong>" + solutions[i].length + " characters </p>");
+      $("#time_stats").html("<strong>My saved time:<br></strong>" + solutions[i].time + " seconds");
+      $("#length_stats").html("<strong>My saved length:<br></strong>" + solutions[i].length + " characters");
+      //$('#code_panel').append("<p class='stats'><br><br><br><strong>My saved time:<br></strong>" + solutions[i].time + " seconds </p>");
+      //$('#code_panel').append("<p class='stats'><strong>My saved length:<br></strong>" + solutions[i].length + " characters </p>");
     }
   }
 }
@@ -39,6 +47,7 @@ function disable_input(){
     $("#language").prop("disabled", true);
     $('.CodeMirror').css("opacity", 0.5);
     $('#code_panel').css("opacity", 0.5);
+    $('#stats').css("opacity", 0.5);
 }
 
 function enable_input(){
@@ -47,6 +56,7 @@ function enable_input(){
   $("#language").prop("disabled", false);
   $('.CodeMirror').css("opacity", 1);
   $('#code_panel').css("opacity", 1); 
+  $('#stats').css("opacity", 1);
 
 }
 
@@ -64,16 +74,16 @@ $(document).ready(function(){
                       mode: "python",
                       theme: "dracula"
   });
-
-  myCodeMirror.setSize(650, 350);
+  
+  //myCodeMirror.setSize(650, 350);
 
   myOutput = CodeMirror.fromTextArea(document.getElementById("codeoutput"), {
                       theme: "base16-dark",
                       mode: "plain",
                       readOnly: "nocursor"
   });
-
-  myOutput.setSize(500, 350);
+/*
+  myOutput.setSize(500, 350);*/
 
   dropdown_update();
   //$('.CodeMirror').css("border", "2px solid " + lang_color($("#language").val().toLowerCase()));
@@ -92,7 +102,7 @@ $(document).ready(function(){
     //console.log("got here submit");
     $.post($(location).attr('href') + '/submit',
     {
-      solution: $("#codeeditor").val(),
+      solution: myCodeMirror.getValue(),
       time: parseFloat(solution_time),
       length: parseInt(solution_length),
       language: $('#language').val().toLowerCase()
@@ -122,18 +132,13 @@ $(document).ready(function(){
   });
   
 
-
-
-  $('form').submit(function(e){
-    e.preventDefault();
+  $("#run_button").click(function(){
     disable_input();
 
-    //myCodeMirror.theme = "base16-dark";
-    console.log("clicked");
-  	console.log($("#codeeditor").val());
     $.post($(location).attr('href'),
     {
-      user_fun: $("#codeeditor").val(),
+      puzzle_name: puzzle_name,
+      user_fun: myCodeMirror.getValue(),
       lang: $("#language").val()
     },
     
@@ -151,20 +156,27 @@ $(document).ready(function(){
           enable_input();
           myOutput.setValue(data.stderr);
         }
+        else if (data.error) {
+          enable_input();
+          myOutput.setValue(data.stdout)
+        }
         else if (data.passed_all) {
-        //if (data.res === "All tests passed!\n") {
-          console.log("this happened");
-          console.log("your time is:", data.time);
-          console.log("solution length is:", data.length);
+
+          $('.CodeMirror').each(function(index) {
+            if (index == 1) {
+              $(this).css("opacity", 1);
+            }
+          });
+
           $("#submit_button").show();
           $("#edit_button").show();
           solution_time = data.time;
           solution_length = data.length;
-          //alert(data.res + "\nRuntime: " + data.time.replace(/^\s+|\s+$/g, '') + " seconds\n\nSolution length: " + data.length + " characters")
           myOutput.setValue(data.stdout + "\nRuntime: " + data.time.replace(/^\s+|\s+$/g, '') + " seconds\n\nSolution length: " + data.length + " characters");
 
         }
         else {
+          /* ??? */
           enable_input();
           myOutput.setValue(data.stdout)
         }

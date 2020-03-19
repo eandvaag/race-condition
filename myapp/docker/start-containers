@@ -1,0 +1,7 @@
+#!/bin/bash
+
+docker start rc-python
+docker start rc-racket
+docker start rc-node
+docker start rc-haskell
+

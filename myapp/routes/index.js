@@ -103,14 +103,30 @@ router.get('/user', landing.get_user);
 
 router.get('/puzzle/:puzzle_name', landing.show_puzzle);
 
-
+/*
 router.get('/create-game', landing.get_create_game);
-
+*/
 
 router.get('/puzzle/:puzzle_name/:username', landing.get_work_on);
-router.post('/puzzle/:puzzle_name/:username', landing.post_work_on);
+router.post('/puzzle/:puzzle_name/:username', landing.run_code);
+
+
 
 router.post('/puzzle/:puzzle_name/:username/submit', landing.work_on_submit);
+
+
+
+router.post('/verify-user', landing.verify_user);
+
+router.get('/play/:game_id', landing.get_game);
+router.post('/play/:game_id', landing.run_code);
+
+router.get('/new', landing.new);
+/*
+router.get('/time-attack', landing.get_time_attack);
+*/
+//router.get('/create-game', landing.create_game);
+
 //router.get('/user/:username', landing.show_user);
 //router.get('/user/:username', landing.user_home);
 //router.get('/form', landing.get_form);

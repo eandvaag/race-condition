@@ -19,15 +19,50 @@ module.exports = {
 				allowNull: false,
 				type: Sequelize.STRING
 			},
-			num_solved: {
+			num_easy_solved: {
+				type: Sequelize.INTEGER,
 				allowNull: false,
-				defaultValue: '0',
-				type: Sequelize.INTEGER
+				defaultValue: '0'
 			},
-			score: {
+			num_moderate_solved: {
+				type: Sequelize.INTEGER,
 				allowNull: false,
-				defaultValue: '0',
-				type: Sequelize.INTEGER
+				defaultValue: '0'
+			},
+			num_difficult_solved: {
+				type: Sequelize.INTEGER,
+				allowNull: false,
+				defaultValue: '0'
+			},
+			games_played: {
+				type: Sequelize.INTEGER,
+				allowNull: false,
+				defaultValue: '0'
+			},
+			games_won: {
+				type: Sequelize.INTEGER,
+				allowNull: false,
+				defaultValue: '0'
+			},
+			games_lost: {
+				type: Sequelize.INTEGER,
+				allowNull: false,
+				defaultValue: '0'
+			},
+			rank: {
+				type: Sequelize.STRING,
+				allowNull: false,
+				defaultValue: "Newbie"
+			},
+			status: {
+				type: Sequelize.ENUM("not_playing", "playing", "join_waiting", 
+					"creating", "create_waiting", "starting"),
+				allowNull: false,
+				defaultValue: "not_playing"
+			},
+			socket_id: {
+				type: Sequelize.STRING,
+				defaultValue: null
 			}
 		}, {
 		hooks: {

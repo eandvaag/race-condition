@@ -2,9 +2,12 @@ doctype html
 
 html
 	head
+		meta(name="viewport" content="width=device-width, initial-scale=1.0")
 		title="race_condition"
 		link(href='/stylesheets/main.css' rel='stylesheet')
-		link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css")
+		script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
+		script(type='text/javascript' src='/javascripts/user.js')
+
 	body
 
 		div(id="container")
@@ -12,72 +15,121 @@ html
 			
 			div(id="body")
 				//p Your score is #{user.score}
-				h2 My Profile
+
+				//p(style="font-size:24px; margin-top: -20px; margin-bottom: -5px") Profile
+				h(class="header1") Profile
+
+				div(class="grid-container")
+					div(class="user-item")
+						h2 Username
+						code(style="font-size:24px") #{user.username}
+					div(class="rank-item")
+						h2 Rank
+						img(src="/images/ranks/" + user.rank.toLowerCase().split(' ').join('_') + ".png" alt='rank', width="160px" style="margin-bottom:-15px; margin-top:-10px")
+						//p(style="font-size:20px; margin:-5px 0") #{user.rank}
+					div
+						h2 Games Played
+						table(style="width:90%; margin: 0 auto")
+								col(style="width:33%")
+								col(style="width:33%")
+								col(style="width:33%")
+								tr
+									th Total
+									th Wins
+									th Losses
+								tr
+									td #{user.games_played}
+									td #{user.games_won}
+									td #{user.games_lost}
+
+					div
+						h2 Puzzles Solved
+						table(style="width:90%; margin: 0 auto")
+								col(style="width:33%")
+								col(style="width:33%")
+								col(style="width:33%")
+								tr
+									th Easy
+									th Moderate
+									th Challenging
+								tr
+									td #{user.num_easy_solved}
+									td #{user.num_moderate_solved}
+									td #{user.num_difficult_solved}
 
 
-				p(style="margin-top: -10px")
-					em
-						font(color="#cc9923") Name: 
-					| #{user.username}
-
-					br
-
-				p(style="margin-top: -40px")
-					em
-						font(color="#cc9923") Total Score: 
-					| #{user.score}
-
-					br
-
-				p(style="margin-top: -40px")
-					em
-						font(color="#cc9923") Number of Puzzles Solved: 
-					| #{user.num_solved}
+				br
+				br
+				
 
 
-				//p Number of Puzzles Solved: #{user.num_solved}
-				//br
-				//p Favourite Language: #{user.favourite_language}
-				//br
-				hr
-
-
-				h2 Solved Puzzles
+				h(class="header1") Puzzle Index
 
 
 				if user.num_solved == 0
 					p You haven't solved any puzzles yet!
 				else
-					table(style="width:100%")
-						tr
-							th Name
-							th Languages
-							th Statistics
-							th Work on it!
-						each langs, puzzle in lang_lookup
+					//div(style="text-align:center")
+					div
+						//table(style="width:; display:block; overflow-auto; margin: 0 auto")
+						//table(style="display: block; overflow: auto; width:85%; margin: 0 auto")
+						table(style="display: table; overflow: scroll; width: 85%; margin: 0 auto;")
+							col(style="width:30%")
+							col(style="width:30%")
+							col(style="width:20%")
+							col(style="width:20%")
 							tr
-								td #{puzzle}
-								td
-									//for lang in langs
-									each lang in ['c', 'java', 'python', 'javascript', 'scheme', 'haskell']
-										if langs.includes(lang)
+								th Name
+								th Languages
+								th Stats
+								th Develop
+							each langs, puzzle in lang_lookup
+								tr
+									td
+										code #{puzzle}
+									td
+										//for lang in langs
+										each lang in ['python', 'scheme', 'javascript', 'haskell']
+											if langs.includes(lang)
 
-											img(src="/images/" + lang + ".svg", alt='logo', width="25px", class="imageLeft")
-										else
-											img(src="/images/transparent.png", alt="empty", width="25px", class="imageLeft")
-								
-								td
-									button(onclick="window.location.href = '/puzzle/" + puzzle + "'")
-										i(class="fa fa-arrow-circle-right")
+												img(src="/images/" + lang + ".svg" alt='logo' width="30px" height="30px" align="middle" style="margin: 5px 10px")
+												//class="imageLeft")
+											else
+												img(src="/images/transparent.png" alt="empty" width="30px" height="30px" align="middle" style="margin: 5px 10px")
+												//class="imageLeft")
 									
-								td
-									//button(onclick="window.location.href = '/" + user.username + "'")
-									//	i(class="fa fa-arrow-circle-right")
-									button(onclick="window.location.href = '/puzzle/" + puzzle + "/" + user.username + "'")
-										i(class="fa fa-arrow-circle-right")
-									// a(href='/puzzle/' + puzzle + '/' + user.username)
+									td
+										div(class="wrapper")
+											svg(class="pointer" onclick="window.location.href = '/puzzle/" + puzzle + "'" width="18px" height="17px" viewBox="-1 0 18 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink")
+												g
+													polygon(class="arrow" points="16.3746667 8.33860465 7.76133333 15.3067621 6.904 14.3175671 14.2906667 8.34246869 6.908 2.42790698 7.76 1.43613596")
+													polygon class="arrow-fixed" points="16.3746667 8.33860465 7.76133333 15.3067621 6.904 14.3175671 14.2906667 8.34246869 6.908 2.42790698 7.76 1.43613596")
+													path(d="M-4.58892184e-16,0.56157424 L-4.58892184e-16,16.1929159 L9.708,8.33860465 L-1.64313008e-15,0.56157424 L-4.58892184e-16,0.56157424 Z M1.33333333,3.30246869 L7.62533333,8.34246869 L1.33333333,13.4327013 L1.33333333,3.30246869 L1.33333333,3.30246869 Z")
 
 
+										//button(onclick="window.location.href = '/puzzle/" + puzzle + "'")
+										//	i(class="fa fa-arrow-circle-right")
+										
+									td
+
+										div(class="wrapper")
+											svg(class="pointer" onclick="window.location.href='/puzzle/" + puzzle + "/" + user.username + "'" width="18px" height="17px" viewBox="-1 0 18 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink")
+												g
+													polygon(class="arrow" points="16.3746667 8.33860465 7.76133333 15.3067621 6.904 14.3175671 14.2906667 8.34246869 6.908 2.42790698 7.76 1.43613596")
+													polygon class="arrow-fixed" points="16.3746667 8.33860465 7.76133333 15.3067621 6.904 14.3175671 14.2906667 8.34246869 6.908 2.42790698 7.76 1.43613596")
+													path(d="M-4.58892184e-16,0.56157424 L-4.58892184e-16,16.1929159 L9.708,8.33860465 L-1.64313008e-15,0.56157424 L-4.58892184e-16,0.56157424 Z M1.33333333,3.30246869 L7.62533333,8.34246869 L1.33333333,13.4327013 L1.33333333,3.30246869 L1.33333333,3.30246869 Z")
+
+										//button(onclick="window.location.href = '/" + user.username + "'")
+										//	i(class="fa fa-arrow-circle-right")
+
+										//button(onclick="window.location.href = '/puzzle/" + puzzle + "/" + user.username + "'")
+										//	i(class="fa fa-arrow-circle-right")
+										// a(href='/puzzle/' + puzzle + '/' + user.username)
+
+
+				script.
+					var new_rank = !{JSON.stringify(new_rank)};
+					var user = !{JSON.stringify(user)};
 
 				// a(href='/puzzle/' + puzzle)
 					// text

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+sudo docker build -f ./Dockerfile.node -t rc/node .
+sudo docker build -f ./Dockerfile.rkt -t rc/racket .
+sudo docker build -f ./Dockerfile.hs -t rc/haskell .
+sudo docker build -f ./Dockerfile.py -t rc/python .
+

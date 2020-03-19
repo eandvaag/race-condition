@@ -14,18 +14,51 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.STRING,
 			allowNull: false
 		},
-		num_solved:{
+		num_easy_solved: {
 			type: DataTypes.INTEGER,
 			allowNull: false,
 			defaultValue: '0'
 		},
-		score: {
+		num_moderate_solved: {
 			type: DataTypes.INTEGER,
 			allowNull: false,
 			defaultValue: '0'
+		},
+		num_difficult_solved: {
+			type: DataTypes.INTEGER,
+			allowNull: false,
+			defaultValue: '0'
+		},
+		games_played: {
+			type: DataTypes.INTEGER,
+			allowNull: false,
+			defaultValue: '0'
+		},
+		games_won: {
+			type: DataTypes.INTEGER,
+			allowNull: false,
+			defaultValue: '0'
+		},
+		games_lost: {
+			type: DataTypes.INTEGER,
+			allowNull: false,
+			defaultValue: '0'
+		},
+		rank: {
+			type: DataTypes.STRING,
+			allowNull: false,
+			defaultValue: "Newbie"
+		},
+		status: {
+			type: DataTypes.ENUM("not_playing", "playing", "join_waiting", 
+					"creating", "create_waiting", "starting"),
+			allowNull: false,
+			defaultValue: "not_playing"
+		},
+		socket_id: {
+			type: DataTypes.STRING,
+			defaultValue: null
 		}
-
-		
 	});
 
 	users.addHook('beforeCreate', (user) => {
@@ -33,7 +66,7 @@ module.exports = (sequelize, DataTypes) => {
 		user.password = bcrypt.hashSync(user.password, salt);
 	});
 
-	users.prototype.validPassword = function(password) {
+	users.prototype.check_password = function(password) {
 		return bcrypt.compareSync(password, this.password);
 	}
 	

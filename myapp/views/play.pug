@@ -1,86 +1,174 @@
 doctype html
 
 html
-	head
-		title="race_condition"
-		link(href='/stylesheets/main.css' rel='stylesheet')
-		link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css")
-	body
+  head
+    title="race_condition"
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    link(href='/stylesheets/main.css' rel='stylesheet')
 
-		div(id="container")
-
-			include ./header.pug
+    //script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
 
 
-			div(id="body")
+    //link(rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css")
+    //link(rel="stylesheet" href="/resources/demos/style.css")
 
-				br
-				br
-				div(class="play")
+    //link(rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css")
 
-					button(class="button", style="vertical-align:middle", onclick="window.location.href = '/create-game'")
-						span Create Game
+    link(rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css")
+    //link(rel="stylesheet" href="/resources/demos/style.css")
 
 
-					br
-					br
-					br
-					hr
+    script(src="https://code.jquery.com/jquery-1.12.4.js")
+    script(src="https://code.jquery.com/ui/1.12.1/jquery-ui.js")
 
-					div(id="fadeDIV")
-						h3 Games to Join
+    //script(type="text/javascript" src="scripts/jquery-1.8.2.min.js")
+    //script(src="/javascripts/jquery.autocomplete.min.js")
 
-					script.
-						console.log("HERE");
-						console.log(puzzle_difficulty_color("easy"));
 
-					if games
-						table(style="width:100%")
-							col(style="width:100px")
-							col(style="width:200px")
-							col(style="width:20px")
-							col(style="width:20px")
-							col(style="width:20px")
-							col(style="width:20px")
-							col(style="width:20px")
-							col(style="width:20px")
-							col(style="width:50px")
-							col(style="width:30px")
-							tr
-								th Creator
-								th Languages
-								th(colspan="3") Puzzle Mix
-								th(colspan="3") Puzzle Times
-								th Players
-								th Join
-
-							for game in games
-								tr
-									td #{game.creator}
-									td #{game.languages}
-									td
-										font(color="green" style="text-shadow: 1px 1px black") #{game.num_easy}
-									td
-										font(color="yellow" style="text-shadow: 1px 1px black") #{game.num_moderate}
-									td
-										font(color="red" style="text-shadow: 1px 1px black") #{game.num_challenging}
-
-									td
-										font(color="green" style="text-shadow: 1px 1px black") #{game.time_easy}
-									td
-										font(color="yellow" style="text-shadow: 1px 1px black") #{game.time_moderate} 
-									td
-										font(color="red" style="text-shadow: 1px 1px black") #{game.time_challenging}
-
-									td #{game.cur_player_num} / #{game.tot_player_num}
-									td
-										button(onclick="window.location.href = '/puzzle/" + puzzle + "'")
-											i(class="fa fa-arrow-circle-right")
+    //link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css")
+    //script(src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js")
+    script(src="/socket.io/socket.io.js")
+    script(src="/javascripts/play.js")
+    //script(src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.2/dist/latest/bootstrap-autocomplete.min.js")
 
 
 
-					else
-						p No games to join ... why not create one?
+
+  body
+
+    div(id="container")
+
+      include ./header.pug
 
 
-			include ./footer.pug
+      div(id="join_modal" class="modal")
+        div(class="modal-content")
+          div(class="modal-header")
+            span(class="close") &times;
+            p Join Game
+            //p Waiting for an invitation...
+          div(class="modal-body")
+            //div(style="align:inline")
+
+
+            h(class="header1") Waiting for Invitations
+            div(class="loader" style="margin: 0 auto")
+
+            p
+
+
+            ul(id="invitation_list")
+
+            //div(class="loader")
+            //p
+          div(class="modal-footer")
+
+      div(id="create_modal" class="modal")
+        div(class="modal-content")
+          div(class="modal-header")
+            span(id="join_close" class="close") &times;
+            p Create Game
+            //p Waiting for an invitation...
+          div(class="modal-body")
+            //div(class="loader")
+
+            //div(id="fadeDIV")
+            //  h3 Languages
+            h(class="header1") Languages
+
+            div(style="text-align:center")
+              ul(class="image_ul")
+                li(class="image_li")
+                  input(type="checkbox" id="image_checkbox_python" value="Python")
+                  label(class="image_label" for="image_checkbox_python")
+                    img(id="python_img" class="check_image" src="/images/python.svg" alt='logo')
+                li(class="image_li")
+                  input(type="checkbox" id="image_checkbox_scheme" value="Scheme")
+                  label(class="image_label" for="image_checkbox_scheme")
+                    img(src="/images/scheme.svg" class="check_image" alt='logo')
+                li(class="image_li")
+                  input(type="checkbox" id="image_checkbox_javascript" value="JavaScript")
+                  label(class="image_label" for="image_checkbox_javascript")
+                    img(src="/images/javascript.svg" class="check_image" alt='logo')
+                li(class="image_li")
+                  input(type="checkbox" id="image_checkbox_haskell" value="Haskell")
+                  label(class="image_label" for="image_checkbox_haskell")
+                    img(src="/images/haskell.svg" class="check_image" alt='logo')
+
+            //div(id="fadeDIV")
+            //  h3 Puzzle Mix
+            h(class="header1") Puzzle Mix
+
+            div(style="text-align:center")
+              label(for="num_easy") Easy:
+              input(type="number" id="num_easy" name="num_easy" min="0" max="5" value="1" style="margin:10px; margin-right:20px")
+
+              label(for="num_moderate") Moderate:
+              input(type="number" id="num_moderate" name="num_moderate" min="0" max="5" value="1" style="margin:10px; margin-right:20px")
+
+              label(for="num_challenging") Challenging:
+              input(type="number" id="num_challenging" name="num_challenging" min="0" max="5" value="1" style="margin:10px")
+
+
+            //div(id="fadeDIV")
+            //    h3 Opponent
+            h(class="header1") Opponent
+
+
+
+
+            div(style="text-align:center")
+              //input(type="text" name="username" id="autocomplete")
+
+              div(class="ui-widget")
+                //label(for="usernames") Username:
+                input(id="usernames" type="text" style="width:30%" placeholder="Enter a username")
+
+            //select(id="new_invite" class="basicAutoSelect" name="simple_select" autocomplete="on" placeholder="Enter a username" data-url="/get-users")
+
+            div(style="text-align:center")
+              button(class="button" id="submit_game" style="width:180px")
+                span Create Game
+            div(style="text-align:center" id="create_loader")
+              //br
+              p(id="sent_message")
+              div(style="display:inline-block" class="loader")
+
+            p(id="error_message" align="center" class="error")
+
+              //p
+          div(class="modal-footer")
+
+      div(id="body")
+
+
+        div(class="panel" style="width:90%")
+
+          //div(id="fadeDIV")
+          //  h3 Solo
+          h(class="header1") Solo
+
+          button(class="button", style="vertical-align:middle", onclick="window.location.href = '/time-attack'")
+            span Time Attack
+
+          //div(id="fadeDIV")
+          //  h3 Play with a Friend
+
+          br
+
+          h(class="header1") Play with a Friend
+
+          button(id="create_game" class="button", style="vertical-align:middle")
+            span Create Game
+
+          //onclick="window.location.href = '/join-game'")
+          button(id="join_game" class="button", style="vertical-align:middle") 
+            span Join Game
+
+    
+      script.
+        var user = !{JSON.stringify(user)};
+        var usernames = !{JSON.stringify(usernames)};
+        start_play(user, usernames);
+
+      include ./footer.pug

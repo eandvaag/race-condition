@@ -2,8 +2,11 @@ doctype html
 
 html
 	head
+		meta(name="viewport" content="width=device-width, initial-scale=1")
 		title="race_condition"
 		link(href='/stylesheets/main.css' rel='stylesheet')
+		script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
+		script(type='text/javascript' src='/javascripts/sign_in.js')
 	body
 
 		div(id="container")
@@ -11,43 +14,44 @@ html
 
 			div(id="body")
 
+
 				br
 				br
 				br
 
-				div(class="sign_in")
+				div(class="panel")
 
-					div(id="fadeDIV")
-						h2(align="center") Sign In
+					h(class="header2" style="text-align:center; font-size: 26px") Sign In
 
 
 
 					p(align="center") Welcome to 
 						em race_condition!
 
-					form(action="/sign-in", method="POST")
+					form(action="")
 
-						div(id="fadeDIV")
-							label(for="username", class="label") Username
+						label(for="username" class="label") Username
 
-						input(name="username", type="text", required)
+						input(id="username" name="username" type="text" required)
 
-						div(id="fadeDIV")
-							label(for="password", class="label") Password
+						label(for="password" class="label") Password
 
-						input(name="password", type="password", required)
+						input(id="password" name="password" type="password" required)
 
-						button(class="button", style="vertical-align:middle")
+						button(class="button" style="vertical-align:middle")
 							span Sign In
 
-					br
+					p(id="error_message" class="error" align="center")
+
+					br(id="spacing")
 					hr
 					br
 
 
-					span New user? 
-					|
-					a(href='/sign-up') Create an account.
+					div(align="center")
+						span New user? 
+						|
+						a(href='/sign-up') Create an account.
 
 
 			include ./footer.pug

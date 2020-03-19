@@ -1,0 +1,13 @@
+FROM node
+
+WORKDIR /usr/src/app
+#COPY package.json .
+#RUN npm install
+#RUN mkdir -p ./node_modules/n-readlines
+#COPY n-readlines ./node_modules/n-readlines
+RUN npm install n-readlines --save
+
+#EXPOSE 8080
+#CMD [ "npm", "start" ]
+
+#COPY . .

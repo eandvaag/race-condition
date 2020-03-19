@@ -2,6 +2,10 @@
 module.exports = {
 	up: (queryInterface, Sequelize) => {
 		return queryInterface.createTable('games', {
+			id: {
+				type: Sequelize.STRING,
+				primaryKey: true,
+			},
 			creator: {
 				type: Sequelize.STRING,
 				references: {
@@ -9,16 +13,18 @@ module.exports = {
 					key: 'username'
 				}
 			},
+			invitee: {
+				type: Sequelize.STRING,
+				references: {
+					model: 'users',
+					key: 'username'
+				}
+			},
+			status: {
+				type: Sequelize.ENUM('pending', 'in_progress', 'completed')
+			},
 			languages: {
 				type: Sequelize.STRING,
-				allowNull: false
-			},
-			tot_player_num: {
-				type: Sequelize.INTEGER,
-				allowNull: false
-			},
-			cur_player_num: {
-				type: Sequelize.INTEGER,
 				allowNull: false
 			},
 			num_easy: {

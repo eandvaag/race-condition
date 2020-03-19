@@ -2,9 +2,11 @@ doctype html
 
 html
 	head
+		meta(name="viewport" content="width=device-width, initial-scale=1")
 		title="race_condition"
 		link(href='/stylesheets/main.css' rel='stylesheet')
-		//script(type='text/javascript' src='/javascripts/validate.js')
+		script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
+		script(type='text/javascript' src='/javascripts/sign_up.js')
 
 	body
 
@@ -18,38 +20,39 @@ html
 				br
 				br
 
-				div(class="sign_in")
+				div(class="panel")
 
-					div(id="fadeDIV")
-						h2(align="center") Sign Up
+					h(class="header2" style="text-align:center; font-size: 26px") Sign Up
 
 					p(align="center") Welcome to 
 						em race_condition!
 
-					form(action="/sign-up" method="POST" id="sign_up")
+					form(action="")
 						
-						div(id="fadeDIV")
-							label(for="username" class="label") Username
+						label(for="username" class="label") Username
 						
-						input(id="username" name="username" type="text" required)
+						input(id="username" name="username" type="text" minlength="4" maxlength="16" pattern="[a-zA-Z0-9_]*" oninvalid="setCustomValidity('Use only alphanumeric characters and underscores. A minimum of 4 characters is required.')" oninput="this.setCustomValidity('')" autocomplete="off" required)
 
-						div(id="fadeDIV")
-							label(for="password" class="label") Password
-						
-						input(id="password" name="password" type="password" required)
+
+						label(for="password" class="label") Password
+
+						input(id="password" name="password" type="password" minlength="8" maxlength="32" pattern="(?=.*[A-Z]).{1,}(?=.*[0-9]).{1,}(?=.*[@$!%*#?&]).{1,}" oninvalid="this.setCustomValidity('A password must contain at least one capital letter, one number, and one special character. A minimum of 8 characters is required.')" oninput="this.setCustomValidity('')" autocomplete="off" required)
 
 						button(class="button" style="vertical-align:middle")
 							span Sign Up
 
-					br
+					p(id="error_message" class="error" align="center")
+
+					br(id="spacing")
 					hr
 					br
 
-					span Returning user? 
-					|
-					a(href='/sign-in') Log in.
+					div(align="center")
+						span Returning user? 
+						|
+						a(href='/sign-in') Log in.
 
 
 			include ./footer.pug
 
-		script(type='text/javascript' src='/javascripts/validate.js')
+		//script(type='text/javascript' src='/javascripts/validate.js')

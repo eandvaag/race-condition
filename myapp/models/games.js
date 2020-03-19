@@ -1,6 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
 
 	var games = sequelize.define('games', {
+		id: {
+			type: DataTypes.STRING,
+			primaryKey: true,
+		},
 		creator: {
 			type: DataTypes.STRING,
 			references: {
@@ -8,17 +12,19 @@ module.exports = (sequelize, DataTypes) => {
 				key: 'username'
 			}
 		},
+		invitee: {
+			type: DataTypes.STRING,
+			references: {
+				model: 'users',
+				key: 'username'
+			}
+		},
+		status: {
+			type: DataTypes.ENUM('pending', 'in_progress', 'completed')
+		},
 		languages: {
 			type: DataTypes.STRING,
 			allowNull: false		
-		},
-		tot_player_num: {
-			type: DataTypes.INTEGER,
-			allowNull: false
-		},
-		cur_player_num: {
-			type: DataTypes.INTEGER,
-			allowNull: false
 		},
 		num_easy: {
 			type: DataTypes.INTEGER,

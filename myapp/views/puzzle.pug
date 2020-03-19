@@ -8,14 +8,14 @@ html
 		script(type='text/javascript' src='https://d3js.org/d3.v5.min.js')
 		//script(type='text/javascript' src='/javascripts/puzzle.js')
 		script(type='text/javascript' src='/javascripts/lang_color.js')
+		script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
 	body
 
 		div(id="container")
 			include ./header.pug
 
-			div(id="body" style="min-height: 900px")
-				h2 #{puzzle.name}
-
+			div(id="body" style="min-height: 200px")
+				h(class="header1") #{puzzle.name}
 
 				if puzzle.difficulty === "easy"
 					-var diff_color = "green";
@@ -24,29 +24,35 @@ html
 				else
 					-var diff_color = "red";
 
-				p
-					em
-						font(color="#cc9923") Difficulty: 
-					font(color="#{diff_color}") #{puzzle.difficulty}
+				h(class="header2") Difficulty: 
+					font(color="#{diff_color}" style="margin-left:34px") #{puzzle.difficulty}
+
+				h(class="header2") Description: 
+				p(style="margin-left:100px; margin-right:2%; margin-top: -50px; text-align: justify;") !{puzzle.description}					
 
 
-				p(style="margin-top: -30px")
-					em
-						font(color="#cc9923") Description:
-					
-				p(style="margin-left:60px; margin-right:60px; margin-top: -50px; text-align: justify;") #{puzzle.description}
+				h(class="header2") Top 10 Solutions: 
 
-				p(style="margin-top: -30px")
-				
-					em
-						font(color="#cc9923") Top 10 Solutions:
-
-
-				div(style="width:70%; margin: 0 auto;")
-					div(id="chart" style="float:left")
-					div(id="legend" style="float:right")
-					div(class="panel" style="width:158px; float:right;")
+				div(class="masonry")
+					div(class="masonry-legend" id="legend")
+					div(class="masonry-chart" id="chart")
 						select(id="drop")
+					
+					//div(class="panel")
+					//	select(id="drop")
+								//option(value="Python" selected) Python
+								//option(value="Scheme") Scheme
+								//option(value="Javascript") JavaScript
+								//option(value="Haskell") Haskell
+
+
+
+
+				//div(style="width:70%; margin: 0 auto;")
+				//	div(id="chart" style="float:left")
+				//	div(id="legend" style="float:right")
+				//	div(class="panel" style="width:158px; float:right;")
+				//		select(id="drop")
 								//option(value="Python" selected) Python
 								//option(value="Scheme") Scheme
 								//option(value="Javascript") JavaScript
@@ -64,7 +70,7 @@ html
 					var fastest_solutions = !{JSON.stringify(fastest_solutions)};
 					var shortest_solutions = !{JSON.stringify(shortest_solutions)};
 					//puzzle_name = "#{puzzle.name}";
-					drawPlot(puzzle, fastest_solutions, shortest_solutions);
+					drawPlot();
 					//drawPlot(puzzle);
 
 			include ./footer.pug

@@ -102,3 +102,6 @@ dist
 
 # TernJS port file
 .tern-port
+
+myapp/public/codemirror-5.51.0/
+myapp/tests/user/
