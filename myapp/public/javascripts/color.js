@@ -12,3 +12,15 @@ function lang_color(language) {
 
 
 }
+
+function difficulty_color(difficulty) {
+	if (difficulty === "easy") {
+		return "lightgreen";
+	}
+	else if (difficulty == "moderate") {
+		return "yellow";
+	}
+	else {
+		return "red";
+	}
+}

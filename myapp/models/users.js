@@ -50,8 +50,8 @@ module.exports = (sequelize, DataTypes) => {
 			defaultValue: "Newbie"
 		},
 		status: {
-			type: DataTypes.ENUM("not_playing", "playing", "join_waiting", 
-					"creating", "create_waiting", "starting"),
+			type: DataTypes.ENUM("not_playing", "join_waiting", 
+					"creating", "create_waiting", "starting", "create_playing", "join_playing"),
 			allowNull: false,
 			defaultValue: "not_playing"
 		},

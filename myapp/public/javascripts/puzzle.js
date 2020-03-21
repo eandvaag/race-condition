@@ -56,6 +56,9 @@ function updateSize() {
 function drawPlot() {
 //function drawPlot(puzzle) {
 
+
+	$("#difficulty").css("color", difficulty_color(puzzle.difficulty));
+
 	var div = $('#chart');
     var width = div.width();
     

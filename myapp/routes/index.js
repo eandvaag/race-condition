@@ -120,8 +120,9 @@ router.post('/verify-user', landing.verify_user);
 
 router.get('/play/:game_id', landing.get_game);
 router.post('/play/:game_id', landing.run_code);
+router.post('/play/:game_id/submit', landing.game_submit);
+router.get('/play/:game_id/terminated', landing.get_terminated);
 
-router.get('/new', landing.new);
 /*
 router.get('/time-attack', landing.get_time_attack);
 */

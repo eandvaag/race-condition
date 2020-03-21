@@ -15,8 +15,10 @@ html
 		script(type='text/javascript' src='/javascripts/mode/scheme/scheme.js')
 		script(type='text/javascript' src='/javascripts/mode/javascript/javascript.js')
 		script(type='text/javascript' src='/javascripts/mode/haskell/haskell.js')
-		script(type='text/javascript' src='/javascripts/lang_color.js')
+		script(src="/socket.io/socket.io.js")
+		script(type='text/javascript' src='/javascripts/color.js')
 		script(type='text/javascript' src='/javascripts/game.js')
+
 
 	body
 
@@ -41,22 +43,27 @@ html
 				//h(class="header2") Description: 
 				//p(style="margin-left:100px; margin-right:2%; margin-top: -50px; text-align: justify;") !{puzzle.description}
 
+				
 
 				div
 					div(class="code-container")
 
-						div(class="codebar-item")
+						div(id="progress-item" class="codebar-item")
 
 							div(class="progress-container")
 								div(class="progress")
 									div(class="progress-name") #{game.creator}
 									div(class="progress-bar")
 										div(id="progress_" + game.creator class="progress-per" per="0%")
+								div(class="progress-text-container")
+									div(id="progress_text_" + game.creator class="progress-per-text" per="0%")
 							
 								div(class="progress")
 									div(class="progress-name") #{game.invitee}
 									div(class="progress-bar")
 										div(id="progress_" + game.invitee class="progress-per" per="0%")
+								div(class="progress-text-container")
+									div(id="progress_text_" + game.invitee class="progress-per-text" per="0%")
 
 
 
@@ -65,13 +72,19 @@ html
 							//div(class="cell" style="display:block")
 							
 							div
-								h(class="header3" style="margin-right: 30px") Puzzle: 
-								select(id="puzzle" name="puzzle")
+								h(id="puzzle_header" class="header3" style="margin-right: 30px") Puzzle: 
+								select(id="puzzle" name="puzzle" style="width: 140px")
 
-								br
-								br
-								h(class="header3") Description
+								br(class="space")
+								br(class="space")
+								h(id="description_header" class="header3") Description: 
 								p(id="description" style="text-align: justify; margin: -20px 0px") 
+
+
+							div(style="height:100%")
+								h(id="gameover" class="header1" style="font-size: 24px; text-align: justify;")
+								p(id="unlocked" style="text-align: justify;")
+								p(id="new_lang" style="text-align: justify;")
 
 
 
@@ -108,7 +121,8 @@ html
 							div.input(style="font-size:15px")
 								textarea(id="codeoutput")
 
-				br
+				//
+				//br
 
 				//button(class="button" id="edit_button" style="vertical-align:middle")
 				//	span Continue Editing
@@ -120,11 +134,6 @@ html
 				script.
 					var game = !{JSON.stringify(game)};
 					var user = !{JSON.stringify(user)};
-					var easy_puzzles = !{JSON.stringify(easy_puzzles)};
-					var moderate_puzzles = !{JSON.stringify(moderate_puzzles)};
-					var challenging_puzzles = !{JSON.stringify(challenging_puzzles)};
+					var puzzles = !{JSON.stringify(puzzles)};
 
-					var points_needed = easy_puzzles.length + (moderate_puzzles.length * 3) + (challenging_puzzles.length * 5);
-					//var solutions = !{JSON.stringify(solutions)};
-					//console.log(solutions);
-		
+					var points_needed = game.num_easy + (game.num_moderate * 3) + (game.num_challenging * 5);

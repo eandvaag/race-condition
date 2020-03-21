@@ -15,7 +15,7 @@ html
 		script(type='text/javascript' src='/javascripts/mode/scheme/scheme.js')
 		script(type='text/javascript' src='/javascripts/mode/javascript/javascript.js')
 		script(type='text/javascript' src='/javascripts/mode/haskell/haskell.js')
-		script(type='text/javascript' src='/javascripts/lang_color.js')
+		script(type='text/javascript' src='/javascripts/color.js')
 		script(type='text/javascript' src='/javascripts/work_on.js')
 
 	body
@@ -27,16 +27,20 @@ html
 			div(id="body")
 
 				h(class="header1") #{puzzle.name}
-				
-				if puzzle.difficulty === "easy"
-					-var diff_color = "green";
-				else if puzzle.difficulty === "moderate"
-					-var diff_color = "yellow";
-				else
-					-var diff_color = "red";
+
+				//- var diff_color = {color: 'yellow'}
+				//if puzzle.difficulty === "easy"
+				//	-var diff_color = red; //#2adb80";
+				//else if puzzle.difficulty === "moderate"
+				//	-var diff_color = "yellow";
+				//else
+				//	-var diff_color = "red";
 
 				h(class="header2") Difficulty: 
-					font(color="#{diff_color}" style="margin-left:34px") #{puzzle.difficulty}
+				p(id="difficulty" style="margin-left:100px; margin-right:2%; margin-top: -50px; text-align: justify;") #{puzzle.difficulty}
+				//	font(color="#{diff_color}" style="margin-left:34px") #{puzzle.difficulty}
+				//}
+				//}
 
 				h(class="header2") Description: 
 				p(style="margin-left:100px; margin-right:2%; margin-top: -50px; text-align: justify;") !{puzzle.description}
@@ -49,17 +53,20 @@ html
 					div(class="code-container")
 						div(class="codebar-item" id="code_panel")
 							div(class="cell")
+								h(class="header3" style="margin-right: 20px") Language: 
 								select(id="language" name="language")
 									option(value="Python" selected) Python
 									option(value="Scheme") Scheme
 									option(value="JavaScript") JavaScript
 									option(value="Haskell") Haskell
-
+							div(class="cell" style="width:60px")
 								img(id="logo" src="/images/" + "python" + ".svg" alt='logo' width="50px" height="50px" style="float:left; margin: 0 20px")
 
 							div(class="cell")
+								h(class="header3" style="margin-right: 20px") Run:
 								button(id="run_button" class="round-button" style="margin 0 auto")
 									i(class="fa fa-play")
+
 											
 
 						div(class="codebar-item" id="stats")
@@ -79,14 +86,16 @@ html
 
 				br
 
-				button(class="button" id="edit_button" style="vertical-align:middle")
+				button(id="edit_button")
 					span Continue Editing
-				button(class="button" id="submit_button" style="vertical-align:middle")
+				button(id="submit_button")
 					span Save this Solution
 
 
 				script.
 					var solutions = !{JSON.stringify(solutions)};
-					var puzzle_name = !{JSON.stringify(puzzle.name)};
+					//var puzzle_name = !{JSON.stringify(puzzle.name)};
+					var puzzle = !{JSON.stringify(puzzle)};
+					//var puzzle_difficulty = !{JSON.stringify(puzzle.difficulty)};
 
 			include ./footer.pug

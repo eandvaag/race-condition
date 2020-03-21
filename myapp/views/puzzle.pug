@@ -7,28 +7,22 @@ html
 		link(href='/stylesheets/d3.css' rel='stylesheet')
 		script(type='text/javascript' src='https://d3js.org/d3.v5.min.js')
 		//script(type='text/javascript' src='/javascripts/puzzle.js')
-		script(type='text/javascript' src='/javascripts/lang_color.js')
+		script(type='text/javascript' src='/javascripts/color.js')
 		script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
 	body
 
 		div(id="container")
 			include ./header.pug
 
-			div(id="body" style="min-height: 200px")
+			div(id="body")
+				// style="min-height: 200px")
 				h(class="header1") #{puzzle.name}
 
-				if puzzle.difficulty === "easy"
-					-var diff_color = "green";
-				else if puzzle.difficulty === "moderate"
-					-var diff_color = "yellow";
-				else
-					-var diff_color = "red";
-
 				h(class="header2") Difficulty: 
-					font(color="#{diff_color}" style="margin-left:34px") #{puzzle.difficulty}
+				p(id="difficulty" style="margin-left:100px; margin-right:2%; margin-top: -50px; text-align: justify;") #{puzzle.difficulty}	
 
 				h(class="header2") Description: 
-				p(style="margin-left:100px; margin-right:2%; margin-top: -50px; text-align: justify;") !{puzzle.description}					
+				p(style="margin-left:100px; margin-right:2%; margin-top: -50px; text-align: justify;") !{puzzle.description}				
 
 
 				h(class="header2") Top 10 Solutions: 

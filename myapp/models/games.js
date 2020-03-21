@@ -38,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.INTEGER,
 			allowNull: false
 		},
+		puzzle_names: {
+			type: DataTypes.STRING,
+			allowNull: false
+		},
 		time_easy: {
 			type: DataTypes.FLOAT,
 			allowNull: false

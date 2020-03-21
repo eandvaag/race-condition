@@ -39,6 +39,10 @@ module.exports = {
 				type: Sequelize.INTEGER,
 				allowNull: false
 			},
+			puzzle_names: {
+				type: Sequelize.STRING,
+				allowNull: false
+			},
 			time_easy: {
 				type: Sequelize.FLOAT,
 				allowNull: false

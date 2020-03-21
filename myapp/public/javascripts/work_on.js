@@ -62,6 +62,9 @@ function enable_input(){
 
 $(document).ready(function(){
 
+  console.log(puzzle.difficulty);
+  $("#difficulty").css("color", difficulty_color(puzzle.difficulty));
+
   //var solutions = !{JSON.stringify(solutions)};
   console.log(solutions);
 
@@ -137,7 +140,7 @@ $(document).ready(function(){
 
     $.post($(location).attr('href'),
     {
-      puzzle_name: puzzle_name,
+      puzzle_name: puzzle.name,
       user_fun: myCodeMirror.getValue(),
       lang: $("#language").val()
     },

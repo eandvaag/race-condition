@@ -26,8 +26,13 @@ exports.sessionChecker = function(req, res, next) {
 }
 
 
-exports.new = function(req, res, next) {
-  res.render('new', { title: 'Home' });
+exports.get_terminated = function(req, res, next) {
+  if (req.session.user && req.cookies.user_sid) {
+    res.render('terminated', {user: req.session.user});
+  } 
+  else {
+    res.redirect('/sign-in');
+  }
 }
 
 exports.home = function(req, res, next) {
@@ -186,10 +191,37 @@ exports.post_sign_in = function(req, res, next) {
         res.json(response);
       }
       else {
-        console.log("redirect");
         req.session.user = user.dataValues;
         response.redirect = "/user";
-        res.json(response);
+
+        /* check user status here... if === "starting", then remove all games where user is creator
+            and game status === "in_progress" */
+        if (user.status !== "not_playing") {
+
+          return models.users.update({
+                  status: "not_playing",
+                  socket_id: null }, {returning: true,
+                where: {
+                  username: user.username } 
+          }).then(update => {
+            return models.games.destroy({
+              where: {
+                creator: user.username,
+                status: ["in_progress", "pending"] }
+            }).then(destroyed => {
+              res.json(response);
+            }).catch(err => {
+              console.log(err);
+            });
+          }).catch(err => {
+            console.log(err);
+          });
+        }
+        else {
+          res.json(response);
+        }
+
+
       }
       //console.log('bad pass');
       //res.redirect('/sign-in');
@@ -354,42 +386,44 @@ exports.verify_user = function(req, res, next) {
 
 exports.get_game = function(req, res, next) {
   if (req.session.user && req.cookies.user_sid) {
-    return models.games.findOne({
+    return models.users.findOne({
       where: {
-        id: req.params.game_id
+        username: req.session.user.username
       }
-    }).then(game => {
-      if (!game) {
-        console.log("VERY BAD");
+    }).then(user => {
+      if (user.status !== "starting") {
+        console.log("user status is not 'starting'!");
+        res.redirect('/play/' + req.params.game_id + '/terminated');
       }
-      if (req.session.user.username === game.creator || req.session.user.username === game.invitee) {
-        fetch_random_puzzles('easy', game.num_easy)
-        .then(easy_puzzles => {
-          fetch_random_puzzles('moderate', game.num_moderate)
-          .then(moderate_puzzles => {
-            fetch_random_puzzles('challenging', game.num_challenging)
-            .then(challenging_puzzles => {
-              console.log("easy_puzzles:", easy_puzzles);
-              res.render('game', { game: game, user: req.session.user, 
-                          easy_puzzles: easy_puzzles, moderate_puzzles: moderate_puzzles,
-                          challenging_puzzles: challenging_puzzles});
+      else {
+        return models.games.findOne({
+          where: {
+            id: req.params.game_id
+          }
+        }).then(game => {
+          if (!game) {
+            console.log("game does not exist!");
+            res.redirect('/play/' + req.params.game_id + '/terminated');
+          }
+          if (req.session.user.username === game.creator || req.session.user.username === game.invitee) {
 
+            fetch_puzzles(game.puzzle_names.split(","))
+            .then(puzzles => {
+              res.render('game', { game: game, user: req.session.user, puzzles: puzzles});
             }).catch(err => {
               console.log(err);
             });
-          }).catch(err => {
-            console.log(err);
-          });
+          } 
+          else {
+            res.redirect("/sign-in");
+          }
         }).catch(err => {
           console.log(err);
         });
-      } 
-      else {
-        res.redirect("/sign-in");
       }
     }).catch(err => {
       console.log(err);
-    });
+    })
   }
   else {
     res.redirect('/sign-in');
@@ -397,39 +431,17 @@ exports.get_game = function(req, res, next) {
 }
 
 
-async function fetch_random_puzzles(difficulty, number) {
 
-  console.log("fetching " + number + " random puzzles with difficulty " + difficulty);
-  if (number == 0) {
-    return [];
-  }
-  else {
+
+
+async function fetch_puzzles(puzzle_names) {
     return models.puzzles.findAll({
-      raw: true,
-      where: {
-        difficulty: difficulty
-      }, 
-      order: sequelize.fn('RAND'),
-      limit: number
-    });
-  }/*
-  .then(puzzles => {
-      return puzzles;
-    }).catch(err => {
-      console.log(err);
-    });
-    */
-}
-
-
-async function fetch_puzzle(puzzle_name) {
-    return models.puzzles.findOne({
       where : {
-        name: puzzle_name
+        name: puzzle_names
       }
       
-    }).then(puzzle => {
-      return puzzle;
+    }).then(puzzles => {
+      return puzzles;
     }).catch(err => {
       console.log(err);
     });
@@ -534,13 +546,13 @@ exports.show_puzzle = function(req, res, next) {
     console.log(req.params.puzzle_name);
 
 
-    fetch_puzzle(req.params.puzzle_name)
-    .then(puzzle => {
+    fetch_puzzles([req.params.puzzle_name])
+    .then(puzzles => {
       get_fastest_solutions(req.params.puzzle_name)
       .then(fastest_solutions => {
         get_shortest_solutions(req.params.puzzle_name)
         .then(shortest_solutions => {
-          res.render('puzzle', { user: req.session.user, puzzle: puzzle,
+          res.render('puzzle', { user: req.session.user, puzzle: puzzles[0],
                       fastest_solutions: fastest_solutions, 
                       shortest_solutions: shortest_solutions});
         }).catch(err => {
@@ -600,7 +612,8 @@ async function get_user_solutions(username, puzzle_name) {
 }
 
 function calc_rank(user) { 
-let score = (user.games_played) + (user.num_easy_solved) + (user.num_moderate_solved * 4) + (user.num_difficult_solved * 8);
+let score = (user.games_played) + (user.games_won) - (user.games_lost) + 
+    (user.num_easy_solved) + (user.num_moderate_solved * 3) + (user.num_difficult_solved * 5);
 
 let cur_rank;
     if (score < 1) {
@@ -741,19 +754,101 @@ function update_user_solved(username, puzzle_name) {
     });
 }
 
+
+exports.game_submit = function(req, res, next) {
+
+  data = {};
+  data.redirect = null;
+  data.unlocked = false;
+  data.solution_exists = false;
+  data.new_lang = false;
+
+  if (req.session.user && req.cookies.user_sid) {
+    return models.solved_puzzles.findAll({
+      where: {
+        username: req.session.user.username,
+        puzzle_name: req.body.puzzle_name,
+      }
+    }).then(solutions => {
+      if (!solutions || solutions.length == 0) {
+        update_user_solved(req.session.user.username, req.body.puzzle_name)
+        .then(updated_user => {
+          return models.solved_puzzles.create({
+            username: req.session.user.username,
+            puzzle_name: req.body.puzzle_name,
+            solution: req.body.solution,
+            time: req.body.time,
+            length: req.body.length,
+            language: req.body.language
+          })
+          .then(solution => {
+
+            //console.log(username + " unlocked " + puzzle_name);
+            console.log("unlocked " + req.body.puzzle_name);
+            data.unlocked = true;
+            res.json(data);
+            //socket.emit("unlocked_puzzle", puzzle_name);
+
+          }).catch(err => {
+            console.log(err);
+          });
+        }).catch(err => {
+          console.log(err);
+        });
+      }
+      else {
+        let lang_solution_exists = false;
+        for (var i = 0; i < solutions.length; i++) {
+          if (solutions[i].language === req.body.language) {
+            lang_solution_exists = true;
+          }
+        }
+        if (lang_solution_exists) {
+          /* do nothing */
+          data.solution_exists = true;
+          res.json(data);
+        }
+        else {
+          /* save solution */
+          return models.solved_puzzles.create({
+            username: req.session.user.username,
+            puzzle_name: req.body.puzzle_name,
+            solution: req.body.solution,
+            time: req.body.time,
+            length: req.body.length,
+            language: req.body.language
+          })
+          .then(solution => {
+            console.log("new lang solution" + req.body.puzzle_name);
+            data.new_lang = true;
+            res.json(data);
+            //socket.emit("new_language", puzzle_name);
+          }).catch(err => {
+            console.log(err);
+          });
+        }
+      }
+    }).catch(err => {
+      console.log(err);
+    });
+  } else {
+    data.redirect = '/sign-in';
+    res.json(data);
+  }
+
+}
+
 exports.work_on_submit = function(req, res, next) {
   var data = {};
   if (req.session.user && req.cookies.user_sid) {
-    return models.solved_puzzles.findOne({
+    return models.solved_puzzles.findAll({
       where: {
         username: req.session.user.username,
         puzzle_name: req.params.puzzle_name,
-        language: req.body.language
       }
-    }).then(solution => {
-      if (!solution) {
-        /* add to user score */
-        /* increment num 'difficulty' solved */
+    }).then(solutions => {
+      if (!solutions || solutions.length == 0) {
+
         update_user_solved(req.session.user.username, req.params.puzzle_name)
         .then(updated_user => {
           return models.solved_puzzles.create({
@@ -781,7 +876,7 @@ exports.work_on_submit = function(req, res, next) {
         })
         .catch(err => {
           console.log(err);
-        });
+        }); 
       } else {
         return models.solved_puzzles.update({
           solution: req.body.solution,
@@ -797,14 +892,14 @@ exports.work_on_submit = function(req, res, next) {
             data.solutions = solutions;
             data.redirect = null;
             res.json(data);
-          })
-        })
-        .catch(function(err) {
+          }).catch(err => {
+            console.log(err);
+          });
+        }).catch(err => {
           console.log(err);
         });
       }
-    })
-    .catch(function(err) {
+    }).catch(err => {
       console.log(err);
     });
   } else {
