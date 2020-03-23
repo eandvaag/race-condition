@@ -9,10 +9,8 @@ $(document).ready(function(){
       btnDown = spinner.find('.quantity-down'),
       min = input.attr('min'),
       max = input.attr('max');
-    console.log("spinner", spinner);
 
     btnUp.click(function() {
-      console.log("button up clicked");
       var oldValue = parseFloat(input.val());
       if (oldValue >= max) {
         var newVal = oldValue;
@@ -24,7 +22,6 @@ $(document).ready(function(){
     });
 
     btnDown.click(function() {
-      console.log("button down clicked");
       var oldValue = parseFloat(input.val());
       if (oldValue <= min) {
         var newVal = oldValue;

@@ -30,7 +30,23 @@ function enable_input(){
 }
 
 function play_again() {
-	window.location.href = "/play/time-attack";
+		$.post("/play/time-attack", {
+		num_easy: game.num_easy,
+		num_moderate: game.num_moderate,
+		num_challenging: game.num_challenging,
+		time_easy: game.time_easy,
+		time_moderate: game.time_moderate,
+		time_challenging: game.time_challenging
+	},
+	function(response,status) {
+		if (response.redirect) {
+			window.location.href = response.redirect;
+		}
+		else if (response.game_id) {
+			window.location.href = '/play/time-attack/' + response.game_id;
+			
+		}
+	});
 
 }
 

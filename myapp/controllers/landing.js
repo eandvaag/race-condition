@@ -417,13 +417,11 @@ exports.create_time_attack = function(req, res, next) {
   data.redirect = null;
 
   if (req.session.user && req.cookies.user_sid) {
-    console.log("GET TIME ATTACK");
 
     var hash = crypto.createHash('md5').update(
         req.session.user.username + moment().utc().format('hh:mm:ss'))
       .digest('hex');
 
-    console.log("fetching random puzzles");
     model_lib.fetch_random_puzzles('easy', parseInt(req.body.num_easy))
     .then(easy_puzzles => {
       model_lib.fetch_random_puzzles('moderate', parseInt(req.body.num_moderate))
@@ -436,7 +434,6 @@ exports.create_time_attack = function(req, res, next) {
             if (i == 0) puzzle_names += puzzles[i].name;
             else puzzle_names += "," + puzzles[i].name;
           }
-          console.log("creating game");
           return models.games.create({
             id: hash,
             creator: req.session.user.username,
@@ -451,20 +448,23 @@ exports.create_time_attack = function(req, res, next) {
             time_moderate: parseInt(req.body.time_moderate),
             time_challenging: parseInt(req.body.time_challenging)
           }).then(game => {
-            console.log("created game", game);
             data.game_id = hash;
             res.json(data);
           }).catch(err => {
             console.log(err);
+            res.json(data);
           });
         }).catch(err => {
           console.log(err);
+          res.json(data);
         });
       }).catch(err => {
         console.log(err);
+        res.json(data);
       });
     }).catch(err => {
       console.log(err);
+      res.json(data);
     });
   }
   else {

@@ -32,34 +32,21 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
-      name: 'harmonic',
-      description: 'Write a function <code>harmonic()</code> that takes an integer n and returns the n\'th harmonic number. The n\'th harmonic number is the sum of the reciprocals of the first n natural numbers. For example, the third harmonic number is equal to 1 + 1/2 + 1/3.',
-      difficulty: 'easy',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    }, {
       name: 'collatz',
       description: 'Write a function <code>collatz()</code> that takes an integer n and returns a list containing the Collatz sequence beginning at n. A Collatz sequence is formed in the following way: if the input integer n is even, the next number in the sequence is (n/2). If the input integer n is odd, the next number in the sequence is (3*n)+1. The sequence ends when the input integer is 1.',
       difficulty: 'easy',
       createdAt: new Date(),
       updatedAt: new Date()
-    }, 
-    {
+    }, {
       name: 'pyth',
       description: 'Write a function <code>pyth()</code> that takes three integers and returns true if the three numbers are a Pythagorean triple, false otherwise. A Pythagorean triple consists of three positive integers <i>a</i>, <i>b</i>, and <i>c</i>, such that <i>a<sup>2</sup></i> + <i>b<sup>2</sup></i> = <i>c<sup>2</sup></i>.',
-      difficulty: 'moderate',
+      difficulty: 'easy',
       createdAt: new Date(),
       updatedAt: new Date()
     },
 
     /* Moderate */
-    {
-      name: 'perfect',
-      description: 'Write a function <code>perfect()</code> that takes an integer n and returns the n\'th perfect number. A perfect number is a positive integer that is equal to the sum of its positive divisors, excluding the number itself. For example, 6 has divisors 1, 2, and 3 (excluding itself), and 1 + 2 + 3 = 6, so 6 is the first perfect number.',
-      difficulty: 'moderate',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },
+
     {
       name: 'select',
       description: 'Write a function <code>select()</code> that takes an unordered list of integers and an integer k, and returns the k\'th smallest element in the list. Assume k = 1 refers to the smallest element in the list.',
@@ -83,9 +70,21 @@ module.exports = {
 
     /* Difficult */
     {
-      name: 'pi',
-      description: 'Write a function <code>pi()</code> that takes an integer i and returns the i\'th digit of pi.',
-      difficulty: 'challenging',  
+      name: 'perfect',
+      description: 'Write a function <code>perfect()</code> that takes an integer n and returns the n\'th perfect number. A perfect number is a positive integer that is equal to the sum of its positive divisors, excluding the number itself. For example, 6 has divisors 1, 2, and 3 (excluding itself), and 1 + 2 + 3 = 6, so 6 is the first perfect number.',
+      difficulty: 'challenging',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }, {
+      name: 'gcd',
+      description: 'Write a function <code>gcd()</code> that takes two integers as arguments and returns the greatest common divisor of the two integers. The greatest common divisor is the largest positive integer that divides both integers.',
+      difficulty: 'challenging',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },  {
+      name: 'largest_mode',
+      description: 'Write a function <code>largest_mode()</code> that takes three lists of integers as input, calculates the mode of each list, and returns the largest mode.',
+      difficulty: 'challenging',
       createdAt: new Date(),
       updatedAt: new Date()
     }

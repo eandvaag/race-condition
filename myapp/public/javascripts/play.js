@@ -11,7 +11,6 @@ function disable_input(){
 		$(".image_label").css("opacity", 0.5);
 		$("label").css("opacity", 0.5);
 		$("input").css("opacity", 0.5);
-		//$('#code_panel').css("opacity", 0.5);
 }
 
 function enable_input(){
@@ -41,7 +40,7 @@ function start_play(user, usernames) {
 
 
 
-		// Get the modal
+	// Get the modal
 	var join_modal = document.getElementById("join_modal");
 
 	// Get the button that opens the modal
@@ -52,18 +51,14 @@ function start_play(user, usernames) {
 
 	var create_span = document.getElementsByClassName("close")[2];
 
-
 	var create_modal = document.getElementById("create_modal");
 
 	var create_btn = document.getElementById("create_game");
 
-
 	var submit_time_btn = document.getElementById("submit_time_game");
-
 
 	var submit_btn = document.getElementById("submit_game");
 
-	console.log(usernames);
 
 
 	/* remove the user's name from list of usernames */
@@ -71,8 +66,6 @@ function start_play(user, usernames) {
 	if (index > -1) {
 		usernames.splice(index, 1);
 	}
-
-	//$('#autocomplete').autocomplete().disable();
 	
 	$("#usernames").autocomplete({
 		source: function(request, response) {
@@ -83,27 +76,23 @@ function start_play(user, usernames) {
 			}
 	});
 
-	//var span1 = document.getElementById("join_close");
-
-	//console.log(span);
-	//console.log(span1);
-
-
 	var socket;
 	var current_games;
 
 	time_btn.onclick = function() {
+
 		$("#footer").css("opacity", 0.4);
+		$("#num_easy_time").val(1);
+		$("#num_moderate_time").val(0);
+		$("#num_challenging_time").val(0);
+		$("#error_message_time").hide();
 		time_modal.style.display = "block";
-		console.log("time_game clicked");
-		console.log(time_modal);
-		
+
 	}
 
 	create_btn.onclick = function() {
-		$("#footer").css("opacity", 0.4)//"rgba(0,0,0,0.4)");
+		$("#footer").css("opacity", 0.4)
 		create_modal.style.display = "block";
-		console.log(create_modal);
 		enable_input();
 
 		socket = io();
@@ -111,21 +100,18 @@ function start_play(user, usernames) {
 
 		$(":checkbox").prop("checked", true);
 		$("#num_easy").val(1);
-		$("#num_moderate").val(1);
-		$("#num_challenging").val(1);
+		$("#num_moderate").val(0);
+		$("#num_challenging").val(0);
 		$("#usernames").val("");
 		$("#error_message").hide();
 		$("#create_loader").hide();
 	}
 
-	// When the user clicks on the button, open the modal
+
 	join_btn.onclick = function() {
 
 		$("#footer").css("opacity", 0.4);
 		join_modal.style.display = "block";
-	//$("#invitation").hide();
-
-		console.log(user);
 
 		socket = io();
 
@@ -136,29 +122,20 @@ function start_play(user, usernames) {
 			$("#invitation_list").empty();
 			let current_games = games;
 			for (var i = 0; i < games.length; i++) {
-				/*
-				$('#invitation_list').append('<li><a onclick=socket.emit("accept", ' + games[i] + 
-					'); window.location.href="/play/' + games[i].id + '">' + games[i].creator + '</a></li>');
-					*/
-
 
 				$("#invitation_list").append('<br><button style="text-align:center; width:280px" id="game_' + i + '">' + 
 					'<span>' + current_games[i].creator + '</span></button>');
-				//$('#invitation_list').append('<li><a id="game_' + i + '">' + current_games[i].creator + '</a></li>');
+
 				$("#game_" + i).click(function() {
-					console.log($(this).attr('id').split("_")[1]);
 					socket.emit("accept", current_games[$(this).attr('id').split("_")[1]]);
 					window.location.href = "/play/" + current_games[$(this).attr('id').split("_")[1]].id;
 				})
 			}
-			console.log(games);
 		});
 
 		socket.on("invitation_update", function() {
 			socket.emit("get_invitations", user);
 		});
-
-		/* on click .. notify games[i].creator and then redirect to game */
 
 	}
 
@@ -168,9 +145,7 @@ function start_play(user, usernames) {
 	}
 
 
-	// When the user clicks on <span> (x), close the modal
 	join_span.onclick = function() {
-		console.log("clicked join x")
 		socket.emit("quit");
 
 		join_modal.style.display = "none";
@@ -179,7 +154,6 @@ function start_play(user, usernames) {
 	}
 
 	create_span.onclick = function() {
-		console.log("clicked create x")
 		socket.emit("quit");
 		create_modal.style.display = "none";
 		$("#footer").css("opacity", 1);
@@ -187,30 +161,36 @@ function start_play(user, usernames) {
 	}
 
 	submit_time_game.onclick = function() {
-		console.log("you clicked me");
-		
-		$.post("/play/time-attack", {
-			num_easy: 1,
-			num_moderate: 0,
-			num_challenging: 0,
-			time_easy: 60,
-			time_moderate: 80,
-			time_challenging: 120
-		},
-		function(response,status) {
-			if (response.redirect) {
-				window.location.href = response.redirect;
-			}
-			else if (response.game_id) {
-				console.log("game created");
-				console.log("game id is", response.game_id);
-				window.location.href = '/play/time-attack/' + response.game_id;
-				
-			}
-			else {
-				console.log("error occurred during creation of game");
-			}
-		});
+
+		if ((($("#num_easy_time").val() == 0) && ($("#num_moderate_time").val() == 0)) && 
+						 ($("#num_challenging_time").val() == 0)) {
+			$("#error_message_time").text("A game requires at least one puzzle.");
+			$("#error_message_time").show();
+		}
+		else {
+			
+			$.post("/play/time-attack", {
+				num_easy: $("#num_easy_time").val(),
+				num_moderate: $("#num_moderate_time").val(),
+				num_challenging: $("#num_challenging_time").val(),
+				time_easy: 160,
+				time_moderate: 300,
+				time_challenging: 500
+			},
+			function(response,status) {
+				if (response.redirect) {
+					window.location.href = response.redirect;
+				}
+				else if (response.game_id) {
+					window.location.href = '/play/time-attack/' + response.game_id;
+					
+				}
+				else {
+					$("#error_message_time").text("An error occurred during the creation of your game.");
+					$("#error_message_time").show();
+				}
+			});
+		}
 	}
 
 	submit_btn.onclick = function() {
@@ -219,7 +199,6 @@ function start_play(user, usernames) {
 		$("#error_message").hide();
 		$("#create_loader").hide();
 
-		console.log("you clicked me");
 		if (!($('#create_modal input[type=checkbox]:checked').length)) {
 			$("#error_message").text("You must select at least one language.");
 			$("#error_message").show();
@@ -265,9 +244,6 @@ function start_play(user, usernames) {
 						"invitee": $("#usernames").val()
 					};
 
-
-					console.log(langs);
-
 					disable_input();
 
 
@@ -282,14 +258,11 @@ function start_play(user, usernames) {
 		});
 
 		socket.on("game_accepted", function(game) {
-			console.log("my game was accepted!");
 			window.location.href = "/play/" + game.id;
 		});
 
 	}
 
-
-	// When the user clicks anywhere outside of the modal, close it
 	window.onclick = function(event) {
 
 		if ((event.target == join_modal) || (event.target == create_modal)) {
@@ -304,17 +277,5 @@ function start_play(user, usernames) {
 			time_modal.style.display = "none";
 			$("#footer").css("opacity", 1);
 		}
-/*
-		else {
-			time_modal.style.display = "none";
-		}*/
-/*
-		else if (event.target == create_modal) {
-			socket.emit("quit");
-
-			create_modal.style.display = "none";
-
-		}
-		*/
 	}
 }
