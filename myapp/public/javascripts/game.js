@@ -5,94 +5,47 @@ var cur_puzzles;
 var solved_puzzles;
 var all_puzzles;
 
+var interval_id;
 
 
-function disable_input(){
-		myCodeMirror.setOption('readOnly', "nocursor");
-		$("#run_button").attr("disabled", true);
-		$("#language").prop("disabled", true);
-		$('.CodeMirror').css("opacity", 0.5);
-		$('.codebar-item').css("opacity", 0.5);
-		$('.puzzle-item').css("opacity", 0.5);
+
+
+function rematch_request() {
+	console.log("sending rematch request");
+	$("#rematch").hide();
+	$("#rematch_msg").text("Rematch offer sent.")
+	$("#rematch_req").show();
+	$("#accept_button").hide();
+	$("#decline_button").hide();
+	socket.emit("rematch_request", user.username, game.id);
+	inverval_id = window.setInterval(function(){
+		console.log("checking liveness");
+		socket.emit("request_check", game.id);
+	}, 3000);
+}
+
+function rematch_accept() {
+	console.log("accepting rematch");
+	socket.emit("rematch_accept", user.username, game.id);
+}
+
+function rematch_decline() {
+	console.log("declining rematch");
+	socket.emit("rematch_decline", user.username, game.id);
 
 }
 
-function enable_input(){
-	myCodeMirror.setOption('readOnly', false);
-	$("#run_button").attr("disabled", false);
-	$("#language").prop("disabled", false);
-	$('.CodeMirror').css("opacity", 1);
-	$('.codebar-item').css("opacity", 1);
-	$('.puzzle-item').css("opacity", 1);
-
-}
-
-function puzzle_update() {
-	var new_puzzle = $("#puzzle").val();
-
-	$("#description").html(cur_puzzles[$("#puzzle").val()].description);
-
-}
-
-function language_update()  {
-
-	var new_lang = $("#language").val().toLowerCase();
-
-	myCodeMirror.setOption("mode", new_lang);
 
 
-	myCodeMirror.setValue("");
-	myOutput.setValue("");
-	//$('p').remove(".stats")
-	//myCodeMirror.style.border = "2px solid " + lang_color(new_lang);
-	$('.CodeMirror').css("border", "2px solid " + lang_color(new_lang));
-	$(".codebar-item").css("border", "2px solid " + lang_color(new_lang));
-	$(".puzzle-item").css("border", "2px solid " + lang_color(new_lang));
-	//$('#code_panel').css("border", "2px solid " + lang_color(new_lang));
-	//$('#puzzle_panel').css("border", "2px solid " + lang_color(new_lang));
-	//document.getElementById("codeeditor").style.border = "2px solid " + lang_color(new_lang);
-	document.getElementById("logo").src = "/images/" + new_lang + ".svg";
 
-}
-
-function populate_puzzle_select() {
-	let puzzle_options = "";
-	for (var i in cur_puzzles) {
-		puzzle_options += "<option value='" + i + "'>" + i + "</option>";
-	}
-	/*
-	}
-	for (var i = 0; i < Object.keys(cur_puzzles).length; i++) {
-		puzzle_options += "<option value='" + cur_puzzles[i].name + "'>" + cur_puzzles[i].name + "</option>";
-	}*/
-	/*$("select[name='puzzle_select']").append($(puzzle_options));*/
-	$("#puzzle").children().remove().end().append($(puzzle_options));
-
-}
-
-function puzzle_percent(name) {
-
-	//for (var i = 0; i < cur_puzzles.length; i++) {
-	//  if (cur_puzzles[i].name === name) {
-	console.log("puzzle percent", all_puzzles[name]);
- // console.log(cur_puzzles)
-	//console.log(cur_puzzles[name][difficulty]);
-	if (all_puzzles[name].difficulty === "easy") {
-		console.log("returning", 1 / points_needed);
-		return 100 * (1 / points_needed);
-	}
-	else if (all_puzzles[name].difficulty === "moderate") {
-		return 100 * (3 / points_needed);
-	}
-	else {
-		return 100 * (5 / points_needed);
-	}
-}
 $(document).ready(function(){
 
 	$("#gameover").hide();
 	$("#unlocked").hide();
 	$("#new_lang").hide();
+	$("#lobby").hide();
+	$("#rematch").hide();
+	$("#rematch_req").hide();
 
 	socket = io();
 
@@ -251,9 +204,7 @@ $(document).ready(function(){
 
 	socket.on("game_over", function(username) {
 		console.log(user.username + " knows that " + username + " has won the game.");
-		disable_input();
-		$("#progress-item").css("opacity", 1);
-		$(".puzzle-item").css("opacity", 1);
+
 		update_per_bar(username, 100);
 		update_per_text(username, 100);
 		update_per_val(username, 100);
@@ -263,6 +214,34 @@ $(document).ready(function(){
 		else {
 			game_end("You lost.");
 		}
+	});
+
+	socket.on("rematch_offer", function(opponent) {
+		console.log("I got a rematch offer");
+		$("#rematch").hide();
+		$("#rematch_req").show();
+		$("#accept_button").show();
+		$("#decline_button").show();	
+
+		$("#rematch_msg").text(opponent + " is offering a rematch.")
+	});
+
+	socket.on("no_rematch", function(sender) {
+
+		if (sender == user.username) {
+			$("#rematch_req").hide();
+		}
+		else {
+			clearInterval(inverval_id);
+			$("#rematch_msg").text("Rematch offer declined.");
+			$("#rematch_msg").css("color", "red");
+			$("#rematch_msg").stop().show();
+      $("#rematch_msg").fadeIn().delay(0).fadeOut(10000);
+		}
+	})
+
+	socket.on("rematch_game", function(new_game_id) {
+		window.location.href = "/play/" + new_game_id;
 	});
 /*
 	socket.on("unlocked_puzzle", function(puzzle_name) {
@@ -275,126 +254,24 @@ $(document).ready(function(){
 */
 
 	socket.on("opponent_disconnect", function() {
-		console.log("my opponent disconnected");
 		window.location.href = '/play/' + game.id + '/terminated';
-		//disable_input();
-		//$("#message").text("Your opponent has disconnected.");
-		//$("#message").show();
+
 	});
 
-	function new_per(username, added_per) {
-		var $this = $("#progress_" + username);
-		
-		var per = $this.attr("per").substring(0, $this.attr("per").length - 1);;
-
-		console.log("per", per);
-		console.log("added_per", added_per);
-		return parseFloat(per) + parseFloat(added_per);
-	}
-
-
-	function update_per_val(username, new_per) {
-		var $this = $("#progress_" + username);
-		$this.attr("per", new_per + "%");
-	}
-	function update_per_bar(username, new_per) {
-		var $this = $("#progress_" + username);
-		
-
-		var per = $this.attr("per").substring(0, $this.attr("per").length - 1);;
-
-
-		$this.css("width", new_per + "%");
-		
-	//});
-	}
-	function update_per_text(username, new_per) {
-		var $this = $("#progress_text_" + username);
-		var per = $this.attr("per").substring(0, $this.attr("per").length - 1);;
-
-		$({ animatedValue: per }).animate(
-			{ animatedValue: new_per },
-			
-			{
-				duration: 1000,
-				step: function() {
-					$this.attr("per", Math.floor(this.animatedValue) + "%");
-				},
-				complete: function() {
-					$this.attr("per", Math.floor(this.animatedValue) + "%");
-				}
-			}
-			);
-
-
-
-	}
-
-	function submit_puzzle(i, _callback) {
-		if (i < solved_puzzles.length) {
-
-			$.post($(location).attr('href') + '/submit', 
-				solved_puzzles[i],
-			
-			function(data,status){
-				if (data.redirect) {
-					window.location.href = data.redirect;
-				}		
-				else if (data.unlocked) {
-					console.log("solved_puzzles", solved_puzzles);
-					console.log("i", i);
-					console.log("solved_puzzles[i]", solved_puzzles[i]);
-					console.log("solved_puzzles[i].puzzle_name", solved_puzzles[i].puzzle_name);
-					unlocked_puzzles.push(solved_puzzles[i].puzzle_name);
-				}
-				else if (data.new_lang) {
-					new_lang_solutions.push(solved_puzzles[i].puzzle_name);
-				}
-				submit_puzzle(i+1, _callback);
-			});
+	socket.on("opponent_left", function() {
+		clearInterval(inverval_id);
+		if (user.username == game.creator) {
+			$("#rematch_msg").text(game.invitee + " has left the room.");
 		}
-		else{
-			_callback();
+		else {
+			$("#rematch_msg").text(game.creator + " has left the room.");
 		}
-	}
-
-	function game_end(outcome_msg) {
-
-
-
-		submit_puzzle(0, function() {
-			$("#puzzle_header").hide();
-			$("#puzzle").hide();
-			$("#description_header").hide();
-			$("#description").hide();
-			$(".space").hide();
+		$("#rematch_msg").css("color", "red");
+		$("#rematch_msg").stop().show();
+    $("#rematch_msg").fadeIn().delay(0).fadeOut(10000);
+	});
 
 
-			$("#gameover").text(outcome_msg);
-			$("#gameover").show()
-			if (unlocked_puzzles.length > 0) {
-				if (unlocked_puzzles.length == 1) {
-					$("#unlocked").html("&bull; You solved the <code>" + unlocked_puzzles[0] + 
-						"</code> puzzle for the first time!");
-				}
-				else {
-					$("#unlocked").html("&bull; You solved the " + list_to_string(unlocked_puzzles) + 
-						" puzzles for the first time!");
-				}
-				$("#unlocked").show();
-			}
-			if (new_lang_solutions.length > 0) {
-				if (new_lang_solutions.length == 1) {
-					$("#new_lang").html("&bull; You solved the <code>" + new_lang_solutions[0] + 
-						"</code> puzzle in a new language!");
-				}
-				else {
-					$("#new_lang").html("&bull; You solved the " + list_to_string(new_lang_solutions) + 
-						" puzzles in new languages!");
-				}
-				$("#new_lang").show();
-			}
-		});
 /*
 		for (var i = 0; i < solved_puzzles.length; i++) {
 			$.when( $.post($(location).attr('href') + '/submit', 
@@ -420,22 +297,9 @@ $(document).ready(function(){
 */
 
 
-	}
+	
 
-	function list_to_string(l) {
-		if (l.length == 2) { 
-			return "<code>" + l[0] + "</code> and <code>" + l[1] + "</code>"; 
-		}
-		else {
-			let s = "";
-			for (var i = 0; i < l.length; i++) {
-				if (i == 0) { s+= "<code>" + l[i] + "</code>"; }
-				else if (i == (l.length - 1)) { s += ", and <code>" + l[i] + "</code>"; }
-				else { s += ", <code>" + l[i] + "</code>"; }
-			}
-			return s;
-		}
-	}
+
 /*
 $(".progress-per").each(function() {
 	var $this = $(this);

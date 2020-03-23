@@ -43,16 +43,13 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: false
 		},
 		time_easy: {
-			type: DataTypes.FLOAT,
-			allowNull: false
+			type: DataTypes.INTEGER
 		},
 		time_moderate: {
-			type: DataTypes.FLOAT,
-			allowNull: false
+			type: DataTypes.INTEGER
 		},
 		time_challenging: {
-			type: DataTypes.FLOAT,
-			allowNull: false
+			type: DataTypes.INTEGER
 		}
 	});
 

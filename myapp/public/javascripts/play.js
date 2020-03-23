@@ -30,6 +30,17 @@ function enable_input(){
 }
 
 function start_play(user, usernames) {
+
+	var time_modal = document.getElementById("time_modal");
+
+	// Get the button that opens the modal
+	var time_btn = document.getElementById("time_game");
+
+	// Get the <span> element that closes the modal
+	var time_span = document.getElementsByClassName("close")[0];
+
+
+
 		// Get the modal
 	var join_modal = document.getElementById("join_modal");
 
@@ -37,15 +48,17 @@ function start_play(user, usernames) {
 	var join_btn = document.getElementById("join_game");
 
 	// Get the <span> element that closes the modal
-	var join_span = document.getElementsByClassName("close")[0];
+	var join_span = document.getElementsByClassName("close")[1];
 
-	var create_span = document.getElementsByClassName("close")[1];
-
+	var create_span = document.getElementsByClassName("close")[2];
 
 
 	var create_modal = document.getElementById("create_modal");
 
 	var create_btn = document.getElementById("create_game");
+
+
+	var submit_time_btn = document.getElementById("submit_time_game");
 
 
 	var submit_btn = document.getElementById("submit_game");
@@ -79,8 +92,18 @@ function start_play(user, usernames) {
 	var socket;
 	var current_games;
 
+	time_btn.onclick = function() {
+		$("#footer").css("opacity", 0.4);
+		time_modal.style.display = "block";
+		console.log("time_game clicked");
+		console.log(time_modal);
+		
+	}
+
 	create_btn.onclick = function() {
+		$("#footer").css("opacity", 0.4)//"rgba(0,0,0,0.4)");
 		create_modal.style.display = "block";
+		console.log(create_modal);
 		enable_input();
 
 		socket = io();
@@ -98,6 +121,7 @@ function start_play(user, usernames) {
 	// When the user clicks on the button, open the modal
 	join_btn.onclick = function() {
 
+		$("#footer").css("opacity", 0.4);
 		join_modal.style.display = "block";
 	//$("#invitation").hide();
 
@@ -118,7 +142,7 @@ function start_play(user, usernames) {
 					*/
 
 
-				$("#invitation_list").append('<button style="width:180px" id="game_' + i + '">' + 
+				$("#invitation_list").append('<br><button style="text-align:center; width:280px" id="game_' + i + '">' + 
 					'<span>' + current_games[i].creator + '</span></button>');
 				//$('#invitation_list').append('<li><a id="game_' + i + '">' + current_games[i].creator + '</a></li>');
 				$("#game_" + i).click(function() {
@@ -138,6 +162,11 @@ function start_play(user, usernames) {
 
 	}
 
+	time_span.onclick = function() {
+		time_modal.style.display = "none";
+		$("#footer").css("opacity", 1);
+	}
+
 
 	// When the user clicks on <span> (x), close the modal
 	join_span.onclick = function() {
@@ -145,6 +174,7 @@ function start_play(user, usernames) {
 		socket.emit("quit");
 
 		join_modal.style.display = "none";
+		$("#footer").css("opacity", 1);
 
 	}
 
@@ -152,10 +182,36 @@ function start_play(user, usernames) {
 		console.log("clicked create x")
 		socket.emit("quit");
 		create_modal.style.display = "none";
+		$("#footer").css("opacity", 1);
 
 	}
 
-
+	submit_time_game.onclick = function() {
+		console.log("you clicked me");
+		
+		$.post("/play/time-attack", {
+			num_easy: 1,
+			num_moderate: 0,
+			num_challenging: 0,
+			time_easy: 60,
+			time_moderate: 80,
+			time_challenging: 120
+		},
+		function(response,status) {
+			if (response.redirect) {
+				window.location.href = response.redirect;
+			}
+			else if (response.game_id) {
+				console.log("game created");
+				console.log("game id is", response.game_id);
+				window.location.href = '/play/time-attack/' + response.game_id;
+				
+			}
+			else {
+				console.log("error occurred during creation of game");
+			}
+		});
+	}
 
 	submit_btn.onclick = function() {
 
@@ -175,6 +231,10 @@ function start_play(user, usernames) {
 		}
 		else if ($("#usernames").val() === "") {
 			$("#error_message").text("You need to invite someone to the game!");
+			$("#error_message").show();
+		}
+		else if ($("#usernames").val() === user.username) {
+			$("#error_message").text("You cannot invite yourself to the game!");
 			$("#error_message").show();
 		}
 		else {
@@ -237,7 +297,17 @@ function start_play(user, usernames) {
 
 			join_modal.style.display = "none";
 			create_modal.style.display = "none";
+			$("#footer").css("opacity", 1);
+
 		}
+		if ((event.target == time_modal)) {
+			time_modal.style.display = "none";
+			$("#footer").css("opacity", 1);
+		}
+/*
+		else {
+			time_modal.style.display = "none";
+		}*/
 /*
 		else if (event.target == create_modal) {
 			socket.emit("quit");

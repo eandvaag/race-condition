@@ -4,7 +4,7 @@ html
 	head
 		title="race_condition"
 		meta(name="viewport" content="width=device-width, initial-scale=1")
-		link(href='/stylesheets/main.css' rel='stylesheet')
+
 
 		//script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
 
@@ -17,18 +17,20 @@ html
 		link(rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css")
 		//link(rel="stylesheet" href="/resources/demos/style.css")
 
-
-		script(src="https://code.jquery.com/jquery-1.12.4.js")
-		script(src="https://code.jquery.com/ui/1.12.1/jquery-ui.js")
-
-		//script(type="text/javascript" src="scripts/jquery-1.8.2.min.js")
-		//script(src="/javascripts/jquery.autocomplete.min.js")
+		script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
+		//script(src="https://code.jquery.com/jquery-1.12.4.js")
+		script(type='text/javascript' src="https://code.jquery.com/ui/1.12.1/jquery-ui.js")
+		script(type='text/javascript' src="/javascripts/number_input.js")
+		link(href='/stylesheets/main.css' rel='stylesheet')
+		//script(type='text/javascript' type="text/javascript" src="scripts/jquery-1.8.2.min.js")
+		//script(type='text/javascript' src="/javascripts/jquery.autocomplete.min.js")
 
 
 		//link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css")
 		//script(src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js")
-		script(src="/socket.io/socket.io.js")
-		script(src="/javascripts/play.js")
+		script(type='text/javascript' src="/socket.io/socket.io.js")
+		script(type='text/javascript' src="/javascripts/play.js")
+
 		//script(src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.2/dist/latest/bootstrap-autocomplete.min.js")
 
 
@@ -39,6 +41,18 @@ html
 		div(id="container")
 
 			include ./header.pug
+
+
+			div(id="time_modal" class="modal")
+				div(class="modal-content")
+					div(class="modal-header")
+						span(class="close") &times;
+						p Time Attack
+					div(class="modal-body")
+						div(style="text-align:center")
+							button(id="submit_time_game" style="width:200px")
+								span Start
+					div(class="modal-footer")
 
 
 			div(id="join_modal" class="modal")
@@ -57,7 +71,7 @@ html
 						//p
 
 
-						div(id="invitation_list")
+						div(id="invitation_list" style="text-align:center")
 
 						//div(class="loader")
 						//p
@@ -99,15 +113,19 @@ html
 						//  h3 Puzzle Mix
 						h(class="header1") Puzzle Mix
 
-						div(style="text-align:center")
-							label(for="num_easy") Easy:
-							input(type="number" id="num_easy" name="num_easy" min="0" max="5" value="1" style="margin:10px; margin-right:20px")
+						div(style="display:inline-block")
 
-							label(for="num_moderate") Moderate:
-							input(type="number" id="num_moderate" name="num_moderate" min="0" max="5" value="1" style="margin:10px; margin-right:20px")
+							div(class="quantity")
+								//label(for="num_easy") Easy:
+								input(type="number" id="num_easy" name="num_easy" min="0" max="5" step="1" value="1")
 
-							label(for="num_challenging") Challenging:
-							input(type="number" id="num_challenging" name="num_challenging" min="0" max="5" value="1" style="margin:10px")
+							div(class="quantity")
+								//label(for="num_moderate") Moderate:
+								input(type="number" id="num_moderate" name="num_moderate" min="0" max="5" value="1")
+
+							div(class="quantity")
+								//label(for="num_challenging") Challenging:
+								input(type="number" id="num_challenging" name="num_challenging" min="0" max="5" value="1")
 
 
 						//div(id="fadeDIV")
@@ -122,7 +140,7 @@ html
 
 							div(class="ui-widget")
 								//label(for="usernames") Username:
-								input(id="usernames" type="text" style="width:30%" placeholder="Enter a username")
+								input(id="usernames" type="text" style="width:200px" placeholder="Enter a username")
 
 						//select(id="new_invite" class="basicAutoSelect" name="simple_select" autocomplete="on" placeholder="Enter a username" data-url="/get-users")
 
@@ -140,14 +158,15 @@ html
 			div(id="body")
 
 
-				div(class="panel" style="width:90%")
+				div(class="panel")
 
 					//div(id="fadeDIV")
 					//  h3 Solo
 					h(class="header1") Solo
 
-					button(onclick="window.location.href = '/time-attack'")
-						span Time Attack
+					div(style="text-align:center")
+						button(id="time_game" style="width:80%")
+							span Time Attack
 
 					//div(id="fadeDIV")
 					//  h3 Play with a Friend
@@ -156,17 +175,19 @@ html
 
 					h(class="header1") Play with a Friend
 
-					button(id="create_game")
-						span Create Game
+					div(style="text-align:center")
+						button(id="create_game" style="width:80%")
+							span Create Game
 
-					//onclick="window.location.href = '/join-game'")
-					button(id="join_game") 
-						span Join Game
+					div(style="text-align:center")
+						button(id="join_game" style="width:80%") 
+							span Join Game
+
+
+			include ./footer.pug
 
 		
 			script.
 				var user = !{JSON.stringify(user)};
 				var usernames = !{JSON.stringify(usernames)};
 				start_play(user, usernames);
-
-			include ./footer.pug

@@ -118,6 +118,14 @@ router.post('/puzzle/:puzzle_name/:username/submit', landing.work_on_submit);
 
 router.post('/verify-user', landing.verify_user);
 
+router.post('/play/time-attack', landing.create_time_attack);
+router.get('/play/time-attack/:game_id', landing.get_time_attack);
+router.post('/play/time-attack/:game_id', landing.run_code);
+router.post('/play/time-attack/:game_id/submit', landing.game_submit);
+router.post('/play/time-attack/:game_id/complete', landing.time_attack_complete)
+
+
+
 router.get('/play/:game_id', landing.get_game);
 router.post('/play/:game_id', landing.run_code);
 router.post('/play/:game_id/submit', landing.game_submit);

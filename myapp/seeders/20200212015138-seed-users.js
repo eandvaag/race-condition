@@ -10,7 +10,7 @@ module.exports = {
     {
       username: 'erik',
       password: bcrypt.hashSync('#rcLivel0ck!', salt),
-      num_easy_solved: 12,
+      num_easy_solved: 5,
       num_moderate_solved: 0,
       num_difficult_solved: 0,
       games_played: 5,

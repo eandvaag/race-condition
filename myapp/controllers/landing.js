@@ -4,7 +4,9 @@ var sequelize = require('sequelize');
 const fs = require('fs');
 const path = require('path');
 const lineByLine = require('n-readlines');
-
+var moment = require('moment');
+var crypto = require('crypto');
+var model_lib = require("../model_lib");
 /*
 exports.get_landing = function(req, res, next) {
   res.render('landing', { title: 'Express' });
@@ -24,7 +26,6 @@ exports.sessionChecker = function(req, res, next) {
     next();
   }
 }
-
 
 exports.get_terminated = function(req, res, next) {
   if (req.session.user && req.cookies.user_sid) {
@@ -383,6 +384,145 @@ exports.verify_user = function(req, res, next) {
     console.log(err);
   });
 }
+
+
+exports.time_attack_complete = function(req, res, next) {
+  let data = {};
+
+  if (req.session.user && req.cookies.user_sid) {
+    return models.games.update({
+          status: "completed" }, {returning: true,
+        where: { id: game_id } 
+    }).then(game_updated => {
+      model_lib.update_user_games(game.creator, req.body.result)
+      .then(updated => {
+        res.json(data);
+      }).catch(err => {
+        console.log(err);
+      });
+    }).catch(err => {
+      console.log(err);
+    });
+  }
+  else{
+    console.log("expired session");
+  }
+}
+
+
+exports.create_time_attack = function(req, res, next) {
+  data = {};
+
+  data.game_id = null;
+  data.redirect = null;
+
+  if (req.session.user && req.cookies.user_sid) {
+    console.log("GET TIME ATTACK");
+
+    var hash = crypto.createHash('md5').update(
+        req.session.user.username + moment().utc().format('hh:mm:ss'))
+      .digest('hex');
+
+    console.log("fetching random puzzles");
+    model_lib.fetch_random_puzzles('easy', parseInt(req.body.num_easy))
+    .then(easy_puzzles => {
+      model_lib.fetch_random_puzzles('moderate', parseInt(req.body.num_moderate))
+      .then(moderate_puzzles => {
+        model_lib.fetch_random_puzzles('challenging', parseInt(req.body.num_challenging))
+        .then(challenging_puzzles => {
+          let puzzle_names = "";
+          let puzzles = easy_puzzles.concat(moderate_puzzles.concat(challenging_puzzles));
+          for (var i = 0; i < puzzles.length; i++) {
+            if (i == 0) puzzle_names += puzzles[i].name;
+            else puzzle_names += "," + puzzles[i].name;
+          }
+          console.log("creating game");
+          return models.games.create({
+            id: hash,
+            creator: req.session.user.username,
+            invitee: null,
+            status: "pending",
+            languages: "Python,Scheme,JavaScript,Haskell",
+            num_easy: parseInt(req.body.num_easy),
+            num_moderate: parseInt(req.body.num_moderate),
+            num_challenging: parseInt(req.body.num_challenging),
+            puzzle_names: puzzle_names,
+            time_easy: parseInt(req.body.time_easy),
+            time_moderate: parseInt(req.body.time_moderate),
+            time_challenging: parseInt(req.body.time_challenging)
+          }).then(game => {
+            console.log("created game", game);
+            data.game_id = hash;
+            res.json(data);
+          }).catch(err => {
+            console.log(err);
+          });
+        }).catch(err => {
+          console.log(err);
+        });
+      }).catch(err => {
+        console.log(err);
+      });
+    }).catch(err => {
+      console.log(err);
+    });
+  }
+  else {
+    data.redirect = '/sign-in';
+    res.json(data);
+  }
+}
+
+
+exports.get_time_attack = function(req, res, next) {
+
+  /* change status to playing (or should it be starting?..), change game to in-progress */
+
+if (req.session.user && req.cookies.user_sid) {
+  console.log("get time attack");
+  return models.users.update({
+        status: "create_playing" }, {returning: true,
+      where: {
+        username: req.session.user.username
+      }
+  }).then(updated_user => {
+    console.log("updated status to starting");
+    return models.games.update({
+          status: "in_progress" }, {returning: true,
+        where: {
+          id: req.params.game_id } 
+    }).then(updated_game => {
+      console.log("updated game status");
+
+      return models.games.findOne({
+        where: {
+          id: req.params.game_id
+        }
+      }).then(game => {
+        console.log("got here");
+        console.log("game", game);
+        fetch_puzzles(game.puzzle_names.split(","))
+          .then(puzzles => {
+            res.render("time_attack", { game: game, user: req.session.user, puzzles: puzzles});
+          }).catch(err => {
+            console.log(err);
+          });
+        }).catch(err => {
+          console.log(err);
+        });
+      }).catch(err => {
+        console.log(err);
+      });
+    }).catch(err => {
+      console.log(err);
+    });
+  }
+  else {
+    res.redirect("/sign-in");
+  }
+}
+
+
 
 exports.get_game = function(req, res, next) {
   if (req.session.user && req.cookies.user_sid) {
@@ -753,6 +893,8 @@ function update_user_solved(username, puzzle_name) {
       console.log(err);
     });
 }
+
+
 
 
 exports.game_submit = function(req, res, next) {

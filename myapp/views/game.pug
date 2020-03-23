@@ -18,7 +18,7 @@ html
 		script(src="/socket.io/socket.io.js")
 		script(type='text/javascript' src='/javascripts/color.js')
 		script(type='text/javascript' src='/javascripts/game.js')
-
+		script(type='text/javascript' src='/javascripts/game_shared.js')
 
 	body
 
@@ -28,27 +28,11 @@ html
 			include ./header.pug
 			div(id="body")
 
-				//h(class="header1") #{puzzle.name}
-				
-				//if puzzle.difficulty === "easy"
-				//	-var diff_color = "green";
-				//else if puzzle.difficulty === "moderate"
-				//	-var diff_color = "yellow";
-				//else
-				//	-var diff_color = "red";
-
-				//h(class="header2") Difficulty: 
-				//	font(color="#{diff_color}" style="margin-left:34px") #{puzzle.difficulty}
-
-				//h(class="header2") Description: 
-				//p(style="margin-left:100px; margin-right:2%; margin-top: -50px; text-align: justify;") !{puzzle.description}
-
-				
-
 				div
+
 					div(class="code-container")
 
-						div(id="progress-item" class="codebar-item")
+						div(id="progress-panel" class="codebar-item")
 
 							div(class="progress-container")
 								div(class="progress")
@@ -67,9 +51,9 @@ html
 
 
 
-						div(class="puzzle-item")
 
-							//div(class="cell" style="display:block")
+
+						div(class="puzzle-item" id="puzzle-panel")
 							
 							div
 								h(id="puzzle_header" class="header3" style="margin-right: 30px") Puzzle: 
@@ -81,31 +65,32 @@ html
 								p(id="description" style="text-align: justify; margin: -20px 0px") 
 
 
-							div(style="height:100%")
-								h(id="gameover" class="header1" style="font-size: 24px; text-align: justify;")
+							div(style="height:100%; margin: 0 auto")
+								h(id="gameover" class="header1" style="font-size: 24px; text-align: center;")
 								p(id="unlocked" style="text-align: justify;")
 								p(id="new_lang" style="text-align: justify;")
 
 
 
 
-						div(class="codebar-item" id="code_panel")
+						div(class="codebar-item" id="lang-panel")
 
 							div(class="cell")
 								h(class="header3" style="margin-right: 20px") Language: 
 
 								select(id="language" name="language")
-								//	option(value="Python" selected) Python
-								//	option(value="Scheme") Scheme
-								//	option(value="JavaScript") JavaScript
-								//	option(value="Haskell") Haskell
+
 							div(class="cell")
 								img(id="logo" src="/images/" + "python" + ".svg" alt='logo' width="50px" height="50px" style="float:left; margin: 0 20px")
+
+							div(id="lobby")
+								button(id="lobby_button" onclick="window.location.href = '/play'" style="margin: 18px 0; width:200px")
+									span Return to Lobby
 
 
 											
 
-						div(class="codebar-item" id="puzzle_panel")
+						div(class="codebar-item" id="run-panel")
 
 							div(class="cell")
 								h(class="header3" style="margin-right: 20px") Run:
@@ -113,6 +98,15 @@ html
 									i(class="fa fa-play")
 
 
+							div(id="rematch")
+								button(id="rematch_button" onclick="rematch_request()" style="margin: 18px 0; width:200px")
+									span Rematch
+							div(id="rematch_req" style="text-align:center")
+								h(id="rematch_msg" class="header1" style="font-size: 18px; margin: 0px")
+								button(id="accept_button" onclick="rematch_accept()" style="width:200px")
+									span Accept
+								button(id="decline_button" onclick="rematch_decline()" style="width:200px")
+									span Decline
 
 						div(style="text-align:left")
 							div.input(style="font-size:15px;")
@@ -121,13 +115,6 @@ html
 							div.input(style="font-size:15px")
 								textarea(id="codeoutput")
 
-				//
-				//br
-
-				//button(class="button" id="edit_button" style="vertical-align:middle")
-				//	span Continue Editing
-				//button(class="button" id="submit_button" style="vertical-align:middle")
-				//	span Save this Solution
 
 			include ./footer.pug
 

@@ -44,16 +44,13 @@ module.exports = {
 				allowNull: false
 			},
 			time_easy: {
-				type: Sequelize.FLOAT,
-				allowNull: false
+				type: Sequelize.INTEGER
 			},
 			time_moderate: {
-				type: Sequelize.FLOAT,
-				allowNull: false
+				type: Sequelize.INTEGER
 			},
 			time_challenging: {
-				type: Sequelize.FLOAT,
-				allowNull: false
+				type: Sequelize.INTEGER
 			}
 		});
 	},

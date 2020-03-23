@@ -9,15 +9,17 @@ html
 		link(href='/theme/dracula.css' rel='stylesheet')
 		link(href='/theme/base16-dark.css' rel='stylesheet')
 		link(href='/stylesheets/main.css' rel='stylesheet')
-		link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css")
 		script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
 		script(type='text/javascript' src='/javascripts/lib/codemirror.js')
 		script(type='text/javascript' src='/javascripts/mode/python/python.js')
 		script(type='text/javascript' src='/javascripts/mode/scheme/scheme.js')
 		script(type='text/javascript' src='/javascripts/mode/javascript/javascript.js')
 		script(type='text/javascript' src='/javascripts/mode/haskell/haskell.js')
-		script(type='text/javascript' src='/javascripts/lang_color.js')
-		script(type='text/javascript' src='/javascripts/work_on.js')
+		script(src="/socket.io/socket.io.js")
+		script(type='text/javascript' src='/javascripts/color.js')
+		script(type='text/javascript' src='/javascripts/time_attack.js')
+		script(type='text/javascript' src='/javascripts/game_shared.js')
+
 
 	body
 
@@ -27,81 +29,100 @@ html
 			include ./header.pug
 			div(id="body")
 
-				div(id="fadeDIV")
-					h2 #{puzzle.name}
-				
-				if puzzle.difficulty === "easy"
-					-var diff_color = "green";
-				else if puzzle.difficulty === "moderate"
-					-var diff_color = "yellow";
-				else
-					-var diff_color = "red";
-
-				p
-					em
-						font(color="#cc9923") Difficulty: 
-					font(color="#{diff_color}") #{puzzle.difficulty}
-
-
-				p(style="margin-top: -30px")
-					em
-						font(color="#cc9923") Description:
-					
-				p(style="margin-left:60px; margin-right:60px; margin-top: -50px; text-align: justify;") !{puzzle.description}
-
-				hr
-
-
 				div
-					form(action="" style="display:table-row")
+					div(class="code-container")
 
-						div(class="panel" id="code_panel" style="display: table-cell; position:relative; top:70px;")
+						div(id="progress-panel" class="codebar-item")
 
-							button(id="run_button" class="round-button")
-								i(class="fa fa-play")
+							div()
+								h(class="header3" style="display:block; text-align:center; padding: 10px 0") Time: 
+								
+								code(id="timer" class="timer")
+
+							div(class="progress-container")
+								div(class="progress")
+									div(class="progress-name") #{game.creator}
+									div(class="progress-bar")
+										div(id="progress_" + game.creator class="progress-per" per="0%")
+								div(class="progress-text-container")
+									div(id="progress_text_" + game.creator class="progress-per-text" per="0%")
+
+
+
+
+
+						div(class="puzzle-item" id="puzzle-panel")
 							
-							br
-							select(id="language" name="language")
-								option(value="Python" selected) Python
-								option(value="Scheme") Scheme
-								option(value="JavaScript") JavaScript
-								option(value="Haskell") Haskell
+							div
+								h(id="puzzle_header" class="header3" style="margin-right: 30px") Puzzle: 
+								select(id="puzzle" name="puzzle" style="width: 140px")
 
-							img(id="logo", src="/images/" + "python" + ".svg", alt='logo', width="50px", class="imageRight")
-
-
-						div.input(style="display: table-cell; position:relative; left: 25px; top:45px; right:25px; font-size:16px;")
-							div(id="fadeDIV")
-								label(for="function" class="code_label") Code Area
-							textarea(name="function", id="codeeditor")
+								br(class="space")
+								br(class="space")
+								h(id="description_header" class="header3") Description: 
+								p(id="description" style="text-align: justify; margin: -20px 0px") 
 
 
-
-						div.input(style="display: table-cell; position:relative; left: 25px; top:45px; font-size:16px;")
-							div(id="fadeDIV")
-								label(for="output" class="code_label") Output
-							textarea(id="codeoutput" name="output")
-
-				br
-				br
-				br
-				br
-				br
-				br
-				button(class="button" id="edit_button" style="vertical-align:middle")
-					span Continue Editing
-				button(class="button" id="submit_button" style="vertical-align:middle")
-					span Save this Solution
-
-				br
-				br
-				hr
+							div(style="height:100%; margin: 0 auto")
+								h(id="gameover" class="header1" style="font-size: 24px; text-align: center;")
+								p(id="unlocked" style="text-align: justify;")
+								p(id="new_lang" style="text-align: justify;")
 
 
-				script.
-					var solutions = !{JSON.stringify(solutions)};
-					//console.log(solutions);
 
+
+						div(class="codebar-item" id="lang-panel")
+
+							div(class="cell")
+								h(class="header3" style="margin-right: 20px") Language: 
+
+								select(id="language" name="language")
+									option(value="Python" selected) Python
+									option(value="Scheme") Scheme
+									option(value="JavaScript") JavaScript
+									option(value="Haskell") Haskell
+
+							div(class="cell")
+								img(id="logo" src="/images/" + "python" + ".svg" alt='logo' width="50px" height="50px" style="float:left; margin: 0 20px")
+
+							div(id="lobby")
+								button(id="lobby_button" onclick="window.location.href = '/play'" style="margin: 18px 0; width:200px")
+									span Return to Lobby
+
+
+											
+
+						div(class="codebar-item" id="run-panel")
+
+							div(class="cell")
+								h(class="header3" style="margin-right: 20px") Run:
+								button(id="run_button" class="round-button" style="margin 0 auto")
+									i(class="fa fa-play")
+
+
+							div(id="rematch")
+								button(id="rematch_button" onclick="play_again()" style="margin: 18px 0; width:200px")
+									span Play Again
+							div(id="rematch_req" style="text-align:center")
+								h(id="rematch_msg" class="header1" style="font-size: 18px; margin: 0px")
+								button(id="accept_button" onclick="rematch_accept()" style="width:200px")
+									span Accept
+								button(id="decline_button" onclick="rematch_decline()" style="width:200px")
+									span Decline
+
+						div(style="text-align:left")
+							div.input(style="font-size:15px;")
+								textarea(id="codeeditor")
+						div(style="text-align:left")
+							div.input(style="font-size:15px")
+								textarea(id="codeoutput")
 
 
 			include ./footer.pug
+
+				script.
+					var game = !{JSON.stringify(game)};
+					var user = !{JSON.stringify(user)};
+					var puzzles = !{JSON.stringify(puzzles)};
+
+					var points_needed = game.num_easy + (game.num_moderate * 3) + (game.num_challenging * 5);

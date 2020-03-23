@@ -20,14 +20,15 @@ html
 				h(class="header1") Profile
 
 				div(class="grid-container")
-					div(class="user-item")
+					div(class="half-round-item-1")
 						h2 Username
 						code(style="font-size:24px") #{user.username}
-					div(class="rank-item")
+					div(class="half-round-item-2")
 						h2 Rank
-						img(src="/images/ranks/" + user.rank.toLowerCase().split(' ').join('_') + ".png" alt='rank', width="160px" style="margin-bottom:-15px; margin-top:-10px")
+						img(src="/images/ranks/" + user.rank.toLowerCase().split(' ').join('_') + ".png" alt='rank', width="160px" style="margin-bottom:-35px; margin-top:-40px")
 						//p(style="font-size:20px; margin:-5px 0") #{user.rank}
-					div
+
+					div(class="half-round-item-2")
 						h2 Games Played
 						table(style="width:90%; margin: 0 auto")
 								col(style="width:33%")
@@ -42,7 +43,7 @@ html
 									td #{user.games_won}
 									td #{user.games_lost}
 
-					div
+					div(class="half-round-item-1")
 						h2 Puzzles Solved
 						table(style="width:90%; margin: 0 auto")
 								col(style="width:33%")

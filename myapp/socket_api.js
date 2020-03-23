@@ -1,8 +1,10 @@
 const models = require('./models');
 //var session = require('express-session');
+//var landing = require('./controllers/landing')
 var sequelize = require('sequelize');
 var moment = require('moment');
 var crypto = require('crypto');
+var model_lib = require("./model_lib");
 
 
 var socket_io = require('socket.io');
@@ -18,6 +20,113 @@ socket_api.io = io;
 
 io.on('connection', function(socket){
 		console.log('A user connected');
+
+
+	socket.on("rematch_accept", function(sender, game_id) {
+		console.log("rematch accepted, setting up game");
+		
+		return models.games.findOne({
+			where: {
+				id: game_id }
+		}).then(game => {
+
+			return models.users.update({
+						status: "starting" }, {returning: true,
+					where: {
+						username: [game.creator, game.invitee]
+					}
+			}).then(updated => {
+				var hash = crypto.createHash('md5').update(
+					game.creator + game.invitee + moment().utc().format('hh:mm:ss'))
+				.digest('hex');
+
+				model_lib.fetch_random_puzzles('easy', game.num_easy)
+				.then(easy_puzzles => {
+					model_lib.fetch_random_puzzles('moderate', game.num_moderate)
+					.then(moderate_puzzles => {
+						model_lib.fetch_random_puzzles('challenging', game.num_challenging)
+						.then(challenging_puzzles => {
+							let puzzle_names = "";
+							let puzzles = easy_puzzles.concat(moderate_puzzles.concat(challenging_puzzles));
+							for (var i = 0; i < puzzles.length; i++) {
+								if (i == 0) puzzle_names += puzzles[i].name;
+								else puzzle_names += "," + puzzles[i].name;
+							}
+							console.log("puzzle_names", puzzle_names);
+
+							/* store the game */
+							return models.games.create({
+										id: hash,
+										creator: game.creator,
+										invitee: game.invitee,
+										status: "in_progress",
+										languages: game.languages,
+										num_easy: game.num_easy,
+										num_moderate: game.num_moderate,
+										num_challenging: game.num_challenging,
+										puzzle_names: puzzle_names,
+							}).then(new_game => {
+								io.in(game_id).emit("rematch_game", hash);
+							}).catch(err => {
+								console.log(err);
+							});
+						}).catch(err => {
+							console.log(err);
+						});
+					}).catch(err => {
+						console.log(err);
+					});
+				}).catch(err => {
+					console.log(err);
+				});
+			}).catch(err => {
+				console.log(err);
+			});
+		}).catch(err => {
+			console.log(err);
+		});
+	});
+
+	socket.on("rematch_decline", function(sender, game_id) {
+		io.in(game_id).emit("no_rematch", sender);
+	})
+
+
+	socket.on("rematch_request", function(sender, game_id) {
+
+
+		return models.games.findOne({
+			where: {
+				id: game_id }
+		}).then(game => {
+			if (sender == game.creator) {
+				return models.users.findOne({
+					where: {
+						username: game.invitee
+					}
+				}).then(receiver => {
+					console.log(sender + " is sending a rematch offer to " + receiver.username);
+					io.to(receiver.socket_id).emit("rematch_offer", sender);
+				}).catch(err => {
+					console.log(err);
+				});
+			}
+			else {
+				return models.users.findOne({
+					where: {
+						username: game.creator
+					}
+				}).then(receiver => {
+					console.log(sender + " is sending a rematch offer to " + receiver.username);
+					io.to(receiver.socket_id).emit("rematch_offer", sender);
+				}).catch(err => {
+					console.log(err);
+				});
+			}
+		}).catch(err => {
+			console.log(err);
+		});
+	});
 
 
 	socket.on("game_start", function(username, game_id) {
@@ -68,8 +177,15 @@ io.on('connection', function(socket){
 		if (room.length !== 2) {
 			io.in(game_id).emit("opponent_disconnect");
 		}
-	})
+	});
 
+
+	socket.on("request_check", function(game_id) {
+		var room = io.sockets.adapter.rooms[game_id];
+		if (room.length !== 2) {
+			io.in(game_id).emit("opponent_left");
+		}	
+	});
 /*
 	socket.on("submit_puzzle", function(username, puzzle_name, solution, language, time, length) {
 		return models.solved_puzzles.findAll({
@@ -166,6 +282,7 @@ io.on('connection', function(socket){
 					where: {id: game_id}
 				}).then(game => {
 					console.log("GAME", game);
+					/*
 					return models.users.update({
 								status: "not_playing",
 								socket_id: null }, {returning: true,
@@ -173,11 +290,12 @@ io.on('connection', function(socket){
 								username: [game.creator, game.invitee]
 							}
 					}).then(updated => {
+						*/
 						/* creator won */
 						if (username === game.creator) {
-							update_user_games(game.creator, "won")
+							model_lib.update_user_games(game.creator, "won")
 							.then(updated_creator => {
-								update_user_games(game.invitee, "lost")
+								model_lib.update_user_games(game.invitee, "lost")
 								.then(updated_invitee => {
 									io.in(game_id).emit("game_over", username);
 								}).catch(err => {
@@ -189,9 +307,9 @@ io.on('connection', function(socket){
 						}
 						else {
 							/* invitee won */
-							update_user_games(game.creator, "lost")
+							model_lib.update_user_games(game.creator, "lost")
 							.then(updated_creator => {
-								update_user_games(game.invitee, "won")
+								model_lib.update_user_games(game.invitee, "won")
 								.then(updated_invitee => {
 									io.in(game_id).emit("game_over", username);
 								}).catch(err => {
@@ -201,9 +319,10 @@ io.on('connection', function(socket){
 								console.log(err);
 							});
 						}
+						/*
 					}).catch(err => {
 						console.log(err);
-					});
+					});*/
 				}).catch(err => {
 					console.log(err);
 				});
@@ -309,15 +428,11 @@ io.on('connection', function(socket){
 				game_info["creator"] + game_info["invitee"] + moment().utc().format('hh:mm:ss'))
 			.digest('hex');
 
-			console.log("hash:", hash);
-			console.log("hash type:", typeof hash);
-			console.log("sock id type:", typeof socket.id);
-
-			fetch_random_puzzles('easy', parseInt(game_info["num_easy"]))
+			model_lib.fetch_random_puzzles('easy', parseInt(game_info["num_easy"]))
 			.then(easy_puzzles => {
-				fetch_random_puzzles('moderate', parseInt(game_info["num_moderate"]))
+				model_lib.fetch_random_puzzles('moderate', parseInt(game_info["num_moderate"]))
 				.then(moderate_puzzles => {
-					fetch_random_puzzles('challenging', parseInt(game_info["num_challenging"]))
+					model_lib.fetch_random_puzzles('challenging', parseInt(game_info["num_challenging"]))
 					.then(challenging_puzzles => {
 						let puzzle_names = "";
 						let puzzles = easy_puzzles.concat(moderate_puzzles.concat(challenging_puzzles));
@@ -339,9 +454,6 @@ io.on('connection', function(socket){
 									num_moderate: parseInt(game_info["num_moderate"]),
 									num_challenging: parseInt(game_info["num_challenging"]),
 									puzzle_names: puzzle_names,
-									time_easy: 0.0,
-									time_moderate: 0.0,
-									time_challenging: 0.0
 						}).then(game => {
 
 							return models.users.findOne({
@@ -595,6 +707,7 @@ socket_api.sendNotification = function() {
 		io.sockets.emit('hello', {msg: 'Hello World!'});
 }
 */
+/*
 async function fetch_random_puzzles(difficulty, number) {
 
 	console.log("fetching " + number + " random puzzles with difficulty " + difficulty);
@@ -631,6 +744,6 @@ function update_user_games(username, result) {
 	.catch(err => {
 		console.log(err);
 	});
-}
+}*/
 
 module.exports = socket_api;
