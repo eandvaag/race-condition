@@ -29,6 +29,11 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: false,
 			defaultValue: '0'
 		},
+		total_solved: {
+			type: DataTypes.INTEGER,
+			allowNull: false,
+			defaultValue: '0'			
+		},
 		games_played: {
 			type: DataTypes.INTEGER,
 			allowNull: false,

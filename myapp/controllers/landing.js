@@ -338,7 +338,9 @@ exports.leaderboards = function(req, res, next) {
     return models.users.findAll({
       raw: true,
       //plain: true,
-      order: sequelize.literal('num_solved DESC'),
+      order: [['DESC'],[sequelize.fn('SUM', 'num_easy_solved', 'num_moderate_solved', 'num_challenging_solved')]],
+      //order: sequelize.literal('num_easy_solved' + 'num_moderate_solved' + 
+      //                          'num_challenging_solved'), 'total_solved DESC',
       limit: 10
     }).then(high_scorers => {
       console.log('high_scorers',high_scorers);
@@ -875,6 +877,7 @@ function update_user_solved(username, puzzle_name) {
         }
       })
       .then(puzzle => {
+        user.increment("total_solved");
         if (puzzle.difficulty == "easy") {
           user.increment("num_easy_solved");
         } 

@@ -34,6 +34,11 @@ module.exports = {
 				allowNull: false,
 				defaultValue: '0'
 			},
+			total_solved: {
+				type: Sequelize.INTEGER,
+				allowNull: false,
+				defaultValue: '0'				
+			},
 			games_played: {
 				type: Sequelize.INTEGER,
 				allowNull: false,
