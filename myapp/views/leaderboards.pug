@@ -5,7 +5,9 @@ html
 		title="race_condition"
 		link(href='/stylesheets/main.css' rel='stylesheet')
 		script(type='text/javascript' src='https://d3js.org/d3.v5.min.js')
-		//script(type='text/javascript' src='/javascripts/leaderboards.js')
+		script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
+		script(type='text/javascript' src='/javascripts/leaderboards.js')
+
 	body
 
 		div(id="container")
@@ -13,8 +15,10 @@ html
 			
 			div(id="body")
 
-				div(id="chart", align="center")
+				h(class="header1") Top Coders
 
+				div(id="chart" style="max-width: 600px; margin: 0 auto")
+					select(id="drop")
 				//-var jsonObj = JSON.parse(high_scorers)
 				//p jsonObj
 
@@ -23,17 +27,17 @@ html
 					//script.
 					//	console.log(JSON.stringify(high_scorer));
 
-				script(type='text/javascript' src='/javascripts/leaderboards.js')
-				script.
+			script.
 					
-					console.log("#{user.username}");
+				//console.log("#{user.username}");
 
-
-					var high_scorers = !{JSON.stringify(high_scorers)};
-					var user = !{JSON.stringify(user)};
-					console.log(high_scorers);
-					console.log(user);
-					drawPlot(high_scorers, user);
+				var user = !{JSON.stringify(user)};
+				var most_solved = !{JSON.stringify(most_solved)};
+				var most_won = !{JSON.stringify(most_won)};
+				//console.log(most_);
+				//console.log(user);
+				//drawPlot(user, most_solved, most_won);
+				init();
 
 
 

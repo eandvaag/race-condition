@@ -68,6 +68,10 @@ module.exports = {
 			socket_id: {
 				type: Sequelize.STRING,
 				defaultValue: null
+			},
+			picture: {
+				type: Sequelize.BOOLEAN,
+				defaultValue: false
 			}
 		}, {
 		hooks: {

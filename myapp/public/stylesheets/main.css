@@ -698,7 +698,11 @@ a {
   color: #eeddbb;
 }
 
-
+.upload {
+  color: #eeddbb;
+  text-decoration: underline;
+  cursor: pointer;
+}
 
 input[type=text], input[type=password]/*, input[type=number]*/ {
 
@@ -889,7 +893,7 @@ input[type="radio"]{
 
 .chart_text {
   font-family: "Helvetica Neue", Helvetica, sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   fill: ghostwhite;
 }
 
@@ -1182,7 +1186,7 @@ $ease: cubic-bezier(.2,1,.3,1);
 
   .pointer:hover polygon, .pointer:hover path {
     transition: all 1s cubic-bezier(.2,1,.3,1);
-    fill: #ffcc56; /*#FF4136;*/
+    fill: #dfac36; /*#ffcc56; *//*#FF4136;*/
   }
     
   .pointer:hover .arrow {

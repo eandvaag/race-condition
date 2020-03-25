@@ -7,6 +7,9 @@ const lineByLine = require('n-readlines');
 var moment = require('moment');
 var crypto = require('crypto');
 var model_lib = require("../model_lib");
+const multer = require('multer');
+
+
 /*
 exports.get_landing = function(req, res, next) {
   res.render('landing', { title: 'Express' });
@@ -37,11 +40,11 @@ exports.get_terminated = function(req, res, next) {
 }
 
 exports.home = function(req, res, next) {
-  res.render('home', { title: 'Home' });
+  res.render('home');
 }
 
 exports.get_sign_up = function(req, res, next) {
-  res.render('sign_up', { title: 'Sign Up' });
+  res.render('sign_up');
 }
 
 
@@ -56,6 +59,69 @@ function valid_password(password) {
   return pattern.test(password);
 
 }
+
+exports.submit_picture = function(req, res, next) {
+  var data = {};
+  data.success = false;
+  data.redirect = null;
+
+  if (req.session.user && req.cookies.user_sid) {
+
+    //.log(req.body);
+    //console.log(file);
+    //console.log("__dirname", __dirname);
+
+    //upload.single("file");
+    if (req.file) {
+      const { exec } = require('child_process');
+      console.log("added image");
+      //console.log(req.file);
+      //console.log(req.file.filename);
+      var filename = req.file.filename;
+
+      cmd = "mv ./profile-pictures/" + filename + " ./tests/user/" + 
+      req.session.user.username + "/picture; convert ./tests/user/" + req.session.user.username + 
+      "/picture -resize 300x300^ " + "-gravity center -extent 300x300 ./tests/user/" + 
+      req.session.user.username + "/picture_resized" ;
+      console.log("cmd", cmd);
+
+      const result = exec(cmd, {shell: "/bin/bash"}, function (error, stdout, stderr) {
+        if (error) {
+          console.log(error.stack);
+          console.log('Error code: '+error.code);
+          console.log('Signal received: '+error.signal);
+          res.json(data);
+        }
+        else {
+          console.log("moved file to user's directory");
+          return models.users.update({
+                  picture: true }, {returning: true,
+                where: {
+                  username: req.session.user.username } 
+          }).then(success => {
+            console.log("updated user");
+            data.success = true;
+            res.json(data);
+          }).catch(err => {
+            console.log(err);
+            res.json(data);
+          })
+        }
+      });
+      
+    }
+    else {
+      console.log("file upload failed");
+      res.json(data);
+    }
+  }
+
+  else {
+    data.redirect = "/sign-in";
+    res.json(data);
+  }
+}
+
 
 exports.post_sign_up = function(req, res, next) {
   response = {};
@@ -104,6 +170,7 @@ exports.post_sign_up = function(req, res, next) {
               console.log(error);
             }
           });
+
           req.session.user = user.dataValues;
           response.redirect = "/user";
           res.json(response);
@@ -335,6 +402,28 @@ exports.leaderboards = function(req, res, next) {
   })
   */
   if (req.session.user && req.cookies.user_sid) {
+
+    return models.users.findAll({
+      raw: true,
+      order: sequelize.literal('total_solved DESC'),
+      limit: 10
+    }).then(most_solved => {
+      return models.users.findAll({
+        raw: true,
+        order: sequelize.literal('games_won DESC'),
+        limit: 10
+      }).then(most_won => {
+        res.render('leaderboards', { user: req.session.user, most_solved: most_solved, most_won: most_won });
+      }).catch(err => {
+        console.log(err);
+      });
+    }).catch(err => {
+      console.log(err);
+    });
+  }
+
+
+/*
     return models.users.findAll({
       raw: true,
       //plain: true,
@@ -349,6 +438,7 @@ exports.leaderboards = function(req, res, next) {
       console.log(err);
     })
   }
+  */
   else {
     res.redirect('/sign-in');
   }

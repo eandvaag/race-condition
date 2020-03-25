@@ -1,4 +1,4 @@
 {
   "verbose": true,
-  "ignore": ["tests/user/"]
+  "ignore": ["tests/user/", "profile-pictures"]
 }

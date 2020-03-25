@@ -63,6 +63,10 @@ module.exports = (sequelize, DataTypes) => {
 		socket_id: {
 			type: DataTypes.STRING,
 			defaultValue: null
+		},
+		picture: {
+			type: DataTypes.BOOLEAN,
+			defaultValue: false
 		}
 	});
 

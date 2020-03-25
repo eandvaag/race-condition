@@ -9,7 +9,9 @@ var router = express.Router();
 let landing = require('../controllers/landing');
 //const express = require('express')
 
-
+const multer = require('multer');
+const upload = multer({dest: __dirname + '/../profile-pictures'}, {limits: {fileSize: 5000000 }},
+	{filename: function(req, file, callback) {callback(null, file.filename);} });
 /*
 console.log("got here");
 
@@ -87,6 +89,9 @@ router.post('/sign-in', landing.post_sign_in);
 
 router.get('/sign-up', landing.get_sign_up);
 router.post('/sign-up', landing.post_sign_up);
+
+
+router.post('/submit-picture', upload.single('file'), landing.submit_picture);
 
 //router.get('/user', landing.get_username)
 router.get('/logout', landing.logout);

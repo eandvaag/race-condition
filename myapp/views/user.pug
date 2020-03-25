@@ -21,8 +21,29 @@ html
 
 				div(class="grid-container")
 					div(class="half-round-item-1")
-						h2 Username
+						// style="height: 200px")
+						//h2 Username
+						br
+						
 						code(style="font-size:24px") #{user.username}
+						br
+
+						if (user.picture == true)
+							br
+							img(id="profile_image" src="/user/" + user.username + "/picture_resized" alt="profile picture" width="120px")
+
+							//img(src="/images/../../public/images/logo.png" alt="profile picture" width="120px")
+						else
+							br
+							img(src="/images/profile_placeholder.png" alt="generic profile picture" width="120px")
+							//br
+							//div(style="height: 100px")
+							//label(for="profile_picture" class="label") Upload a Profile Picture
+							//input(type="file" id="file" name="profile_picture" accept="image/*" style="margin-left: 80px")
+						br
+						input(type="file" id="file" name="profile_picture" accept="image/*" style="display: none;")
+						label(for="file" class="upload") Select File
+
 					div(class="half-round-item-2")
 						h2 Rank
 						img(src="/images/ranks/" + user.rank.toLowerCase().split(' ').join('_') + ".png" alt='rank', width="160px" style="margin-bottom:-35px; margin-top:-40px")

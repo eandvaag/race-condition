@@ -19,7 +19,7 @@ module.exports = {
       updatedAt: new Date()
     },
     {
-      username: 'arvid',
+      username: 'dennis',
       puzzle_name: 'fibonacci',
       language: 'python',
       time: 0.01,
@@ -178,7 +178,7 @@ module.exports = {
       updatedAt: new Date()
     },   
     {
-      username: 'arvid',
+      username: 'richard',
       puzzle_name: 'collatz',
       language: 'python',
       time: 0.2,

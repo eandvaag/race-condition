@@ -4,21 +4,21 @@ var subchart_bg;
 var subchart;
 var users = {};
 var usernames = [];
-var width = 800;
-var height = 600;
+var width;// = 800;
+var height;// = 600;
 var legend_width = 150;
 var legend_height = 160;
 var legend_svg;
 
 var padding = 40;
 
-
+/*
 $(function() {
-    var div = $('#chart');
-    var width = div.width();
-    
-    div.css('height', width);
-});
+		var div = $('#chart');
+		var width = div.width();
+		
+		div.css('height', width);
+});*/
 /*
 d3.csv("../sample_data/sample_scores.csv").then(function(data) {
 	console.log("LEADERBOARDS.js");
@@ -40,18 +40,6 @@ d3.csv("../sample_data/sample_scores.csv").then(function(data) {
 //drawPlot()
 window.addEventListener("resize", drawPlot);
 
-function updateSize() {
-
-	/*
-	let chart_div = document.getElementById("chart");
-	width = chart_div.clientWidth;
-	height
-	svg.attr("width", chart_div.clientWidth);
-	svg.attr("height", chart_div.clientHeight);*/
-	drawPlot();
-}
-
-
 
 function drawPlot() {
 //function drawPlot(puzzle) {
@@ -60,14 +48,13 @@ function drawPlot() {
 	$("#difficulty").css("color", difficulty_color(puzzle.difficulty));
 
 	var div = $('#chart');
-    var width = div.width();
-    
-    div.css('height', (3/4) * width );
+	var width = div.width();
+		
+	div.css('height', (15/16) * width);
 
 
 	if (svg) {
 		svg.remove();
-		//chart_bg.remove()
 		legend_svg.remove();
 	}
 
@@ -106,7 +93,7 @@ function drawPlot() {
 	//let chart_div = document.getElementById("chart");
 
 	width = div.width();
-	height = div.height();/*
+	height = (7/8) * div.height();/*
 	console.log("chart width:", chart_div.clientWidth);
 	console.log("chart height:", chart_div.clientHeight);*/
 
@@ -130,8 +117,8 @@ function drawPlot() {
 
 
 	//var dropdown = d3.select("#legend").select("svg")
-    //.insert("select", "svg")
-    //.on("change", dropdownChange);
+		//.insert("select", "svg")
+		//.on("change", dropdownChange);
 	//subchart = d3.select("#chart").select("svg").append("g");
 	//legend = d3.select("#chart").select("svg").append("g");
 	//var dropdown = d3.select("#chart").insert("select", "svg").style("top", "400px").style("left", "250px");//.on("change", drowdownChange);
