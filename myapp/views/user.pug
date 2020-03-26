@@ -31,11 +31,9 @@ html
 						if (user.picture == true)
 							br
 							img(id="profile_image" src="/user/" + user.username + "/picture_resized" alt="profile picture" width="120px")
-
-							//img(src="/images/../../public/images/logo.png" alt="profile picture" width="120px")
 						else
 							br
-							img(src="/images/profile_placeholder.png" alt="generic profile picture" width="120px")
+							img(id="profile_image" src="/images/profile_placeholder.png" alt="generic profile picture" width="120px")
 							//br
 							//div(style="height: 100px")
 							//label(for="profile_picture" class="label") Upload a Profile Picture

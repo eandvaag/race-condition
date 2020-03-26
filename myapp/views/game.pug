@@ -36,14 +36,26 @@ html
 
 							div(class="progress-container")
 								div(class="progress")
-									div(class="progress-name") #{game.creator}
+									div(style="display:flex; margin-top:20px")
+										if creator.picture
+											img(src="/user/" + creator.username + "/picture_resized" alt="profile picture" width="40px" height="40px" style="margin: 10px 10px")
+										else
+											img(src="/images/profile_placeholder.png" alt="generic profile picture" width="40px" height="40px" style="margin: 10px 10px")
+										div(class="progress-name") #{game.creator}
+									//div(class="progress-name") #{game.creator}
 									div(class="progress-bar")
 										div(id="progress_" + game.creator class="progress-per" per="0%")
 								div(class="progress-text-container")
 									div(id="progress_text_" + game.creator class="progress-per-text" per="0%")
 							
 								div(class="progress")
-									div(class="progress-name") #{game.invitee}
+									div(style="display:flex; margin-top:25px")
+										if invitee.picture
+											img(src="/user/" + invitee.username + "/picture_resized" alt="profile picture" width="40px" height="40px" style="margin: 10px 10px")
+										else
+											img(src="/images/profile_placeholder.png" alt="generic profile picture" width="40px" height="40px" style="margin: 10px 10px")
+										div(class="progress-name") #{game.invitee}								
+									//div(class="progress-name") #{game.invitee}
 									div(class="progress-bar")
 										div(id="progress_" + game.invitee class="progress-per" per="0%")
 								div(class="progress-text-container")

@@ -173,9 +173,9 @@ function start_play(user, usernames) {
 				num_easy: $("#num_easy_time").val(),
 				num_moderate: $("#num_moderate_time").val(),
 				num_challenging: $("#num_challenging_time").val(),
-				time_easy: 160,
+				time_easy: 150,
 				time_moderate: 300,
-				time_challenging: 500
+				time_challenging: 600
 			},
 			function(response,status) {
 				if (response.redirect) {

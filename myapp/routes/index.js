@@ -135,6 +135,7 @@ router.get('/play/:game_id', landing.get_game);
 router.post('/play/:game_id', landing.run_code);
 router.post('/play/:game_id/submit', landing.game_submit);
 router.get('/play/:game_id/terminated', landing.get_terminated);
+//router.post('/play/:game_id/complete', landing.game_complete);
 
 /*
 router.get('/time-attack', landing.get_time_attack);

@@ -32,12 +32,6 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
-      name: 'collatz',
-      description: 'Write a function <code>collatz()</code> that takes an integer n and returns a list containing the Collatz sequence beginning at n. A Collatz sequence is formed in the following way: if the input integer n is even, the next number in the sequence is (n/2). If the input integer n is odd, the next number in the sequence is (3*n)+1. The sequence ends when the input integer is 1.',
-      difficulty: 'easy',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    }, {
       name: 'pyth',
       description: 'Write a function <code>pyth()</code> that takes three integers and returns true if the three numbers are a Pythagorean triple, false otherwise. A Pythagorean triple consists of three positive integers <i>a</i>, <i>b</i>, and <i>c</i>, such that <i>a<sup>2</sup></i> + <i>b<sup>2</sup></i> = <i>c<sup>2</sup></i>.',
       difficulty: 'easy',
@@ -54,8 +48,8 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
-      name: 'anagram',
-      description: 'Write a function <code>anagram()</code> that takes two strings as input and returns true if the strings are anagrams of each other, false otherwise (i.e., the first string can be constructed by re-arranging the letters of the first string). You may assume each string is a single word.',
+      name: 'collatz',
+      description: 'Write a function <code>collatz()</code> that takes an integer n and returns a list containing the Collatz sequence beginning at n. A Collatz sequence is formed in the following way: if the input integer n is even, the next number in the sequence is (n/2). If the input integer n is odd, the next number in the sequence is (3*n)+1. The sequence ends when the input integer is 1.',
       difficulty: 'moderate',
       createdAt: new Date(),
       updatedAt: new Date()
@@ -72,6 +66,12 @@ module.exports = {
     {
       name: 'perfect',
       description: 'Write a function <code>perfect()</code> that takes an integer n and returns the n\'th perfect number. A perfect number is a positive integer that is equal to the sum of its positive divisors, excluding the number itself. For example, 6 has divisors 1, 2, and 3 (excluding itself), and 1 + 2 + 3 = 6, so 6 is the first perfect number.',
+      difficulty: 'challenging',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },  {
+      name: 'anagram',
+      description: 'Write a function <code>anagram()</code> that takes two strings as input and returns true if the strings are anagrams of each other, false otherwise (i.e., the first string can be constructed by re-arranging the letters of the first string). You may assume each string is a single word.',
       difficulty: 'challenging',
       createdAt: new Date(),
       updatedAt: new Date()

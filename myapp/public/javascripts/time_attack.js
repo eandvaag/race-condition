@@ -113,7 +113,11 @@ function tick() {
 		$("#timer").css("color", "white");
 		$("#timer").val("");
 		$("#timer").text("--:--");
-		game_end("Time's Up!");
+		$.post($(location).attr('href') + '/complete',
+		{},		
+		function(data,status){
+			game_end("Time's Up!");
+		});
 	}
 
 	seconds_remaining--;
@@ -122,6 +126,7 @@ function tick() {
 
 
 $(document).ready(function(){
+	console.log(user);
 
 	$("#gameover").hide();
 	$("#unlocked").hide();
@@ -245,10 +250,16 @@ $(document).ready(function(){
 						update_per_val(user.username, new_per(user.username, puzzle_percent($("#puzzle").val())));
 						populate_puzzle_select();
 						clearInterval(interval_id);
+
 						$("#timer").css("color", "white");
 						$("#timer").val("");
-						$("#timer").text("--:--")
-						game_end("Congratulations!");
+						$("#timer").text("--:--");
+						$.post($(location).attr('href') + '/complete',
+						{},
+						
+						function(data,status){
+							game_end("Congratulations!");
+						});
 						//puzzle_update();
 						//update_per(user.username, 100);
 						//gameover_modal.style.display = "block";

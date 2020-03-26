@@ -43,6 +43,9 @@ $(document).ready(function(){
            console.log("/user/" + user.username + "/picture_resized");
            console.log($("#profile_image"));
            d = new Date();
+           //if ($("#profile_image").attr("src") == "/images/profile_placeholder.png")
+           //	$("#profile_image").attr("src", "/user/" + user.username + "/picture_resized");
+           //else
            $("#profile_image").attr("src", "/user/" + user.username + "/picture_resized?" + d.getTime());
        }
       });

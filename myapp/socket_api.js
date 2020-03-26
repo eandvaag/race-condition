@@ -1,6 +1,6 @@
 const models = require('./models');
 //var session = require('express-session');
-//var landing = require('./controllers/landing')
+var landing = require('./controllers/landing')
 var sequelize = require('sequelize');
 var moment = require('moment');
 var crypto = require('crypto');
@@ -273,7 +273,26 @@ io.on('connection', function(socket){
 			io.in(game_id).emit("opponent_disconnect");			
 		}
 		else {
-			/* set game status to completed */
+			/*
+			var winner;
+			var loser;
+			if (username == game.creator) {
+				winner = game.creator;
+				loser = game.invitee;
+			}
+			else {
+				winner = game.invitee;
+				loser = game.creator;
+			}
+
+			$.post('/play/'  + game_id +'/complete',
+				{
+					winner: winner,
+					loser: loser
+				},		
+			function(data,status){
+				*/
+			//console.log("CAN I ACCESS THIS:------->", req.session.user);
 			return models.games.update({
 					status: "completed" }, {returning: true,
 				where: { id: game_id } 
@@ -291,6 +310,10 @@ io.on('connection', function(socket){
 							}
 					}).then(updated => {
 						*/
+
+
+						/* should really update req.session.user..... */
+
 						/* creator won */
 						if (username === game.creator) {
 							model_lib.update_user_games(game.creator, "won")

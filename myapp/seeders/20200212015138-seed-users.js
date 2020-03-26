@@ -31,6 +31,7 @@ module.exports = {
       games_played: 9,
       games_won: 7,
       games_lost: 2,
+      picture: true,
       rank: "Hacker", // score = 70
       createdAt: new Date(),
       updatedAt: new Date()
@@ -45,6 +46,7 @@ module.exports = {
       games_played: 6,
       games_won: 5,
       games_lost: 1,
+      picture: true,
       rank: "Real Programmer",
       createdAt: new Date(),
       updatedAt: new Date()
@@ -59,6 +61,7 @@ module.exports = {
       games_played: 15,
       games_won: 9,
       games_lost: 6,
+      picture: true,
       rank: "Hacker",
       createdAt: new Date(),
       updatedAt: new Date()
@@ -73,6 +76,7 @@ module.exports = {
       games_played: 11,
       games_won: 9,
       games_lost: 2,
+      picture: true,
       rank: "Real Programmer",
       createdAt: new Date(),
       updatedAt: new Date()
@@ -87,6 +91,7 @@ module.exports = {
       games_played: 17,
       games_won: 9,
       games_lost: 8,
+      picture: true,
       rank: "Language Lawyer",
       createdAt: new Date(),
       updatedAt: new Date()
@@ -101,6 +106,7 @@ module.exports = {
       games_played: 33,
       games_won: 21,
       games_lost: 12,
+      picture: true,
       rank: "Guru",     // score = 180
       createdAt: new Date(),
       updatedAt: new Date()
@@ -115,6 +121,7 @@ module.exports = {
       games_played: 38,
       games_won: 30,
       games_lost: 8,
+      picture: true,
       rank: "Wizard",   // score = 238
       createdAt: new Date(),
       updatedAt: new Date()
@@ -129,6 +136,7 @@ module.exports = {
       games_played: 42,
       games_won: 31,
       games_lost: 11,
+      picture: true,
       rank: "Guru",   // score = 195
       createdAt: new Date(),
       updatedAt: new Date()
@@ -143,6 +151,7 @@ module.exports = {
       games_played: 33,
       games_won: 20,
       games_lost: 13,
+      picture: true,
       rank: "Super Programmer",   // score = 133
       createdAt: new Date(),
       updatedAt: new Date()
@@ -157,6 +166,7 @@ module.exports = {
       games_played: 70,
       games_won: 68,
       games_lost: 2,
+      picture: true,
       rank: "Demi-god",   // score = 309
       createdAt: new Date(),
       updatedAt: new Date()

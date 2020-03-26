@@ -186,7 +186,32 @@ module.exports = {
       solution: 'sample',
       createdAt: new Date(),
       updatedAt: new Date()
-    }], {});
+    },
+    {
+      username: 'erik',
+      puzzle_name: 'lis',
+      language: 'python',
+      time: 0.04,
+      length: 281,
+      solution: 'def lis(l):\n'+
+'  seq = 1\n'+
+'  longest_seq = 1\n'+
+'  prev = l[0]\n'+
+'  for i in range(1, len(l)):\n'+
+'    if l[i] > prev:\n'+
+'      seq += 1\n'+
+'    else:\n'+
+'      if seq > longest_seq:\n'+
+'        longest_seq = seq\n'+
+'      seq = 1\n'+
+'    prev = l[i]\n'+
+'  if (seq > longest_seq):\n'+
+'    longest_seq = seq\n'+
+'  return longest_seq\n',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }
+    ], {});
   },
 
   down: (queryInterface, Sequelize) => {

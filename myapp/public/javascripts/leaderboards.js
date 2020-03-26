@@ -46,10 +46,12 @@ function init() {
 //console.log(Object.values(most_solved));
 	for (var i = 0; i < most_solved.length; i++) {
 		most_solved_data.push({ username : most_solved[i].username,
-														score : most_solved[i].total_solved});
+														score : most_solved[i].total_solved,
+														picture : most_solved[i].picture});
 
 		most_won_data.push({ username : most_won[i].username,
-												 score : most_won[i].games_won});
+												 score : most_won[i].games_won,
+												 picture : most_won[i].picture});
 
 	}
 
@@ -100,7 +102,7 @@ function drawPlot() {
 	//	high_scorers.push(JSON.stringify(high_scorer_obj));
 	//}
 	var div = $('#chart');
-	var width = div.width();
+	width = div.width();
 		
 	div.css('height', (15/16) * width);
 
@@ -112,6 +114,7 @@ function drawPlot() {
 	width = div.width();
 	height = (7/8) * div.height();
 
+	padding = width / 14;
 
 /*
 	console.log(most_solved);
@@ -166,7 +169,7 @@ function drawPlot() {
 						//.paddingInner(0.05);
 	xScale = d3.scaleLinear()
 					.domain([0, d3.max(data, function(d) { return d.score; })])
-					.range([2 * padding, width - 2 * padding]);
+					.range([3 * padding, width - 2 * padding]);
 
 	//xAxis = d3.axisTop(xScale)
 	//				.ticks(5);
@@ -192,9 +195,34 @@ function drawPlot() {
 						return yScale(i) + (height / (1.35 * data.length) / 1.5);
 				 })
 				 .attr("text-anchor", "end")
+				 .attr("font-size", (width / 34).toString() + "px")
 				 .text(function(d) { return d.username; })
 				 .style("cursor", "default");
 
+
+
+	subchart1
+				.selectAll("image")
+				.data(data)
+				.enter()
+				.append("image")
+				.attr("x", function(d, i) {
+					return padding * 3;
+				})
+				.attr("y", function(d, i) {
+					return yScale(i);// + (height / (1.35 * data.length) / 0.75);
+				})
+				.attr("height", function(d) {
+					return height / (1.35 * data.length);//"35px")
+				})
+				.attr("xlink:href", function(d) {
+					if (d.picture) {
+						return "/user/" + d.username + "/picture_resized";
+					}
+					else {
+						return "/images/profile_placeholder.png";
+					}
+				});
 
 
 	subchart1.selectAll(".bar")
@@ -203,19 +231,21 @@ function drawPlot() {
 				.append("rect")
 				.attr("class", "bar")
 				.attr("x", function(d, i) {
-					return 3 * padding;
+					return 4 * padding;
 				})
 				.attr("y", function(d, i) {
 					return yScale(i);
 				})
 				.attr("width", function(d) {
-					return xScale(d.score) - 2 * padding;
+					return xScale(d.score) - 3 * padding;
 				})
 				.attr("height", function(d) {
+					console.log(height / (1.35 * data.length));
 					return height / (1.35 * data.length); //bandScale.bandwidth();
 				})
 				.attr("fill", "#dfac36")
 				.attr("opacity", 0.95);
+
 
 
 
@@ -320,29 +350,87 @@ function updateBars() {
 		.transition()
 		.duration(1000)
 		.attr("x", function(d, i) {
-			return 3 * padding;
+			return 4 * padding;
 		})
 		/*
 		.attr("y", function(d, i) {
 			return yScale(i);//bandScale(d.username);
 		})*/
 		.attr("width", function(d) {
-			return xScale(d.score) - 2 * padding;
+			return xScale(d.score) - 3 * padding;
 		});
 		/*
 		.attr("height", function(d) {
 			return height / (1.35 * data.length);;
 		});*/
 		//.attr("fill", "lightblue");
-/*
+
 	d3
 	 .selectAll(".chart_text")
 	 .remove();
+
+
+	subchart1
+				 .selectAll("text")
+				 .data(data)
+				 .enter()
+				 .append("text")
+				 .attr("class", "chart_text")
+				 .attr("x", function(d, i) {
+						return padding * 2.5;
+				 })
+				 .attr("y", function(d, i) {
+						return yScale(i) + (height / (1.35 * data.length) / 1.5);
+				 })
+				 .attr("text-anchor", "end")
+				 .attr("font-size", (width / 34).toString() + "px")
+				 .text(function(d) { return d.username; })
+				 .style("cursor", "default");
+
+	d3
+	 .selectAll("image")
+	 .remove();
+
+	subchart1
+				.selectAll("image")
+				.data(data)
+				.enter()
+				.append("image")
+				.attr("x", function(d, i) {
+					return padding * 3;
+				})
+				.attr("y", function(d, i) {
+					return yScale(i);// + (height / (1.35 * data.length) / 0.75);
+				})
+				.attr("height", function(d) {
+					return height / (1.35 * data.length);//"35px")
+				})
+				.attr("xlink:href", function(d) {
+					if (d.picture) {
+						return "/user/" + d.username + "/picture_resized";
+					}
+					else {
+						return "/images/profile_placeholder.png";
+					}
+				});
+
+/*
+	d3.selectAll(".chart_text").each(function(d, i) {
+		d3.select(this).text(d.username);
+	});
+
+	d3.selectAll("images").each(function(d, i) {
+		d3.select(this).attr("xlink:href", function(d) {
+			if (d.picture) {
+				return "/user/" + d.username + "/picture_resized";
+			}
+			else {
+				return "/images/profile_placeholder.png";
+			}
+		});
+	});
 */
 
-	d3.selectAll(".chart_text").each(function(d, i) {
-		d3.select(this).text(data[i].username);
-	});
 	/*
 	d3.selectAll(".chart_text")
 		.data(data)
