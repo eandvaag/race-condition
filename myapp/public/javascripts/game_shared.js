@@ -57,10 +57,7 @@ function language_update()  {
 
 function puzzle_percent(name) {
 
-	console.log("puzzle percent", all_puzzles[name]);
-
 	if (all_puzzles[name].difficulty === "easy") {
-		console.log("returning", 1 / points_needed);
 		return 100 * (1 / points_needed);
 	}
 	else if (all_puzzles[name].difficulty === "moderate") {
@@ -78,8 +75,6 @@ function new_per(username, added_per) {
 	
 	var per = $this.attr("per").substring(0, $this.attr("per").length - 1);;
 
-	console.log("per", per);
-	console.log("added_per", added_per);
 	return parseFloat(per) + parseFloat(added_per);
 }
 
@@ -133,10 +128,6 @@ function update_per_text(username, new_per) {
 					window.location.href = data.redirect;
 				}		
 				else if (data.unlocked) {
-					console.log("solved_puzzles", solved_puzzles);
-					console.log("i", i);
-					console.log("solved_puzzles[i]", solved_puzzles[i]);
-					console.log("solved_puzzles[i].puzzle_name", solved_puzzles[i].puzzle_name);
 					unlocked_puzzles.push(solved_puzzles[i].puzzle_name);
 				}
 				else if (data.new_lang) {

@@ -1,4 +1,3 @@
-//jQuery('<div class="quantity-nav"><div class="quantity-button quantity-up">ghjghj+</div><div class="quantity-button quantity-down">-</div></div>').insertAfter('.quantity input');
 
 $(document).ready(function(){
   $('<div class="quantity-nav"><div class="quantity-button quantity-up">+</div><div class="quantity-button quantity-down">-</div></div>').insertAfter('.quantity input');

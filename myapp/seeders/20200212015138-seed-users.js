@@ -17,6 +17,7 @@ module.exports = {
       games_played: 5,
       games_won: 3,
       games_lost: 2,
+      picture: false,
       rank: "Code Grinder",
       createdAt: new Date(),
       updatedAt: new Date()

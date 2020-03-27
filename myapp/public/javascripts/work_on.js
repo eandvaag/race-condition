@@ -16,17 +16,12 @@ function dropdown_update()  {
 
   myCodeMirror.setValue("");
   myOutput.setValue("");
-  //$('p').remove(".stats")
   $("#time_stats").html("");
   $("#length_stats").html("");
-  //myCodeMirror.style.border = "2px solid " + lang_color(new_lang);
   $('.CodeMirror').css("border", "2px solid " + lang_color(new_lang));
   $('#code_panel').css("border", "2px solid " + lang_color(new_lang));
   $('#stats').css("border", "2px solid " + lang_color(new_lang));
-  /*
-  $("#run_button").css("color", lang_color(new_lang));
-  $("#run_button").css("border", "2px solid " + lang_color(new_lang));*/
-  //document.getElementById("codeeditor").style.border = "2px solid " + lang_color(new_lang);
+
   document.getElementById("logo").src = "/images/" + new_lang + ".svg";
 
   for (var i = 0; i < solutions.length; i++) {
@@ -34,8 +29,6 @@ function dropdown_update()  {
       myCodeMirror.setValue(solutions[i].solution);
       $("#time_stats").html("<strong>My saved time:<br></strong>" + solutions[i].time + " seconds");
       $("#length_stats").html("<strong>My saved length:<br></strong>" + solutions[i].length + " characters");
-      //$('#code_panel').append("<p class='stats'><br><br><br><strong>My saved time:<br></strong>" + solutions[i].time + " seconds </p>");
-      //$('#code_panel').append("<p class='stats'><strong>My saved length:<br></strong>" + solutions[i].length + " characters </p>");
     }
   }
 }
@@ -62,11 +55,8 @@ function enable_input(){
 
 $(document).ready(function(){
 
-  console.log(puzzle.difficulty);
   $("#difficulty").css("color", difficulty_color(puzzle.difficulty));
 
-  //var solutions = !{JSON.stringify(solutions)};
-  console.log(solutions);
 
   /* hide submit button */
   $("#submit_button").hide();
@@ -77,32 +67,21 @@ $(document).ready(function(){
                       mode: "python",
                       theme: "dracula"
   });
-  
-  //myCodeMirror.setSize(650, 350);
 
   myOutput = CodeMirror.fromTextArea(document.getElementById("codeoutput"), {
                       theme: "base16-dark",
                       mode: "plain",
                       readOnly: "nocursor"
   });
-/*
-  myOutput.setSize(500, 350);*/
 
   dropdown_update();
-  //$('.CodeMirror').css("border", "2px solid " + lang_color($("#language").val().toLowerCase()));
-  //$('#code_panel').css("border", "2px solid " + lang_color($("#language").val().toLowerCase()));
-
-
-
-  //$('.CodeMirror').style.border = "2px solid green";
-
 
   $('#language').change(function(){
     dropdown_update();
   });
 
   $("#submit_button").click(function(){
-    //console.log("got here submit");
+
     $.post($(location).attr('href') + '/submit',
     {
       solution: myCodeMirror.getValue(),
@@ -128,7 +107,6 @@ $(document).ready(function(){
 
   
   $("#edit_button").click(function(){
-    //console.log("got here edit");
     enable_input();
     $("#submit_button").hide();
     $("#edit_button").hide();

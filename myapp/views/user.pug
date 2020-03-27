@@ -14,17 +14,13 @@ html
 			include ./header.pug
 			
 			div(id="body")
-				//p Your score is #{user.score}
 
-				//p(style="font-size:24px; margin-top: -20px; margin-bottom: -5px") Profile
 				h(class="header1") Profile
 
 				div(class="grid-container")
 					div(class="half-round-item-1")
-						// style="height: 200px")
-						//h2 Username
+
 						br
-						
 						code(style="font-size:24px") #{user.username}
 						br
 
@@ -34,10 +30,7 @@ html
 						else
 							br
 							img(id="profile_image" src="/images/profile_placeholder.png" alt="generic profile picture" width="120px")
-							//br
-							//div(style="height: 100px")
-							//label(for="profile_picture" class="label") Upload a Profile Picture
-							//input(type="file" id="file" name="profile_picture" accept="image/*" style="margin-left: 80px")
+
 						br
 						input(type="file" id="file" name="profile_picture" accept="image/*" style="display: none;")
 						label(for="file" class="upload") Select File
@@ -45,7 +38,6 @@ html
 					div(class="half-round-item-2")
 						h2 Rank
 						img(src="/images/ranks/" + user.rank.toLowerCase().split(' ').join('_') + ".png" alt='rank', width="160px" style="margin-bottom:-35px; margin-top:-40px")
-						//p(style="font-size:20px; margin:-5px 0") #{user.rank}
 
 					div(class="half-round-item-2")
 						h2 Games Played
@@ -89,10 +81,7 @@ html
 				if user.num_solved == 0
 					p You haven't solved any puzzles yet!
 				else
-					//div(style="text-align:center")
 					div
-						//table(style="width:; display:block; overflow-auto; margin: 0 auto")
-						//table(style="display: block; overflow: auto; width:85%; margin: 0 auto")
 						table(style="display: table; overflow: scroll; width: 85%; margin: 0 auto;")
 							col(style="width:30%")
 							col(style="width:30%")
@@ -108,15 +97,12 @@ html
 									td
 										code #{puzzle}
 									td
-										//for lang in langs
 										each lang in ['python', 'scheme', 'javascript', 'haskell']
 											if langs.includes(lang)
 
 												img(src="/images/" + lang + ".svg" alt='logo' width="30px" height="30px" align="middle" style="margin: 5px 10px")
-												//class="imageLeft")
 											else
 												img(src="/images/transparent.png" alt="empty" width="30px" height="30px" align="middle" style="margin: 5px 10px")
-												//class="imageLeft")
 									
 									td
 										div(class="wrapper")
@@ -125,10 +111,6 @@ html
 													polygon(class="arrow" points="16.3746667 8.33860465 7.76133333 15.3067621 6.904 14.3175671 14.2906667 8.34246869 6.908 2.42790698 7.76 1.43613596")
 													polygon class="arrow-fixed" points="16.3746667 8.33860465 7.76133333 15.3067621 6.904 14.3175671 14.2906667 8.34246869 6.908 2.42790698 7.76 1.43613596")
 													path(d="M-4.58892184e-16,0.56157424 L-4.58892184e-16,16.1929159 L9.708,8.33860465 L-1.64313008e-15,0.56157424 L-4.58892184e-16,0.56157424 Z M1.33333333,3.30246869 L7.62533333,8.34246869 L1.33333333,13.4327013 L1.33333333,3.30246869 L1.33333333,3.30246869 Z")
-
-
-										//button(onclick="window.location.href = '/puzzle/" + puzzle + "'")
-										//	i(class="fa fa-arrow-circle-right")
 										
 									td
 
@@ -139,26 +121,9 @@ html
 													polygon class="arrow-fixed" points="16.3746667 8.33860465 7.76133333 15.3067621 6.904 14.3175671 14.2906667 8.34246869 6.908 2.42790698 7.76 1.43613596")
 													path(d="M-4.58892184e-16,0.56157424 L-4.58892184e-16,16.1929159 L9.708,8.33860465 L-1.64313008e-15,0.56157424 L-4.58892184e-16,0.56157424 Z M1.33333333,3.30246869 L7.62533333,8.34246869 L1.33333333,13.4327013 L1.33333333,3.30246869 L1.33333333,3.30246869 Z")
 
-										//button(onclick="window.location.href = '/" + user.username + "'")
-										//	i(class="fa fa-arrow-circle-right")
-
-										//button(onclick="window.location.href = '/puzzle/" + puzzle + "/" + user.username + "'")
-										//	i(class="fa fa-arrow-circle-right")
-										// a(href='/puzzle/' + puzzle + '/' + user.username)
-
 
 				script.
 					var new_rank = !{JSON.stringify(new_rank)};
 					var user = !{JSON.stringify(user)};
-
-				// a(href='/puzzle/' + puzzle)
-					// text
-				//for puzzle in puzzles
-				//	p
-				//		span #{puzzle.name}
-				//		|
-				//		a(href="/puzzle" + puzzle.id) Statistics
-				//		|
-				//		a(href="/puzzle" + puzzle.id + "/" + user.username) Work on it!
 			
 			include ./footer.pug

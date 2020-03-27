@@ -1,8 +1,4 @@
 
-
-
-
-
 const models = require('./models');
 var sequelize = require('sequelize');
 
@@ -10,10 +6,7 @@ var sequelize = require('sequelize');
 exports.fetch_random_puzzles = function (difficulty, number) {
 
   console.log("fetching " + number + " random puzzles with difficulty " + difficulty);
-  /*
-  if (number == 0) {
-    return [];
-  }*/
+
   return models.puzzles.findAll({
     raw: true,
     where: {

@@ -1,5 +1,4 @@
 const models = require('./models');
-//var session = require('express-session');
 var landing = require('./controllers/landing')
 var sequelize = require('sequelize');
 var moment = require('moment');
@@ -13,10 +12,6 @@ var socket_api = {};
 
 socket_api.io = io;
 
-
-/*
-	users have three possible statuses: wait_join, wait_create, none */
-/* add two fields to user table: status and socket_id */
 
 io.on('connection', function(socket){
 		console.log('A user connected');
@@ -186,74 +181,6 @@ io.on('connection', function(socket){
 			io.in(game_id).emit("opponent_left");
 		}	
 	});
-/*
-	socket.on("submit_puzzle", function(username, puzzle_name, solution, language, time, length) {
-		return models.solved_puzzles.findAll({
-			where: {
-				username: username,
-				puzzle_name: puzzle_name,
-			}
-		}).then(solutions => {
-			if (!solutions || solutions.length == 0) {
-				update_user_solved(username, puzzle_name)
-				.then(updated_user => {
-					return models.solved_puzzles.create({
-						username: username,
-						puzzle_name: puzzle_name,
-						solution: solution,
-						time: time,
-						length: length,
-						language: language
-					})
-					.then(solution => {
-
-						console.log(username + " unlocked " + puzzle_name);
-						socket.emit("unlocked_puzzle", puzzle_name);
-
-					}).catch(err => {
-						console.log(err);
-					});
-				}).catch(err => {
-					console.log(err);
-				});
-			}
-			else {
-				lang_solution_exists = false;
-				for (var i = 0; i < solutions.length; i++) {
-					if (solutions[i].language === language) {
-						lang_solution_exists = true;
-					}
-				}
-				if (lang_solution_exists) {
-					// do nothing
-				}
-				else {
-					// save solution
-					update_user_solved(username, puzzle_name)
-					.then(updated_user => {
-						return models.solved_puzzles.create({
-							username: username,
-							puzzle_name: puzzle_name,
-							solution: solution,
-							time: time,
-							length: length,
-							language: language
-						})
-						.then(solution => {
-							socket.emit("new_language", puzzle_name);
-						}).catch(err => {
-							console.log(err);
-						});
-					}).catch(err => {
-						console.log(err);
-					});
-				}
-			}
-		}).catch(err => {
-			console.log(err);
-		});
-	});
-	*/
 
 	socket.on("puzzle_solved", function(username, game_id, puzzle_name) {
 		var room = io.sockets.adapter.rooms[game_id];
@@ -273,26 +200,7 @@ io.on('connection', function(socket){
 			io.in(game_id).emit("opponent_disconnect");			
 		}
 		else {
-			/*
-			var winner;
-			var loser;
-			if (username == game.creator) {
-				winner = game.creator;
-				loser = game.invitee;
-			}
-			else {
-				winner = game.invitee;
-				loser = game.creator;
-			}
 
-			$.post('/play/'  + game_id +'/complete',
-				{
-					winner: winner,
-					loser: loser
-				},		
-			function(data,status){
-				*/
-			//console.log("CAN I ACCESS THIS:------->", req.session.user);
 			return models.games.update({
 					status: "completed" }, {returning: true,
 				where: { id: game_id } 
@@ -300,52 +208,34 @@ io.on('connection', function(socket){
 				return models.games.findOne({
 					where: {id: game_id}
 				}).then(game => {
-					console.log("GAME", game);
-					/*
-					return models.users.update({
-								status: "not_playing",
-								socket_id: null }, {returning: true,
-							where: {
-								username: [game.creator, game.invitee]
-							}
-					}).then(updated => {
-						*/
-
-
-						/* should really update req.session.user..... */
-
-						/* creator won */
-						if (username === game.creator) {
-							model_lib.update_user_games(game.creator, "won")
-							.then(updated_creator => {
-								model_lib.update_user_games(game.invitee, "lost")
-								.then(updated_invitee => {
-									io.in(game_id).emit("game_over", username);
-								}).catch(err => {
-									console.log(err);
-								});
+					/* creator won */
+					if (username === game.creator) {
+						model_lib.update_user_games(game.creator, "won")
+						.then(updated_creator => {
+							model_lib.update_user_games(game.invitee, "lost")
+							.then(updated_invitee => {
+								io.in(game_id).emit("game_over", username);
 							}).catch(err => {
 								console.log(err);
 							});
-						}
-						else {
-							/* invitee won */
-							model_lib.update_user_games(game.creator, "lost")
-							.then(updated_creator => {
-								model_lib.update_user_games(game.invitee, "won")
-								.then(updated_invitee => {
-									io.in(game_id).emit("game_over", username);
-								}).catch(err => {
-									console.log(err);
-								});
+						}).catch(err => {
+							console.log(err);
+						});
+					}
+					else {
+						/* invitee won */
+						model_lib.update_user_games(game.creator, "lost")
+						.then(updated_creator => {
+							model_lib.update_user_games(game.invitee, "won")
+							.then(updated_invitee => {
+								io.in(game_id).emit("game_over", username);
 							}).catch(err => {
 								console.log(err);
 							});
-						}
-						/*
-					}).catch(err => {
-						console.log(err);
-					});*/
+						}).catch(err => {
+							console.log(err);
+						});
+					}
 				}).catch(err => {
 					console.log(err);
 				});
@@ -367,7 +257,7 @@ io.on('connection', function(socket){
 		}).then(update => {
 			get_invitations(user.username)
 			.then(invitations => {
-				socket.emit("invitations", invitations);//"You have an invitation from --- room number = ---");
+				socket.emit("invitations", invitations);
 			}).catch(err => {
 				console.log(err);
 			});
@@ -379,7 +269,7 @@ io.on('connection', function(socket){
 	socket.on("get_invitations", function(user) {
 		get_invitations(user.username)
 		.then(invitations => {
-			socket.emit("invitations", invitations);//"You have an invitation from --- room number = ---");
+			socket.emit("invitations", invitations);
 		}).catch(err => {
 			console.log(err);
 		});
@@ -533,16 +423,6 @@ io.on('connection', function(socket){
 				/* do nothing */
 				console.log("disconnected to start game");
 			}
-			// if user status is starting basically don't do anything
-
-			/*
-			return models.users.update({
-								status: "none",
-								socket_id: null }, {returning: true,
-							where: {
-								socket_id: socket.id, } 
-			}).then(update => {
-				*/
 			else if (user.status === "create_waiting") {
 				/* destroy game */
 				notify_invitee(user.username)
@@ -641,22 +521,11 @@ io.on('connection', function(socket){
 				}).catch(err => {
 					console.log(err);
 				});
-
-
-				//update_user_status("not_playing", null);
 			}
 		}).catch(err => {
 			console.log(err);
 		});
-			/*
-			
-		}).catch(err => {
-			console.log(err);
-		});
-		*/
 	});
-
-
 });
 
 
@@ -669,14 +538,6 @@ async function get_invitations(username) {
 		},
 		order: [['updatedAt', 'DESC']]
 	});
-/*
-	.then(games => {
-
-				socket.emit("invitations", games);//"You have an invitation from --- room number = ---");
-			}).catch(err => {
-				console.log(err);
-			});
-			*/
 }
 
 async function notify_invitee(creator) {
@@ -697,76 +558,5 @@ async function notify_invitee(creator) {
 		console.log(err);
 	});
 }
-
-/*
-function update_user_status(username, new_status, new_socket) {
-
-
-
-	return models.users.update({ status: new_status, socket_id: new_socket }, {
-			where: { username: username }
-	}).then(updated => {
-		return updated;
-	}).catch(err => {
-		console.log(err);
-	});
-}
-
-function update_game_status(id, new_status) {
-
-	return models.games.update({ status: new_status }, {
-			where: { id: id }
-	}).then(updated => {
-		return updated;
-	}).catch(err => {
-		console.log(err);
-	});
-}
-*/
-
-
-/*
-socket_api.sendNotification = function() {
-		io.sockets.emit('hello', {msg: 'Hello World!'});
-}
-*/
-/*
-async function fetch_random_puzzles(difficulty, number) {
-
-	console.log("fetching " + number + " random puzzles with difficulty " + difficulty);
-	if (number == 0) {
-		return [];
-	}
-	return models.puzzles.findAll({
-		raw: true,
-		where: {
-			difficulty: difficulty
-		}, 
-		order: sequelize.fn('RAND'),
-		limit: number
-	});
-}
-
-
-function update_user_games(username, result) {
-
-	return models.users.findOne({
-			where : {
-				username : username
-			}
-	})
-	.then(user => {
-		user.increment("games_played");
-		if (result == "won") {
-			user.increment("games_won");
-		}
-		else {
-			user.increment("games_lost");
-		}
-	})
-	.catch(err => {
-		console.log(err);
-	});
-}*/
 
 module.exports = socket_api;

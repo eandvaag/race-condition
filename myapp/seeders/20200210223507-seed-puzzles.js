@@ -37,7 +37,44 @@ module.exports = {
       difficulty: 'easy',
       createdAt: new Date(),
       updatedAt: new Date()
+    }, {
+      name: 'find_expr',
+      description: 'Write a function <code>find_expr()</code> that takes two string arguments. The function returns true if the second string can be found within the first string. Otherwise, false is returned.',
+      difficulty: 'easy',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }, {
+      name: 'flip_add',
+      description: 'Write a function <code>flip_add()</code> that takes a list of integers as an argument. The function returns the sum of all the integers, but flips the sign of each operand before performing the summation. For example, <code>flip_add(2,-3,5)</code> == ((-2 + 3) + -5).',
+      difficulty: 'easy',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }, {
+      name: 'clean_string',
+      description: 'Write a function <code>clean()</code> that takes two string arguments. The function returns a new string that results from removing all the characters which appear in the second string from the first string.',
+      difficulty: 'easy',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }, {
+      name: 'r_perm',
+      description: 'Write a function <code>r_perm()</code> that takes two integer arguments, n and r, and returns the number of r-permutations of a set of n elements. An r-permutation of a set of n elements is an ordered selection of r elements taken from the set of n elements and is equal to (n!)/((n-r)!).',
+      difficulty: 'easy',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }, {
+      name: 'prime',
+      description: 'Write a function <code>prime()</code> that takes an integer argument and returns true if the number is prime, false otherwise.',
+      difficulty: 'easy',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }, {
+      name: 'calc',
+      description: "Write a function <code>calc()</code> that takes three arguments: two integers and a character. The character argument is one of the following arithmetic operators: '+', '-', '*', or '/'. The function returns the result of performing the corresponding arithmetic operation on the two integer arguments. For example, <code>calc(1,2,'+')</code> == 3.",
+      difficulty: 'easy',
+      createdAt: new Date(),
+      updatedAt: new Date()
     },
+
 
     /* Moderate */
 
@@ -81,7 +118,7 @@ module.exports = {
       difficulty: 'challenging',
       createdAt: new Date(),
       updatedAt: new Date()
-    },  {
+    }, {
       name: 'largest_mode',
       description: 'Write a function <code>largest_mode()</code> that takes three lists of integers as input, calculates the mode of each list, and returns the largest mode.',
       difficulty: 'challenging',

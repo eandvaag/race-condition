@@ -10,18 +10,6 @@ var model_lib = require("../model_lib");
 const multer = require('multer');
 
 
-/*
-exports.get_landing = function(req, res, next) {
-  res.render('landing', { title: 'Express' });
-}
-
-exports.submit_lead = function(req, res, next) {
-  console.log("lead email:", req.body.lead_email);
-  res.redirect('/form');
-}
-*/
-
-
 exports.sessionChecker = function(req, res, next) {
   if (req.session.user && req.cookies.user_sid) {
     res.redirect('/user');
@@ -72,16 +60,9 @@ exports.submit_picture = function(req, res, next) {
 
   if (req.session.user && req.cookies.user_sid) {
 
-    //.log(req.body);
-    //console.log(file);
-    //console.log("__dirname", __dirname);
-
-    //upload.single("file");
     if (req.file) {
       const { exec } = require('child_process');
-      console.log("added image");
-      //console.log(req.file);
-      //console.log(req.file.filename);
+
       var filename = req.file.filename;
 
       cmd = "mv ./profile-pictures/" + filename + " ./tests/user/" + 
@@ -186,8 +167,6 @@ exports.post_sign_up = function(req, res, next) {
           req.session.user = user.dataValues;
           response.redirect = "/user";
           res.json(response);
-          //res.redirect('/user');
-
         })
         .catch(error => {
           console.log(error);
@@ -204,46 +183,8 @@ exports.post_sign_up = function(req, res, next) {
 }
 
 
-/*
-exports.post_sign_up = function(req, res, next) {
-
-
-  isUsernameNew(req.body.username).then(isNew => {
-    if (isNew) {
-      console.log("NEW USERNAME");
-      console.log(req.body.username);
-      return models.users.create({
-        username: req.body.username,
-        password: req.body.password
-      }).then(users => {
-        console.log(req.body.username);
-        return models.users.findOne({
-          where: {
-            username: req.body.username
-          }
-        }).then(user => {
-          console.log(user);
-          //res.redirect('/user/' + req.body.username, {user, user});
-          res.render('user', {user, user});
-        });
-
-        //res.redirect('user', {user : user });
-      }).catch(function(err) {
-        console.log(err);
-      });
-    }
-    else {
-      console.log('Username is already in use.');
-      res.redirect('/');
-    }
-  });
-}
-*/
-
-
 
 exports.get_sign_in = function(req, res, next) {
-//res.render('sign_in', { title: 'Sign In' });
   res.render('sign_in');
 }
 
@@ -262,8 +203,6 @@ exports.post_sign_in = function(req, res, next) {
     if (!user) {
       response.not_found = true;
       res.json(response);
-      console.log('no user found with that name')
-      //res.redirect('/sign-in');
     }
     else {
       if (!user.check_password(req.body.password)) {
@@ -300,16 +239,8 @@ exports.post_sign_in = function(req, res, next) {
         else {
           res.json(response);
         }
-
-
       }
-      //console.log('bad pass');
-      //res.redirect('/sign-in');
     }
-    //else {
-    //  req.session.user = user.dataValues;
-    //  res.redirect('/user');
-    //}
   }).catch(error => {
     console.log(error)
     response.error = true;
@@ -317,56 +248,6 @@ exports.post_sign_in = function(req, res, next) {
   });
 }
 
-
-
-/*
-exports.post_sign_in = function(req, res, next) {
-  return models.users.findOne({
-    where : {
-      username : req.body.username,
-      password : req.body.password
-    }
-  }).then(user => {
-    if (user==null) {
-      //res.render('sign_in', { success: 'false'});
-      console.log("bad user/pass");
-    }
-    else {
-      //res.redirect('user', user);
-      res.render('user', {user : user});
-      //req = user;
-      //return next();
-      //res.render('user', { user : user });
-    }
-  }).catch(function(err) {
-    console.log(err);
-  });
-}
-*/
-/*
-exports.post_sign_in_json = function(req, res, next) {
-
-  return models.users.
-
-
-
-}
-*/
-/*
-exports.get_username = function(req, res, next) {
-
-  console.log(req);
-  return models.users.findOne({
-    where : {
-      username : req.params.username
-    }
-  }).then(user => {
-    res.render('user', {user : user})
-  }).catch(function(err) {
-    console.log(err);
-  })
-}
-*/
 
 exports.play = function(req, res, next) {
   if (req.session.user && req.cookies.user_sid) {
@@ -386,37 +267,9 @@ exports.play = function(req, res, next) {
     res.redirect('/sign-in');
   }
 }
-/*
-exports.get_create_game = function(req, res, next) {
-  if (req.session.user && req.cookies.user_sid) {
-    console.log(req.session.user);
-  //console.log(req);
-  //res.render('play', {user : user});
-    res.render('create_game', { title: 'Create Game' , user: req.session.user});
-  }
-  else {
-    res.redirect('/sign-in');
-  }
-}
-*/
-
-exports.play_post = function(req, res, next) {
-/*
-  console.log("LOG START");
-  console.log(req.body);
-*/
-  res.redirect('/play');
-
-}
 
 exports.leaderboards = function(req, res, next) {
 
-  /* return top 10 */
-  /*
-  users.findAll({
-    order: [[Sequelize.col(score)]]
-  })
-  */
   if (req.session.user && req.cookies.user_sid) {
 
     return models.users.findAll({
@@ -437,24 +290,6 @@ exports.leaderboards = function(req, res, next) {
       console.log(err);
     });
   }
-
-
-/*
-    return models.users.findAll({
-      raw: true,
-      //plain: true,
-      order: [['DESC'],[sequelize.fn('SUM', 'num_easy_solved', 'num_moderate_solved', 'num_challenging_solved')]],
-      //order: sequelize.literal('num_easy_solved' + 'num_moderate_solved' + 
-      //                          'num_challenging_solved'), 'total_solved DESC',
-      limit: 10
-    }).then(high_scorers => {
-      console.log('high_scorers',high_scorers);
-      res.render('leaderboards', { title: 'Leaderboards', user: req.session.user, high_scorers : high_scorers });
-    }).catch(function(err) {
-      console.log(err);
-    })
-  }
-  */
   else {
     res.redirect('/sign-in');
   }
@@ -492,31 +327,7 @@ exports.verify_user = function(req, res, next) {
     console.log(err);
   });
 }
-/*
-exports.game_complete = function(req, res, next) {
-  let data = {};
 
-  if (req.session.user && req.cookies.user_sid) {
-    console.log("updating game to complete");
-    return models.games.update({
-          status: "completed" }, {returning: true,
-        where: { id: req.params.game_id } 
-    }).then(game_updated => {
-      model_lib.update_user_games(req.body.winner, "won")
-      .then(updated_winner => {
-        model_lib.update_user_games(req.body.loser, "lost")
-        .then(updated_loser => {
-          res.json(data);
-
-    }).catch(err => {
-      console.log(err);
-    });
-  }
-  else{
-    console.log("expired session");
-  }
-}
-*/
 
 exports.time_attack_complete = function(req, res, next) {
   let data = {};
@@ -527,12 +338,7 @@ exports.time_attack_complete = function(req, res, next) {
           status: "completed" }, {returning: true,
         where: { id: req.params.game_id } 
     }).then(game_updated => {
-      //model_lib.update_user_games(game.creator, req.body.result)
-      //.then(updated => {
         res.json(data);
-      //}).catch(err => {
-      //  console.log(err);
-      //});
     }).catch(err => {
       console.log(err);
     });
@@ -753,9 +559,9 @@ exports.get_user = function(req, res, next) {
           raw: true,
           where: {
             username: req.session.user.username
-          }
+          },
+          order: sequelize.literal('puzzle_name ASC'),
         }).then(puzzles => {
-          //console.log(puzzles);
           var lang_lookup = create_lang_lookup(puzzles);
 
           let cur_rank = calc_rank(user);
@@ -784,26 +590,12 @@ exports.get_user = function(req, res, next) {
             res.render('user', { user: user, puzzles: puzzles, lang_lookup : lang_lookup, new_rank: new_rank});
           }
 
-        })
-        //console.log("got this user:", user);
-        
-          //console.log(u_puzzles);
-
-          /* get most up-to-date rank information */
-          
-
-          //res.render('user', { title: 'User', user: user, puzzles: puzzles, lang_lookup : lang_lookup, new_rank: new_rank});
-        .catch(err => {
+        }).catch(err => {
           console.log(err);
         });
-      })
-      .catch(err => {
+      }).catch(err => {
         console.log(err);
-      })
-    //}).catch(err => {
-    //  console.log(err);
-    //});
-    //res.render('user', {user: req.session.user});
+      });
   }
   else {
     res.redirect('/sign-in');
@@ -894,13 +686,7 @@ async function get_user_solutions(username, puzzle_name) {
           username: username,
           puzzle_name: puzzle_name
     }
-  });/*.then(solutions => {
-    console.log("get_user_solutions", solutions);
-    return solutions;
-  }).catch(function(err) {
-    console.log(err);
   });
-  */
 }
 
 function calc_rank(user) { 
@@ -940,43 +726,7 @@ let cur_rank;
   return cur_rank;
 
 }
-/*
-async function update_rank(username) {
-  info = {};
 
-  console.log("UPDATE RANK");
-  fetch_user(username)
-  .then(user => {
-    console.log("GOT USER");
-    let cur_rank = calc_rank(user);
-    let score = (user.games_played) + (user.num_easy_solved) + (user.num_moderate_solved * 4) + (user.num_difficult_solved * 8);
-    let saved_rank = user.rank;
-
-    if (cur_rank !== saved_rank) {
-      console.log("DIFFERENT!!");
-      return true;
-
-      return models.users.update({
-        rank: cur_rank }, {returning: true,
-      where: {
-        username: username } }
-      ).then(updated_user => {
-        return true;
-      }).catch(err => {
-        console.log(err);
-      });
-
-      
-    }
-    else {
-      return false;
-    }
-  }).catch(err => {
-    console.log(err);
-  });
-}
-
-*/
 exports.get_work_on = function(req, res, next) {
   if (req.session.user && req.cookies.user_sid) {
 
@@ -1087,11 +837,9 @@ exports.game_submit = function(req, res, next) {
             fetch_user(req.session.user.username)
             .then(updated_user => {
               req.session.user = updated_user.dataValues;
-              //console.log(username + " unlocked " + puzzle_name);
               console.log("unlocked " + req.body.puzzle_name);
               data.unlocked = true;
               res.json(data);
-              //socket.emit("unlocked_puzzle", puzzle_name);
             }).catch(err => {
               console.log(err);
             });
@@ -1131,7 +879,6 @@ exports.game_submit = function(req, res, next) {
               console.log("new lang solution" + req.body.puzzle_name);
               data.new_lang = true;
               res.json(data);
-              //socket.emit("new_language", puzzle_name);
             }).catch(err => {
               console.log(err);
             });
@@ -1247,7 +994,6 @@ exports.run_code = function(req, res, next) {
   if (req.session.user && req.cookies.user_sid) {
     if (req.body.lang === "Python") {
       compile = "python3 -m py_compile";
-      //rm = "rm ./tests/user/" + req.session.user.username + "/UserFun.pyc";
       cmd = "docker exec rc-python python3";
       ext = "py";
       head = "";
@@ -1361,8 +1107,6 @@ exports.run_code = function(req, res, next) {
     + req.body.puzzle_name + ' ' + req.session.user.username + '; echo $? >' + cmd_error +' ; tail -1 ' + time_exp + ' | bc >' + time_tot;
     console.log("EXECUTING:", full_cmd);
 
-    //full_compile = "ls";
-
     const { exec } = require('child_process');
 
     console.log("error check...");
@@ -1380,7 +1124,6 @@ exports.run_code = function(req, res, next) {
       }
       else {
         /* user's function passed error-checking stage */
-
 
         const result = exec(full_cmd, {shell: "/bin/bash"}, function (error, stdout, stderr) {
           if (error) {
@@ -1425,9 +1168,6 @@ exports.run_code = function(req, res, next) {
         });
       }
     });
-
-
-
   }
   else {
     data.redirect = '/sign-in';
@@ -1437,18 +1177,3 @@ exports.run_code = function(req, res, next) {
     res.json(data);
   }
 }
-
-
-/*
-exports.create_game = function(req, res, next) {
-  let data = {};
-
-  if (req.session.user && req.cookies.user_sid) {
-
-
-  }
-  else {
-    data.redirect = "/sign-in";
-    res.json(data);
-  }
-  */

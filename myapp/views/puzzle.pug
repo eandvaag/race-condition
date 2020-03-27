@@ -6,7 +6,7 @@ html
 		link(href='/stylesheets/main.css' rel='stylesheet')
 		link(href='/stylesheets/d3.css' rel='stylesheet')
 		script(type='text/javascript' src='https://d3js.org/d3.v5.min.js')
-		//script(type='text/javascript' src='/javascripts/puzzle.js')
+		script(type='text/javascript' src='/javascripts/puzzle.js')
 		script(type='text/javascript' src='/javascripts/color.js')
 		script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
 	body
@@ -15,7 +15,6 @@ html
 			include ./header.pug
 
 			div(id="body")
-				// style="min-height: 400px")
 				h(class="header1") #{puzzle.name}
 
 				h(class="header2") Difficulty: 
@@ -24,47 +23,17 @@ html
 				h(class="header2") Description: 
 				p(style="margin-left:100px; margin-right:2%; margin-top: -50px; text-align: justify;") !{puzzle.description}				
 
-
 				h(class="header2") Top 10 Solutions: 
 
 				div(class="masonry")
 					div(class="masonry-legend" id="legend")
 					div(class="masonry-chart" id="chart")
 						select(id="drop")
-					
-					//div(class="panel")
-					//	select(id="drop")
-								//option(value="Python" selected) Python
-								//option(value="Scheme") Scheme
-								//option(value="Javascript") JavaScript
-								//option(value="Haskell") Haskell
 
-
-
-
-				//div(style="width:70%; margin: 0 auto;")
-				//	div(id="chart" style="float:left")
-				//	div(id="legend" style="float:right")
-				//	div(class="panel" style="width:158px; float:right;")
-				//		select(id="drop")
-								//option(value="Python" selected) Python
-								//option(value="Scheme") Scheme
-								//option(value="Javascript") JavaScript
-								//option(value="Haskell") Haskell
-					//div(id="chart" style="position:relative; float:left; width:800px; height:600px;")
-					//div(id="legend" style="position:relative; float:right; width:200px; height:200px;")
-
-				
-				//button(onclick=`drawPlot('${puzzle.name}')`) Draw
-				//-var puzzle_name = puzzle.name;
-				
-				script(type='text/javascript' src='/javascripts/puzzle.js')
 				script.
 					var puzzle = !{JSON.stringify(puzzle)};
 					var fastest_solutions = !{JSON.stringify(fastest_solutions)};
 					var shortest_solutions = !{JSON.stringify(shortest_solutions)};
-					//puzzle_name = "#{puzzle.name}";
 					drawPlot();
-					//drawPlot(puzzle);
 
 			include ./footer.pug

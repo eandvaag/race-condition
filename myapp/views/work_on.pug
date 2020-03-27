@@ -28,26 +28,13 @@ html
 
 				h(class="header1") #{puzzle.name}
 
-				//- var diff_color = {color: 'yellow'}
-				//if puzzle.difficulty === "easy"
-				//	-var diff_color = red; //#2adb80";
-				//else if puzzle.difficulty === "moderate"
-				//	-var diff_color = "yellow";
-				//else
-				//	-var diff_color = "red";
-
 				h(class="header2") Difficulty: 
 				p(id="difficulty" style="margin-left:100px; margin-right:2%; margin-top: -50px; text-align: justify;") #{puzzle.difficulty}
-				//	font(color="#{diff_color}" style="margin-left:34px") #{puzzle.difficulty}
-				//}
-				//}
 
 				h(class="header2") Description: 
 				p(style="margin-left:100px; margin-right:2%; margin-top: -50px; text-align: justify;") !{puzzle.description}
 
-
 				hr
-
 
 				div
 					div(class="code-container")
@@ -94,8 +81,6 @@ html
 
 				script.
 					var solutions = !{JSON.stringify(solutions)};
-					//var puzzle_name = !{JSON.stringify(puzzle.name)};
 					var puzzle = !{JSON.stringify(puzzle)};
-					//var puzzle_difficulty = !{JSON.stringify(puzzle.difficulty)};
 
 			include ./footer.pug

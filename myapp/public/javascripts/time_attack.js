@@ -70,10 +70,7 @@ function language_update()  {
 
 function puzzle_percent(name) {
 
-	console.log("puzzle percent", all_puzzles[name]);
-
 	if (all_puzzles[name].difficulty === "easy") {
-		console.log("returning", 1 / points_needed);
 		return 100 * (1 / points_needed);
 	}
 	else if (all_puzzles[name].difficulty === "moderate") {
@@ -126,7 +123,6 @@ function tick() {
 
 
 $(document).ready(function(){
-	console.log(user);
 
 	$("#gameover").hide();
 	$("#unlocked").hide();
@@ -135,8 +131,6 @@ $(document).ready(function(){
 	$("#rematch").hide();
 	$("#rematch_req").hide();
 
-
-	console.log("game", game);
 	seconds_remaining = (parseInt(game.num_easy) * parseInt(game.time_easy)) +
 									(parseInt(game.num_moderate) * parseInt(game.time_moderate)) + 
 									(parseInt(game.num_challenging) * parseInt(game.time_challenging));
@@ -184,10 +178,6 @@ $(document).ready(function(){
 	$("#run_button").click(function(){
 		disable_input();
 
-		//myCodeMirror.theme = "base16-dark";
-		console.log("clicked");
-		//console.log($("#codeeditor").val());
-		console.log($("#language").val());
 		$.post($(location).attr('href'),
 		{
 			puzzle_name: $("#puzzle").val(),
@@ -214,22 +204,11 @@ $(document).ready(function(){
 					myOutput.setValue(data.stdout)
 				}
 				else if (data.passed_all) {
-				//if (data.res === "All tests passed!\n") {
-					console.log("this happened");
-					console.log("your time is:", data.time);
-					console.log("solution length is:", data.length);
-					//$("#submit_button").show();
-					//$("#edit_button").show();
 					solution_time = data.time;
 					solution_length = data.length;
-					//alert(data.res + "\nRuntime: " + data.time.replace(/^\s+|\s+$/g, '') + " seconds\n\nSolution length: " + data.length + " characters")
 					myOutput.setValue(data.stdout + "\nRuntime: " + data.time.replace(/^\s+|\s+$/g, '') + " seconds\n\nSolution length: " + data.length + " characters");
 
-
-
-
 					delete cur_puzzles[$("#puzzle").val()];
-					//console.log(cur_puzzles);
 
 					solved_puzzles.push({
 						puzzle_name: $("#puzzle").val(),
@@ -238,11 +217,8 @@ $(document).ready(function(){
 						time: parseFloat(data.time),
 						length: parseInt(data.length)
 					});
-					//socket.emit("submit_puzzle", user.username, $("#puzzle").val(), myCodeMirror.getValue(), 
-					//	$("#language").val().toLowerCase(), parseFloat(data.time), parseInt(data.length));
 
 					if (Object.keys(cur_puzzles).length == 0) {
-						//socket.emit("game_won", user.username, game.id);
 
 						/* set game status to completed */
 						update_per_bar(user.username, new_per(user.username, puzzle_percent($("#puzzle").val())));
@@ -260,17 +236,11 @@ $(document).ready(function(){
 						function(data,status){
 							game_end("Congratulations!");
 						});
-						//puzzle_update();
-						//update_per(user.username, 100);
-						//gameover_modal.style.display = "block";
 					}
 					else {
-						//socket.emit("puzzle_solved", user.username, game.id, $("#puzzle").val());
-
 						update_per_bar(user.username, new_per(user.username, puzzle_percent($("#puzzle").val())));
 						update_per_text(user.username, new_per(user.username, puzzle_percent($("#puzzle").val())));
 						update_per_val(user.username, new_per(user.username, puzzle_percent($("#puzzle").val())));
-						// new_per(user.username, puzzle_percent($("#puzzle").val())));
 						myCodeMirror.setValue("");
 						/* update puzzle list */
 						
@@ -287,8 +257,5 @@ $(document).ready(function(){
 				}
 			}
 		});
-
 	});
-
-
 });

@@ -32,21 +32,14 @@ function start_play(user, usernames) {
 
 	var time_modal = document.getElementById("time_modal");
 
-	// Get the button that opens the modal
 	var time_btn = document.getElementById("time_game");
 
-	// Get the <span> element that closes the modal
 	var time_span = document.getElementsByClassName("close")[0];
 
-
-
-	// Get the modal
 	var join_modal = document.getElementById("join_modal");
 
-	// Get the button that opens the modal
 	var join_btn = document.getElementById("join_game");
 
-	// Get the <span> element that closes the modal
 	var join_span = document.getElementsByClassName("close")[1];
 
 	var create_span = document.getElementsByClassName("close")[2];
