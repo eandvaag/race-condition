@@ -73,7 +73,7 @@ function start_play(user, usernames) {
 	var current_games;
 
 	time_btn.onclick = function() {
-
+		enable_input();
 		$("#footer").css("opacity", 0.4);
 		$("#num_easy_time").val(1);
 		$("#num_moderate_time").val(0);
