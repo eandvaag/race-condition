@@ -30,7 +30,7 @@ html
 						
 						label(for="username" class="label") Username
 						
-						input(id="username" name="username" type="text" minlength="4" maxlength="16" pattern="[a-zA-Z0-9_]*" oninvalid="setCustomValidity('Use only alphanumeric characters and underscores. A minimum of 4 characters is required.')" oninput="this.setCustomValidity('')" autocomplete="off" required)
+						input(id="username" name="username" type="text" minlength="4" maxlength="10" pattern="[a-zA-Z0-9_]*" oninvalid="setCustomValidity('Use only alphanumeric characters and underscores. Enter 4-10 characters.')" oninput="this.setCustomValidity('')" autocomplete="off" required)
 
 
 						label(for="password" class="label") Password

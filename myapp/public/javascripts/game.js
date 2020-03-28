@@ -11,7 +11,7 @@ var interval_id;
 
 
 function rematch_request() {
-	
+
 	$("#rematch").hide();
 	$("#rematch_msg").text("Rematch offer sent.")
 	$("#rematch_req").show();
@@ -45,8 +45,8 @@ $(document).ready(function(){
 
 	socket = io();
 
-	/* after 5 seconds, verify that both players are in the room */
-	setTimeout(live_check, 5000);
+	/* after 60 seconds, verify that both players are in the room */
+	setTimeout(live_check, 60000);
 
 	socket.emit("game_start", user.username, game.id);
 

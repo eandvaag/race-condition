@@ -499,11 +499,11 @@ exports.get_game = function(req, res, next) {
                 fetch_user(game.invitee)
                 .then(invitee => {
                   fetch_user(req.session.user.username)
-                  then(user => {
+                  .then(user => {
                     res.render('game', { game: game, user: user, puzzles: puzzles, creator: creator, invitee: invitee});
                   }).catch(err => {
                     console.log(err);
-                  })
+                  });
                 }).catch(err => {
                   console.log(err);
                 });
