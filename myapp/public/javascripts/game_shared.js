@@ -1,3 +1,5 @@
+
+
 function disable_input(){
 		myCodeMirror.setOption('readOnly', "nocursor");
 		$("#run_button").attr("disabled", true);
@@ -5,6 +7,8 @@ function disable_input(){
 		$('.CodeMirror').css("opacity", 0.5);
 		$('.codebar-item').css("opacity", 0.5);
 		$('#puzzle-panel').css("opacity", 0.5);
+    $("#run_button").removeClass("round-button-hover");
+    $("#run_button").css("cursor", "default");		
 
 }
 
@@ -15,7 +19,8 @@ function enable_input(){
 	$('.CodeMirror').css("opacity", 1);
 	$('.codebar-item').css("opacity", 1);
 	$('#puzzle-panel').css("opacity", 1);
-
+  $("#run_button").addClass("round-button-hover");
+  $("#run_button").css("cursor", "pointer");  
 }
 
 function populate_puzzle_select() {

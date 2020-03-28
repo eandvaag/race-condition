@@ -172,7 +172,7 @@ io.on('connection', function(socket){
 		if (!room) {
 			io.in(game_id).emit("opponent_disconnect");
 		}
-		if (room.length !== 2) {
+		else if (room.length !== 2) {
 			io.in(game_id).emit("opponent_disconnect");
 		}
 	});
@@ -183,7 +183,7 @@ io.on('connection', function(socket){
 		if (!room) {
 			io.in(game_id).emit("opponent_disconnect");
 		}
-		if (room.length !== 2) {
+		else if (room.length !== 2) {
 			io.in(game_id).emit("opponent_left");
 		}	
 	});
@@ -193,7 +193,7 @@ io.on('connection', function(socket){
 		if (!room) {
 			io.in(game_id).emit("opponent_disconnect");
 		}
-		if (room.length !== 2) {
+		else if (room.length !== 2) {
 			io.in(game_id).emit("opponent_disconnect");
 		}
 		else {
@@ -208,7 +208,7 @@ io.on('connection', function(socket){
 		if (!room) {
 			io.in(game_id).emit("opponent_disconnect");
 		}
-		if (room.length !== 2) {
+		else if (room.length !== 2) {
 			io.in(game_id).emit("opponent_disconnect");			
 		}
 		else {
@@ -343,74 +343,123 @@ io.on('connection', function(socket){
 
 	socket.on("create_game", function(game_info) {
 
-		return models.users.update({
-							status: "create_waiting" }, {returning: true,
-						where: {
-							username: game_info["creator"] } 
-		}).then(update => {
+		
+		if (game_info["languages"] === "") {
+			socket.emit("invalid");
+		}
+    else if (((!isNormalInteger(game_info["num_easy"])) || 
+      (!isNormalInteger(game_info["num_moderate"]))) ||
+      (!isNormalInteger(game_info["num_challenging"]))) {
+      socket.emit("invalid");
+    }
+    else {
+      var num_easy = parseInt(game_info["num_easy"]);
+      var num_moderate = parseInt(game_info["num_moderate"]);
+      var num_challenging = parseInt(game_info["num_challenging"]);
 
-			var hash = crypto.createHash('md5').update(
-				game_info["creator"] + game_info["invitee"] + moment().utc().format('hh:mm:ss'))
-			.digest('hex');
+      if 
+        ((((((num_easy < 0) ||  num_easy > 5) ||
+          num_moderate < 0) ||  num_moderate > 5) ||
+          num_challenging < 0) ||  num_challenging > 5) {
+      	socket.emit("invalid");
+      }
+      else if (((num_easy == 0) && (num_moderate == 0)) && 
+               (num_challenging == 0)) {
+      	socket.emit("invalid");
+      }
+      else {
 
-			model_lib.fetch_random_puzzles('easy', parseInt(game_info["num_easy"]))
-			.then(easy_puzzles => {
-				model_lib.fetch_random_puzzles('moderate', parseInt(game_info["num_moderate"]))
-				.then(moderate_puzzles => {
-					model_lib.fetch_random_puzzles('challenging', parseInt(game_info["num_challenging"]))
-					.then(challenging_puzzles => {
-						let puzzle_names = "";
-						let puzzles = easy_puzzles.concat(moderate_puzzles.concat(challenging_puzzles));
-						for (var i = 0; i < puzzles.length; i++) {
-							if (i == 0) puzzle_names += puzzles[i].name;
-							else puzzle_names += "," + puzzles[i].name;
-						}
-						console.log("puzzle_names", puzzle_names);
+      	return model_lib.fetch_user(game_info["creator"])
+      	.then(creator => {
+      		if (!creator) {
+      			socket.emit("invalid");
+      		}
+      		else {
+						return model_lib.fetch_user(game_info["invitee"])
+						.then(invitee => {
+						 	if (!invitee) {
+						     socket.emit("invalid");
+						  }
+						  else {
+								return models.users.update({
+													status: "create_waiting" }, {returning: true,
+												where: {
+													username: game_info["creator"] } 
+								}).then(update => {
+
+									var hash = crypto.createHash('md5').update(
+										game_info["creator"] + game_info["invitee"] + moment().utc().format('hh:mm:ss'))
+									.digest('hex');
+
+									model_lib.fetch_random_puzzles('easy', num_easy)
+									.then(easy_puzzles => {
+										model_lib.fetch_random_puzzles('moderate', num_moderate)
+										.then(moderate_puzzles => {
+											model_lib.fetch_random_puzzles('challenging', num_challenging)
+											.then(challenging_puzzles => {
+												let puzzle_names = "";
+												let puzzles = easy_puzzles.concat(moderate_puzzles.concat(challenging_puzzles));
+												for (var i = 0; i < puzzles.length; i++) {
+													if (i == 0) puzzle_names += puzzles[i].name;
+													else puzzle_names += "," + puzzles[i].name;
+												}
+												console.log("puzzle_names", puzzle_names);
 
 
-						/* store the game */
-						return models.games.create({
-									id: hash,
-									creator: game_info["creator"],
-									invitee: game_info["invitee"],
-									status: "pending",
-									languages: game_info["languages"],
-									num_easy: parseInt(game_info["num_easy"]),
-									num_moderate: parseInt(game_info["num_moderate"]),
-									num_challenging: parseInt(game_info["num_challenging"]),
-									puzzle_names: puzzle_names,
-						}).then(game => {
+												/* store the game */
+												return models.games.create({
+															id: hash,
+															creator: game_info["creator"],
+															invitee: game_info["invitee"],
+															status: "pending",
+															languages: game_info["languages"],
+															num_easy: parseInt(game_info["num_easy"]),
+															num_moderate: parseInt(game_info["num_moderate"]),
+															num_challenging: parseInt(game_info["num_challenging"]),
+															puzzle_names: puzzle_names,
+												}).then(game => {
 
-							return models.users.findOne({
-								where: {
-									username: game_info["invitee"],
-								}
-							}).then(invitee => {
-								/* if invitee status == "wait_join", emit message to their socket informing them
-									 of the new game */
-								if (invitee.status == "join_waiting") {
-									io.to(invitee.socket_id).emit("invitation_update");
-								}
-								socket.emit("created");
-							}).catch(err => {
-								console.log(err);
-							});
-						}).catch(err => {
-							console.log(err);
-						});
+													return models.users.findOne({
+														where: {
+															username: game_info["invitee"],
+														}
+													}).then(invitee => {
+														/* if invitee status == "wait_join", emit message to their socket informing them
+															 of the new game */
+														if (invitee.status == "join_waiting") {
+															io.to(invitee.socket_id).emit("invitation_update");
+														}
+														socket.emit("created");
+													}).catch(err => {
+														console.log(err);
+													});
+												}).catch(err => {
+													console.log(err);
+												});
 
-					}).catch(err => {
-						console.log(err);
-					});
-				}).catch(err => {
-					console.log(err);
-				});
-			}).catch(err => {
-				console.log(err);
-			});
-		}).catch(err => {
-			console.log(err);
-		});
+											}).catch(err => {
+												console.log(err);
+											});
+										}).catch(err => {
+											console.log(err);
+										});
+									}).catch(err => {
+										console.log(err);
+									});
+								}).catch(err => {
+									console.log(err);
+								});
+					    }
+					  }).catch(err => {
+					    console.log(err);
+					  });
+					}
+	     	}).catch(err => {
+	     		console.log(err);
+	     	});
+			}
+    }
+
 
 	});
 
@@ -569,6 +618,11 @@ async function notify_invitee(creator) {
 	}).catch(err => {
 		console.log(err);
 	});
+}
+
+function isNormalInteger(str) {
+    var n = Math.floor(Number(str));
+    return n !== Infinity && String(n) === str && n >= 0;
 }
 
 module.exports = socket_api;

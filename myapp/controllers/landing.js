@@ -20,7 +20,7 @@ exports.sessionChecker = function(req, res, next) {
 
 exports.get_terminated = function(req, res, next) {
   if (req.session.user && req.cookies.user_sid) {
-    fetch_user(req.session.user.username)
+    model_lib.fetch_user(req.session.user.username)
     .then(user => {
       res.render('terminated', {user: user});
     }).catch(err => {
@@ -48,7 +48,7 @@ function valid_username(username) {
 
 
 function valid_password(password) {
-  let pattern = new RegExp("^(?=.*[A-Z]){1,}(?=.*[0-9]){1,}(?=.*[@$!%*#?&]){1,}[A-Za-z0-9@$!%*#?&]{8,}$");
+  let pattern = new RegExp("^(?=.*[0-9]){1,}(?=.*[@$!%*#?&]){1,}[A-Za-z0-9@$!%*#?&]{8,}$");
   return pattern.test(password);
 
 }
@@ -85,7 +85,7 @@ exports.submit_picture = function(req, res, next) {
                 where: {
                   username: req.session.user.username } 
           }).then(success => {
-            fetch_user(req.session.user.username)
+            model_lib.fetch_user(req.session.user.username)
             .then(updated_user => {
               req.session.user = updated_user.dataValues;
               console.log("updated user");
@@ -253,7 +253,7 @@ exports.play = function(req, res, next) {
   if (req.session.user && req.cookies.user_sid) {
     fetch_usernames()
     .then(usernames => {
-      fetch_user(req.session.user.username)
+      model_lib.fetch_user(req.session.user.username)
       .then(user => {
         res.render('play', { title: 'Play' , user: user, usernames: usernames});
       }).catch(err => {
@@ -296,25 +296,12 @@ exports.leaderboards = function(req, res, next) {
 }
 
 
-async function fetch_user(username) {
-  return models.users.findOne({
-      where : {
-        username : username
-      }
-    })
-    .then(user => {
-      return user;
-    })
-    .catch(err => {
-      console.log(err);
-    });
-}
 
 exports.verify_user = function(req, res, next) {
   data = {};
   data.not_found = false;
 
-  return fetch_user(req.body.username)
+  return model_lib.fetch_user(req.body.username)
   .then(user => {
     if (user) {
       res.json(data);
@@ -348,47 +335,91 @@ exports.time_attack_complete = function(req, res, next) {
   }
 }
 
+function isNormalInteger(str) {
+    var n = Math.floor(Number(str));
+    return n !== Infinity && String(n) === str && n >= 0;
+}
 
 exports.create_time_attack = function(req, res, next) {
   data = {};
 
   data.game_id = null;
   data.redirect = null;
+  data.not_num = false;
+  data.bad_num = false;  
+  data.all_zero = false;
 
   if (req.session.user && req.cookies.user_sid) {
 
-    var hash = crypto.createHash('md5').update(
-        req.session.user.username + moment().utc().format('hh:mm:ss'))
-      .digest('hex');
+    console.log(req.body.num_easy);
 
-    model_lib.fetch_random_puzzles('easy', parseInt(req.body.num_easy))
-    .then(easy_puzzles => {
-      model_lib.fetch_random_puzzles('moderate', parseInt(req.body.num_moderate))
-      .then(moderate_puzzles => {
-        model_lib.fetch_random_puzzles('challenging', parseInt(req.body.num_challenging))
-        .then(challenging_puzzles => {
-          let puzzle_names = "";
-          let puzzles = easy_puzzles.concat(moderate_puzzles.concat(challenging_puzzles));
-          for (var i = 0; i < puzzles.length; i++) {
-            if (i == 0) puzzle_names += puzzles[i].name;
-            else puzzle_names += "," + puzzles[i].name;
-          }
-          return models.games.create({
-            id: hash,
-            creator: req.session.user.username,
-            invitee: null,
-            status: "pending",
-            languages: "Python,Scheme,JavaScript,Haskell",
-            num_easy: parseInt(req.body.num_easy),
-            num_moderate: parseInt(req.body.num_moderate),
-            num_challenging: parseInt(req.body.num_challenging),
-            puzzle_names: puzzle_names,
-            time_easy: parseInt(req.body.time_easy),
-            time_moderate: parseInt(req.body.time_moderate),
-            time_challenging: parseInt(req.body.time_challenging)
-          }).then(game => {
-            data.game_id = hash;
-            res.json(data);
+    if (((!isNormalInteger(req.body.num_easy)) || 
+      (!isNormalInteger(req.body.num_moderate))) ||
+      (!isNormalInteger(req.body.num_challenging))) {
+      console.log("not_num");
+      data.not_num = true;
+      res.json(data);
+    }
+    else {
+      var num_easy = parseInt(req.body.num_easy);
+      var num_moderate = parseInt(req.body.num_moderate);
+      var num_challenging = parseInt(req.body.num_challenging);
+
+      if 
+        ((((((num_easy < 0) ||  num_easy > 5) ||
+          num_moderate < 0) ||  num_moderate > 5) ||
+          num_challenging < 0) ||  num_challenging > 5) {
+        console.log("bad_num");
+        data.bad_num = true;
+        res.json(data);
+      }
+      else if (((num_easy == 0) && (num_moderate == 0)) && 
+               (num_challenging == 0)) {
+        console.log("all_zero");
+        data.all_zero = true;
+        res.json(data);
+      }
+      else {
+        var hash = crypto.createHash('md5').update(
+            req.session.user.username + moment().utc().format('hh:mm:ss'))
+          .digest('hex');
+
+        model_lib.fetch_random_puzzles('easy', num_easy)
+        .then(easy_puzzles => {
+          model_lib.fetch_random_puzzles('moderate', num_moderate)
+          .then(moderate_puzzles => {
+            model_lib.fetch_random_puzzles('challenging', num_challenging)
+            .then(challenging_puzzles => {
+              let puzzle_names = "";
+              let puzzles = easy_puzzles.concat(moderate_puzzles.concat(challenging_puzzles));
+              for (var i = 0; i < puzzles.length; i++) {
+                if (i == 0) puzzle_names += puzzles[i].name;
+                else puzzle_names += "," + puzzles[i].name;
+              }
+              return models.games.create({
+                id: hash,
+                creator: req.session.user.username,
+                invitee: null,
+                status: "pending",
+                languages: "Python,Scheme,JavaScript,Haskell",
+                num_easy: num_easy,
+                num_moderate: num_moderate,
+                num_challenging: num_challenging,
+                puzzle_names: puzzle_names,
+                time_easy: 180, //parseInt(req.body.time_easy),
+                time_moderate: 300, //parseInt(req.body.time_moderate),
+                time_challenging: 600 //parseInt(req.body.time_challenging)
+              }).then(game => {
+                data.game_id = hash;
+                res.json(data);
+              }).catch(err => {
+                console.log(err);
+                res.json(data);
+              });
+            }).catch(err => {
+              console.log(err);
+              res.json(data);
+            });
           }).catch(err => {
             console.log(err);
             res.json(data);
@@ -397,14 +428,8 @@ exports.create_time_attack = function(req, res, next) {
           console.log(err);
           res.json(data);
         });
-      }).catch(err => {
-        console.log(err);
-        res.json(data);
-      });
-    }).catch(err => {
-      console.log(err);
-      res.json(data);
-    });
+      }
+    }
   }
   else {
     data.redirect = '/sign-in';
@@ -442,7 +467,7 @@ if (req.session.user && req.cookies.user_sid) {
         console.log("game", game);
         fetch_puzzles(game.puzzle_names.split(","))
           .then(puzzles => {
-            fetch_user(req.session.user.username)
+            model_lib.fetch_user(req.session.user.username)
             .then(user => {
               res.render("time_attack", { game: game, user: user, puzzles: puzzles});
             }).catch(err => {
@@ -494,11 +519,11 @@ exports.get_game = function(req, res, next) {
             fetch_puzzles(game.puzzle_names.split(","))
             .then(puzzles => {
 
-              fetch_user(game.creator)
+              model_lib.fetch_user(game.creator)
               .then(creator => {
-                fetch_user(game.invitee)
+                model_lib.fetch_user(game.invitee)
                 .then(invitee => {
-                  fetch_user(req.session.user.username)
+                  model_lib.fetch_user(req.session.user.username)
                   .then(user => {
                     res.render('game', { game: game, user: user, puzzles: puzzles, creator: creator, invitee: invitee});
                   }).catch(err => {
@@ -553,7 +578,7 @@ exports.get_user = function(req, res, next) {
 
 
 
-    fetch_user(req.session.user.username)
+    model_lib.fetch_user(req.session.user.username)
       .then(user => {
         return models.solved_puzzles.findAll({
           raw: true,
@@ -572,7 +597,7 @@ exports.get_user = function(req, res, next) {
             where: {
               username: req.session.user.username } })
             .then(update => {
-              fetch_user(req.session.user.username)
+              model_lib.fetch_user(req.session.user.username)
               .then(updated_user => {
                 req.session.user = updated_user.dataValues;
                 res.render('user', { user: updated_user, puzzles: puzzles, lang_lookup : lang_lookup, new_rank: new_rank});
@@ -738,7 +763,7 @@ exports.get_work_on = function(req, res, next) {
       get_user_solutions(req.session.user.username, req.params.puzzle_name)
       .then(solutions => {
         console.log(solutions);
-        fetch_user(req.session.user.username)
+        model_lib.fetch_user(req.session.user.username)
         .then(user => {
           res.render('work_on', { user: user, puzzle: puzzle, solutions: solutions});
         }).catch(err => {
@@ -834,7 +859,7 @@ exports.game_submit = function(req, res, next) {
           })
           .then(solution => {
 
-            fetch_user(req.session.user.username)
+            model_lib.fetch_user(req.session.user.username)
             .then(updated_user => {
               req.session.user = updated_user.dataValues;
               console.log("unlocked " + req.body.puzzle_name);
@@ -873,7 +898,7 @@ exports.game_submit = function(req, res, next) {
             language: req.body.language
           })
           .then(solution => {
-            fetch_user(req.session.user.username)
+            model_lib.fetch_user(req.session.user.username)
             .then(updated_user => {
               req.session.user = updated_user.dataValues;             
               console.log("new lang solution" + req.body.puzzle_name);
@@ -921,7 +946,7 @@ exports.work_on_submit = function(req, res, next) {
           .then(solution => {
             get_user_solutions(req.session.user.username, req.params.puzzle_name)
             .then(solutions => {
-              fetch_user(req.session.user.username)
+              model_lib.fetch_user(req.session.user.username)
               .then(updated_user => {
                 req.session.user = updated_user.dataValues;
                 data.solutions = solutions;
@@ -953,7 +978,7 @@ exports.work_on_submit = function(req, res, next) {
         ).then(solution => {
           get_user_solutions(req.session.user.username, req.params.puzzle_name).
           then(solutions => {
-            fetch_user(req.session.user.username)
+            model_lib.fetch_user(req.session.user.username)
             .then(updated_user => {
               req.session.user = updated_user.dataValues;
               data.solutions = solutions;

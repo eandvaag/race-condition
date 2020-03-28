@@ -41,17 +41,17 @@ html
 								li(class="image_li")
 									p(style="margin: 5px 0; margin-top: 25px; padding: 0; font-size: 18px") Easy
 									div(class="quantity")
-										input(type="number" id="num_easy_time" min="0" max="5" step="1" value="1")
+										input(type="number" id="num_easy_time" min="0" max="5" step="1" value="1" maxlength="1")
 
 								li(class="image_li")
 									p(style="margin: 5px 0; margin-top: 25px; padding: 0; font-size: 18px") Moderate
 									div(class="quantity")
-										input(type="number" id="num_moderate_time" min="0" max="5" value="0")
+										input(type="number" id="num_moderate_time" min="0" max="5" value="0" maxlength="1")
 
 								li(class="image_li")
 									p(style="margin: 5px 0; margin-top: 25px; padding: 0; font-size: 18px") Challenging
 									div(class="quantity")
-										input(type="number" id="num_challenging_time" min="0" max="5" value="0")
+										input(type="number" id="num_challenging_time" min="0" max="5" value="0" maxlength="1")
 
 								br
 								br
@@ -60,7 +60,7 @@ html
 
 
 						div(style="text-align:center")
-							button(id="submit_time_game" style="width:200px")
+							button(id="submit_time_game" class="button-hover" style="width:200px")
 								span Start
 
 
@@ -123,17 +123,17 @@ html
 								li(class="image_li")
 									p(style="margin: 5px 0; margin-top: 25px; padding: 0; font-size: 18px") Easy
 									div(class="quantity")
-										input(type="number" id="num_easy" name="num_easy" min="0" max="5" step="1" value="1")
+										input(type="number" id="num_easy" name="num_easy" min="0" max="5" step="1" value="1" dis="false" maxlength="1")
 
 								li(class="image_li")
 									p(style="margin: 5px 0; margin-top: 25px; padding: 0; font-size: 18px") Moderate
 									div(class="quantity")
-										input(type="number" id="num_moderate" name="num_moderate" min="0" max="5" value="0")
+										input(type="number" id="num_moderate" name="num_moderate" min="0" max="5" value="0" dis="false" maxlength="1")
 
 								li(class="image_li")
 									p(style="margin: 5px 0; margin-top: 25px; padding: 0; font-size: 18px") Challenging
 									div(class="quantity")
-										input(type="number" id="num_challenging" name="num_challenging" min="0" max="5" value="0")
+										input(type="number" id="num_challenging" name="num_challenging" min="0" max="5" value="0" dis="false" maxlength="1")
 						
 
 						h(class="header1") Opponent
@@ -146,8 +146,8 @@ html
 						br
 
 						div(style="text-align:center")
-							button(id="submit_game" style="width:200px")
-								span Create Game
+							button(id="submit_game" style="width:200px" class="button-hover")
+								span(id="submit_game_text") Create Game
 						div(style="text-align:center" id="create_loader")
 							p(id="sent_message")
 							div(class="loader")
@@ -167,7 +167,7 @@ html
 					h(class="header1") Solo
 
 					div(style="text-align:center")
-						button(id="time_game" style="width:80%")
+						button(id="time_game" style="width:80%" class="button-hover")
 							span Time Attack
 
 					br
@@ -175,11 +175,11 @@ html
 					h(class="header1") Play with a Friend
 
 					div(style="text-align:center")
-						button(id="create_game" style="width:80%")
+						button(id="create_game" style="width:80%" class="button-hover")
 							span Create Game
 
 					div(style="text-align:center")
-						button(id="join_game" style="width:80%") 
+						button(id="join_game" style="width:80%" class="button-hover") 
 							span Join Game
 
 

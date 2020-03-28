@@ -37,3 +37,18 @@ exports.update_user_games = function(username, result) {
     console.log(err);
   });
 }
+
+
+exports.fetch_user = function(username) {
+  return models.users.findOne({
+      where : {
+        username : username
+      }
+    })
+    .then(user => {
+      return user;
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}

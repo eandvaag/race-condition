@@ -41,6 +41,8 @@ function disable_input(){
     $('.CodeMirror').css("opacity", 0.5);
     $('#code_panel').css("opacity", 0.5);
     $('#stats').css("opacity", 0.5);
+    $("#run_button").removeClass("round-button-hover");
+    $("#run_button").css("cursor", "default");
 }
 
 function enable_input(){
@@ -50,6 +52,8 @@ function enable_input(){
   $('.CodeMirror').css("opacity", 1);
   $('#code_panel').css("opacity", 1); 
   $('#stats').css("opacity", 1);
+  $("#run_button").addClass("round-button-hover");
+  $("#run_button").css("cursor", "pointer");  
 
 }
 

@@ -51,7 +51,7 @@ html
 
 							div(class="cell")
 								h(class="header3" style="margin-right: 20px") Run:
-								button(id="run_button" class="round-button" style="margin 0 auto")
+								button(id="run_button" class="round-button round-button-hover" style="margin 0 auto")
 									i(class="fa fa-play")
 
 											
@@ -59,11 +59,14 @@ html
 						div(class="codebar-item" id="stats")
 
 							div(class="cell")
-								p(id="time_stats" style="margin-bottom: -25px; margin-top: -10px")
+								p(id="time_stats" style="margin: auto")
+								// style="margin-bottom: -25px; margin-top: -10px")
 
 							div(class="cell")
-								p(id="length_stats" style="margin-bottom: -25px; margin-top: -10px")
+								p(id="length_stats" style="margin: auto")
+								//-bottom: -25px; margin-top: -10px")
 
+					div(class="code-container")
 						div(style="text-align:left")
 							div.input(style="font-size:15px;")
 								textarea(id="codeeditor")
@@ -73,9 +76,9 @@ html
 
 				br
 
-				button(id="edit_button")
+				button(id="edit_button" class="button-hover")
 					span Continue Editing
-				button(id="submit_button")
+				button(id="submit_button" class="button-hover")
 					span Save this Solution
 
 

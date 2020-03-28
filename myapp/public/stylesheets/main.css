@@ -152,6 +152,7 @@ select {
 
 .code-container {
   margin: auto;
+  margin-top: 10px;
   display: grid;
   grid-gap: 10px;
   grid-template-columns: repeat(auto-fill, minmax(250px, 600px));
@@ -428,16 +429,16 @@ button span:after {
   transition: 0.5s;
 }
 
-button:hover span {
+.button-hover:hover span {
   padding-right: 25px;
 }
 
-button:hover span:after {
+.button-hover:hover span:after {
   opacity: 1;
   right: 0;
 }
 
-button:hover {
+.button-hover:hover {
   background-color: #cc9923;
 }
 
@@ -476,7 +477,7 @@ input[type="radio"]{
   transition: all 0.3s ease;
   cursor: pointer;
 }
-.round-button:hover {
+.round-button-hover:hover {
   background-color: rgba(0,0,0,0.8);
   box-shadow: 0px 0px 10px rgba(255,255,100,1);
   text-shadow: 0px 0px 10px rgba(255,255,100,1);

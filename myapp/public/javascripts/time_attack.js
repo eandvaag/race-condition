@@ -4,11 +4,13 @@ var new_lang_solutions;
 var cur_puzzles;
 var solved_puzzles;
 var all_puzzles;
+var myCodeMirror;
+var myOutput;
 
 var seconds_remaining;
 
 var interval_id;
-
+/*
 function disable_input(){
 		myCodeMirror.setOption('readOnly', "nocursor");
 		$("#run_button").attr("disabled", true);
@@ -27,7 +29,7 @@ function enable_input(){
 	$('.codebar-item').css("opacity", 1);
 	$('#puzzle-panel').css("opacity", 1);
 
-}
+}*/
 
 function play_again() {
 		$.post("/play/time-attack", {
@@ -131,9 +133,10 @@ $(document).ready(function(){
 	$("#rematch").hide();
 	$("#rematch_req").hide();
 
-	seconds_remaining = (parseInt(game.num_easy) * parseInt(game.time_easy)) +
-									(parseInt(game.num_moderate) * parseInt(game.time_moderate)) + 
-									(parseInt(game.num_challenging) * parseInt(game.time_challenging));
+
+	seconds_remaining = (game.num_easy * game.time_easy) + 
+											(game.num_moderate * game.time_moderate) + 
+											(game.num_challenging * game.time_challenging);
 
 	tick();
 	interval_id = setInterval(tick, 1000);

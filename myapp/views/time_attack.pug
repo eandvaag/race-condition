@@ -34,7 +34,7 @@ html
 
 						div(id="progress-panel" class="codebar-item")
 
-							div()
+							div
 								h(class="header3" style="display:block; text-align:center; padding: 10px 0") Time: 
 								
 								code(id="timer" class="timer")
@@ -75,7 +75,7 @@ html
 
 
 
-
+					div(class="code-container")
 						div(class="codebar-item" id="lang-panel")
 
 							div(class="cell")
@@ -91,7 +91,7 @@ html
 								img(id="logo" src="/images/" + "python" + ".svg" alt='logo' width="50px" height="50px" style="float:left; margin: 0 20px")
 
 							div(id="lobby")
-								button(id="lobby_button" onclick="window.location.href = '/play'" style="margin: 18px 0; width:200px")
+								button(id="lobby_button" class="button-hover" onclick="window.location.href = '/play'" style="margin: 18px 0; width:200px")
 									span Return to Lobby
 
 
@@ -101,20 +101,16 @@ html
 
 							div(class="cell")
 								h(class="header3" style="margin-right: 20px") Run:
-								button(id="run_button" class="round-button" style="margin 0 auto")
+								button(id="run_button" class="round-button" class="round-button-hover" style="margin 0 auto")
 									i(class="fa fa-play")
 
 
 							div(id="rematch")
-								button(id="rematch_button" onclick="play_again()" style="margin: 18px 0; width:200px")
+								button(id="rematch_button" class="button-hover" onclick="play_again()" style="margin: 18px 0; width:200px")
 									span Play Again
-							div(id="rematch_req" style="text-align:center")
-								h(id="rematch_msg" class="header1" style="font-size: 18px; margin: 0px")
-								button(id="accept_button" onclick="rematch_accept()" style="width:200px")
-									span Accept
-								button(id="decline_button" onclick="rematch_decline()" style="width:200px")
-									span Decline
 
+
+					div(class="code-container")
 						div(style="text-align:left")
 							div.input(style="font-size:15px;")
 								textarea(id="codeeditor")

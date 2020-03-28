@@ -7,6 +7,8 @@ var all_puzzles;
 
 var interval_id;
 
+var myCodeMirror;
+var myOutput;
 
 
 

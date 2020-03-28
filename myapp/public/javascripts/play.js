@@ -1,4 +1,51 @@
+$(document).ready(function(){
+	$('body').on('keypress', 'input[type=number][maxlength]', function(event){
 
+	    var key = event.keyCode || event.charCode;
+	    var charcodestring = String.fromCharCode(event.which);
+	    var txtVal = $(this).val();
+	    var maxlength = $(this).attr('maxlength');
+	    var regex = new RegExp('^[0-9]+$');
+	    // 8 = backspace 46 = Del 13 = Enter 39 = Left 37 = right Tab = 9
+	    if( key == 8 || key == 46 || key == 13 || key == 37 || key == 39 || key == 9 ){
+	        return true;
+	    }
+	    // maxlength allready reached
+	    if(txtVal.length==maxlength){
+	        event.preventDefault();
+	        return false;
+	    }
+	    // pressed key have to be a number
+	    if( !regex.test(charcodestring) ){
+	        event.preventDefault();
+	        return false;
+	    }
+	    return true;
+	});
+
+	$('body').on('paste', 'input[type=number][maxlength]', function(event) {
+	    //catch copy and paste
+	    var ref = $(this);
+	    var regex = new RegExp('^[0-9]+$');
+	    var maxlength = ref.attr('maxlength');
+	    var clipboardData = event.originalEvent.clipboardData.getData('text');
+	    var txtVal = ref.val();//current value
+	    var filteredString = '';
+	    var combined_input = txtVal + clipboardData;//dont forget old data
+
+	    for (var i = 0; i < combined_input.length; i++) {
+	        if( filteredString.length < maxlength ){
+	            if( regex.test(combined_input[i]) ){
+	                filteredString += combined_input[i];
+	            }
+	        }
+	    }
+	    setTimeout(function(){
+	        ref.val('').val(filteredString)
+	    },100);
+	});
+
+});
 
 function disable_input(){
 		$("input").prop("disabled", true);
@@ -11,6 +58,22 @@ function disable_input(){
 		$(".image_label").css("opacity", 0.5);
 		$("label").css("opacity", 0.5);
 		$("input").css("opacity", 0.5);
+
+		$("#submit_game").removeClass("button-hover");
+	  $("#submit_game").css("cursor", "wait");
+	  $("#submit_game_text").css("cursor", "wait");
+
+	  $("#num_easy").attr("dis", "true");
+	  $("#num_moderate").attr("dis", "true");
+	  $("#num_challenging").attr("dis", "true");
+
+	  $("input").css("cursor", "wait");
+	  $(".quantity-up").css("cursor", "wait");
+	  $(".quantity-down").css("cursor", "wait");
+
+	  $(".image_label").css("cursor", "wait");
+
+
 }
 
 function enable_input(){
@@ -26,6 +89,19 @@ function enable_input(){
 		$("label").css("opacity", 1);
 		$("input").css("opacity", 1);
 
+		$("#submit_game").addClass("button-hover");
+	  $("#submit_game").css("cursor", "pointer");  
+	  $("#submit_game_text").css("cursor", "pointer");
+
+	  $("#num_easy").attr("dis", "false");
+	  $("#num_moderate").attr("dis", "false");	  
+	  $("#num_challenging").attr("dis", "false");
+
+	  $("input").css("cursor", "text");
+	  $(".quantity-up").css("cursor", "pointer");
+	  $(".quantity-down").css("cursor", "pointer");
+
+	  $(".image_label").css("cursor", "pointer");
 }
 
 function start_play(user, usernames) {
@@ -51,7 +127,6 @@ function start_play(user, usernames) {
 	var submit_time_btn = document.getElementById("submit_time_game");
 
 	var submit_btn = document.getElementById("submit_game");
-
 
 
 	/* remove the user's name from list of usernames */
@@ -116,7 +191,7 @@ function start_play(user, usernames) {
 			let current_games = games;
 			for (var i = 0; i < games.length; i++) {
 
-				$("#invitation_list").append('<br><button style="text-align:center; width:280px" id="game_' + i + '">' + 
+				$("#invitation_list").append('<br><button style="text-align:center; width:280px" class="button-hover" id="game_' + i + '">' + 
 					'<span>' + current_games[i].creator + '</span></button>');
 
 				$("#game_" + i).click(function() {
@@ -154,8 +229,14 @@ function start_play(user, usernames) {
 	}
 
 	submit_time_game.onclick = function() {
-
-		if ((($("#num_easy_time").val() == 0) && ($("#num_moderate_time").val() == 0)) && 
+		if 
+			(((((($("#num_easy_time").val() < 0) ||  $("#num_easy_time").val() > 5) ||
+				$("#num_moderate_time").val() < 0) ||  $("#num_moderate_time").val() > 5) ||
+				$("#num_challenging_time").val() < 0) ||  $("#num_challenging_time").val() > 5) {
+			$("#error_message_time").text("The number of puzzles in each category must be between 0 and 5 (inclusive).");
+			$("#error_message_time").show();
+		}
+		else if ((($("#num_easy_time").val() == 0) && ($("#num_moderate_time").val() == 0)) && 
 						 ($("#num_challenging_time").val() == 0)) {
 			$("#error_message_time").text("A game requires at least one puzzle.");
 			$("#error_message_time").show();
@@ -165,14 +246,22 @@ function start_play(user, usernames) {
 			$.post("/play/time-attack", {
 				num_easy: $("#num_easy_time").val(),
 				num_moderate: $("#num_moderate_time").val(),
-				num_challenging: $("#num_challenging_time").val(),
-				time_easy: 150,
-				time_moderate: 300,
-				time_challenging: 600
+				num_challenging: $("#num_challenging_time").val()
+				//time_easy: 180,
+				//time_moderate: 300,
+				//time_challenging: 600
 			},
 			function(response,status) {
 				if (response.redirect) {
 					window.location.href = response.redirect;
+				}
+				else if (response.not_num || response.bad_num) {
+					$("#error_message_time").text("The number of puzzles in each category must be between 0 and 5 (inclusive).");
+					$("#error_message_time").show();					
+				}
+				else if (response.all_zero) {
+					$("#error_message_time").text("A game requires at least one puzzle.");
+					$("#error_message_time").show();							
 				}
 				else if (response.game_id) {
 					window.location.href = '/play/time-attack/' + response.game_id;
@@ -192,8 +281,17 @@ function start_play(user, usernames) {
 		$("#error_message").hide();
 		$("#create_loader").hide();
 
+		let pattern = new RegExp('/^(0|[1-9]+[0-9]*)$/');
+
 		if (!($('#create_modal input[type=checkbox]:checked').length)) {
 			$("#error_message").text("You must select at least one language.");
+			$("#error_message").show();
+		}
+		else if 
+			(((((($("#num_easy").val() < 0) ||  $("#num_easy").val() > 5) ||
+				$("#num_moderate").val() < 0) ||  $("#num_moderate").val() > 5) ||
+				$("#num_challenging").val() < 0) ||  $("#num_challenging").val() > 5) {
+			$("#error_message").text("The number of puzzles in each category must be between 0 and 5 (inclusive).");
 			$("#error_message").show();
 		}
 		else if ((($("#num_easy").val() == 0) && ($("#num_moderate").val() == 0)) && 
@@ -244,6 +342,11 @@ function start_play(user, usernames) {
 				}
 			});
 		}
+
+		socket.on("invalid", function() {
+			$("#error_message").text("Sorry, an error occurred during the creation of your game.");
+			$("#error_message").show();
+		});
 
 		socket.on("created", function() {
 			$("#create_loader").show();

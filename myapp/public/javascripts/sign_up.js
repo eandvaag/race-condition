@@ -27,7 +27,7 @@ $(document).ready(function(){
         $("#spacing").hide();
       }
       else if (response.bad_password) {
-        $("#error_message").text("The password you entered is invalid. A password must contain at least one letter, one number, and one special character. A minimum of 8 characters is required.");
+        $("#error_message").text("The password you entered is invalid. A password must contain at one number and one special character. A minimum of 8 characters is required.");
         $("#error_message").show();
         $("#spacing").hide();
       }
