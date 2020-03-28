@@ -169,6 +169,9 @@ io.on('connection', function(socket){
 
 	socket.on("live_check", function(game_id) {
 		var room = io.sockets.adapter.rooms[game_id];
+		if (!room) {
+			io.in(game_id).emit("opponent_disconnect");
+		}
 		if (room.length !== 2) {
 			io.in(game_id).emit("opponent_disconnect");
 		}
@@ -177,6 +180,9 @@ io.on('connection', function(socket){
 
 	socket.on("request_check", function(game_id) {
 		var room = io.sockets.adapter.rooms[game_id];
+		if (!room) {
+			io.in(game_id).emit("opponent_disconnect");
+		}
 		if (room.length !== 2) {
 			io.in(game_id).emit("opponent_left");
 		}	
@@ -184,6 +190,9 @@ io.on('connection', function(socket){
 
 	socket.on("puzzle_solved", function(username, game_id, puzzle_name) {
 		var room = io.sockets.adapter.rooms[game_id];
+		if (!room) {
+			io.in(game_id).emit("opponent_disconnect");
+		}
 		if (room.length !== 2) {
 			io.in(game_id).emit("opponent_disconnect");
 		}
@@ -196,6 +205,9 @@ io.on('connection', function(socket){
 
 	socket.on("game_won", function(username, game_id) {
 		var room = io.sockets.adapter.rooms[game_id];
+		if (!room) {
+			io.in(game_id).emit("opponent_disconnect");
+		}
 		if (room.length !== 2) {
 			io.in(game_id).emit("opponent_disconnect");			
 		}
