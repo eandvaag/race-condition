@@ -51,7 +51,7 @@ module.exports = {
       updatedAt: new Date()
     }, {
       name: 'clean_string',
-      description: 'Write a function <code>clean()</code> that takes two string arguments. The function returns a new string that results from removing all the characters which appear in the second string from the first string.',
+      description: 'Write a function <code>clean_string()</code> that takes two string arguments. The function returns a new string that results from removing all the characters which appear in the second string from the first string.',
       difficulty: 'easy',
       createdAt: new Date(),
       updatedAt: new Date()
@@ -96,10 +96,35 @@ module.exports = {
       difficulty: 'moderate',
       createdAt: new Date(),
       updatedAt: new Date()
+    }, {
+      name: 'quadratic',
+      description: 'Write a function <code>quadratic()</code> that takes three integer arguments: a, b, and c. These three arguments represent the coefficients of a quadratic equation <i>ax<sup>2</sup></i> + <i>bx</i> + <i>c</i> = 0. The function returns one of three strings corresponding to the number of solutions there are to the equation: "two real", "repeated real", or "two imaginary".',
+      difficulty: 'moderate',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }, {
+      name: 'rect_in_circ',
+      description: 'Write a function <code>rect_in_circ()</code> that takes three integers: the width and height of a rectangle, and the radius of a circle. The function returns true if the rectangle can fit inside of the circle, false otherwise.',
+      difficulty: 'moderate',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }, {
+      name: 'common_facts',
+      description: 'Write a function <code>common_facts()</code> that takes two integer arguments and returns a list containing all of the factors which both integers share.',
+      difficulty: 'moderate',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }, {
+      name: 'same_line',
+      description: 'Write a function <code>same_line()</code> that takes three lists of integers as arguments. Each list is a pair representing an (x,y) point. The function returns true if all three points fall on the same line, false otherwise. (Hint: a vertical line is a special case).',
+      difficulty: 'moderate',
+      createdAt: new Date(),
+      updatedAt: new Date()
     },
 
 
     /* Difficult */
+
     {
       name: 'perfect',
       description: 'Write a function <code>perfect()</code> that takes an integer n and returns the n\'th perfect number. A perfect number is a positive integer that is equal to the sum of its positive divisors, excluding the number itself. For example, 6 has divisors 1, 2, and 3 (excluding itself), and 1 + 2 + 3 = 6, so 6 is the first perfect number.',
@@ -121,6 +146,12 @@ module.exports = {
     }, {
       name: 'largest_mode',
       description: 'Write a function <code>largest_mode()</code> that takes three lists of integers as input, calculates the mode of each list, and returns the largest mode.',
+      difficulty: 'challenging',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }, {
+      name: 'digit_sum',
+      description: 'Write a function <code>digit_sum()</code> that takes an integer argument n and returns a single digit that is the result of summing all the digits in n. If the summation results in a number with more than one digit, continue summing until a single digit remains.',
       difficulty: 'challenging',
       createdAt: new Date(),
       updatedAt: new Date()

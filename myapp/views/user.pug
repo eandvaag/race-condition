@@ -37,33 +37,34 @@ html
 
 					div(class="half-round-item-2")
 						h2 Rank
-						img(src="/images/ranks/" + user.rank.toLowerCase().split(' ').join('_') + ".png" alt='rank', width="160px" style="margin-bottom:-35px; margin-top:-40px")
+						br
+						img(id="rank_image" src="/images/ranks/" + user.rank.toLowerCase().split(' ').join('_') + ".png" alt='rank', style="max-width: 160px; margin-bottom:-35px; margin-top:-40px;")
 
 					div(class="half-round-item-2")
-						h2 Games Played
-						table(style="width:90%; margin: 0 auto")
+						h2(style="padding: 0 10px") Games Played
+						table(style="width:90%; margin: 10px 10px;")
 								col(style="width:33%")
 								col(style="width:33%")
 								col(style="width:33%")
 								tr
-									th Total
-									th Wins
-									th Losses
+									th(id="total-header")  Total
+									th(id="win-header") Wins
+									th(id="loss-header") Losses
 								tr
 									td #{user.games_played}
 									td #{user.games_won}
 									td #{user.games_lost}
 
 					div(class="half-round-item-1")
-						h2 Puzzles Solved
-						table(style="width:90%; margin: 0 auto")
+						h2(style="padding: 0 10px") Puzzles Solved
+						table(style="width:90%; margin: 0 auto; word-wrap: break-word")
 								col(style="width:33%")
 								col(style="width:33%")
 								col(style="width:33%")
 								tr
-									th Easy
-									th Moderate
-									th Challenging
+									th(id="easy-header") Easy
+									th(id="moderate-header") Moderate
+									th(id="challenging-header") Challenging
 								tr
 									td #{user.num_easy_solved}
 									td #{user.num_moderate_solved}
@@ -90,7 +91,7 @@ html
 							tr
 								th Name
 								th Languages
-								th Stats
+								th(id="statistics-header") Statistics
 								th Develop
 							each langs, puzzle in lang_lookup
 								tr

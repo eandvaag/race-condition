@@ -8,7 +8,38 @@ function get_rank_path(rank) {
 	return "/images/ranks/" + rank.toLowerCase() + ".png";
 }
 
+function window_change() {
+	var width = window.innerWidth;
+	console.log("width", width);
+	if (width < 550) {
+		$("#easy-header").text("Easy");
+		$("#moderate-header").text("Mod.");
+		$("#challenging-header").text("Chal.");
+		$("#total-header").text("Tot.");		
+		$("#win-header").text("W.");	
+		$("#loss-header").text("L.");			
+		$("#statistics-header").text("Stats");			
+		$("#rank_image").width("90%");
+	}
+	else {
+		$("#easy-header").text("Easy");
+		$("#moderate-header").text("Moderate");
+		$("#challenging-header").text("Challenging");
+		$("#total-header").text("Total");		
+		$("#win-header").text("Wins");	
+		$("#loss-header").text("Losses");	
+		$("#statistics-header").text("Statistics");	
+		$("#rank_image").width(160);
+	}
+
+
+}
+
+window.addEventListener("resize", window_change);
+
 $(document).ready(function(){
+
+	window_change();
 
 	var Upload = function (file) {
 			this.file = file;

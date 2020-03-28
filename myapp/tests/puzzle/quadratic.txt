@@ -1,0 +1,46 @@
+8
+3
+int
+int
+int
+string
+
+3
+7
+-4
+two real
+
+5
+4
+1
+two imaginary
+
+4
+4
+1
+repeated real
+
+-1
+4
+3
+two real
+
+-1
+4
+-4
+repeated real
+
+-1
+4
+10
+two real
+
+-1
+0
+0
+repeated real
+
+-1
+0
+-3
+two imaginary
