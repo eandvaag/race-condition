@@ -10,7 +10,6 @@ function get_rank_path(rank) {
 
 function window_change() {
 	var width = window.innerWidth;
-	console.log("width", width);
 	if (width < 550) {
 		$("#easy-header").text("Easy");
 		$("#moderate-header").text("Mod.");
