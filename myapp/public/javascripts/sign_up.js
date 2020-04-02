@@ -1,4 +1,4 @@
-
+/* for submitting sign-up information to server */
 
 
 $(document).ready(function(){

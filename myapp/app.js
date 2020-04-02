@@ -23,13 +23,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'tests')));
 app.use(session({
-	key: 'user_sid',
-	secret: 'secretcodeword',
-	resave: false,
-	saveUninitialized: false,
-	cookie: {
-		expires: 6000000
-	}
+    key: 'user_sid',
+    secret: 'secretcodeword',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        expires: 6000000
+    }
 }));
 
 app.use('/', indexRouter);
@@ -38,10 +38,10 @@ app.use('/users', usersRouter);
 
 
 app.use((req, res, next) => {
-	if (req.cookies.user_sid && !req.session.user) {
-		res.clearCookie('user_sid');
-	}
-	next();
+    if (req.cookies.user_sid && !req.session.user) {
+        res.clearCookie('user_sid');
+    }
+    next();
 })
 
 // catch 404 and forward to error handler

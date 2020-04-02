@@ -1,60 +1,60 @@
 doctype html
 
 html
-	head
-		meta(name="viewport" content="width=device-width, initial-scale=1")
-		title="race_condition"
-		link(href='/stylesheets/main.css' rel='stylesheet')
-		script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
-		script(type='text/javascript' src='/javascripts/sign_up.js')
+  head
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    title="race_condition"
+    link(href='/stylesheets/main.css' rel='stylesheet')
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
+    script(type='text/javascript' src='/javascripts/sign_up.js')
 
-	body
-
-
-		div(id="container")
+  body
 
 
-			div(id="body")
-			
-				br
-				br
-				br
-
-				div(class="panel" style="max-width: 310px")
-
-					h(class="header2" style="text-align:center; font-size: 26px") Sign Up
-
-					p(align="center" style="font-size: 18px") Welcome to <em>race_condition</em>!
-
-					form(action="")
-						
-						label(for="username" class="label") Username
-						
-						input(id="username" name="username" type="text" minlength="4" maxlength="10" pattern="[a-zA-Z0-9_]*" oninvalid="setCustomValidity('Use only alphanumeric characters and underscores. Enter 4-10 characters.')" oninput="this.setCustomValidity('')" autocomplete="off" required)
+    div(id="container")
 
 
-						label(for="password" class="label") Password
+      div(id="body")
+      
+        br
+        br
+        br
 
-						input(id="password" name="password" type="password" minlength="8" maxlength="32" pattern="(?=.*[0-9]).{1,}(?=.*[@$!%*#?&]).{1,}" oninvalid="this.setCustomValidity('A password must contain at least one number and one special character. A minimum of 8 characters is required.')" oninput="this.setCustomValidity('')" autocomplete="off" required)
+        div(class="panel" style="max-width: 310px")
 
-						br
-						br
+          h(class="header2" style="text-align:center; font-size: 26px") Sign Up
 
+          p(align="center" style="font-size: 18px") Welcome to <em>race_condition</em>!
 
-						button(class="button-hover")
-							span Sign Up
-
-
-					p(id="error_message" class="error" align="center")
-
-					br(id="spacing")
-					hr
-					br
-
-					div(align="center")
-						span Returning user? 
-						|
-						a(href='/sign-in') Log in.
+          form(action="")
+            
+            label(for="username" class="label") Username
+            
+            input(id="username" name="username" type="text" minlength="4" maxlength="10" pattern="[a-zA-Z0-9_]*" oninvalid="setCustomValidity('Use only alphanumeric characters and underscores. Enter 4-10 characters.')" oninput="this.setCustomValidity('')" autocomplete="off" required)
 
 
-			include ./footer.pug
+            label(for="password" class="label") Password
+
+            input(id="password" name="password" type="password" minlength="8" maxlength="32" pattern="(?=.*[0-9]).{1,}(?=.*[@$!%*#?&]).{1,}" oninvalid="this.setCustomValidity('A password must contain at least one number and one special character. A minimum of 8 characters is required.')" oninput="this.setCustomValidity('')" autocomplete="off" required)
+
+            br
+            br
+
+
+            button(class="button-hover")
+              span Sign Up
+
+
+          p(id="error_message" class="error" align="center")
+
+          br(id="spacing")
+          hr
+          br
+
+          div(align="center")
+            span Returning user? 
+            |
+            a(href='/sign-in') Log in.
+
+
+      include ./footer.pug

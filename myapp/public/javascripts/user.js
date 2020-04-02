@@ -1,13 +1,16 @@
+/* client-side javascript for the user page */
 
 var new_rank;
 var user;
 
 
+/* returns the pathname of the appropriate rank image */
 function get_rank_path(rank) {
 
 	return "/images/ranks/" + rank.toLowerCase() + ".png";
 }
 
+/* some text is abbreviated when window width is sufficiently small */
 function window_change() {
 	var width = window.innerWidth;
 	if (width < 550) {
@@ -78,7 +81,8 @@ $(document).ready(function(){
 	};
 
 
-
+	/* for uploading a profile picture */
+	/* from https://stackoverflow.com/questions/2320069/jquery-ajax-file-upload */
 	$("#file").on("change", function (e) {
 		var file = $(this)[0].files[0];
 		var upload = new Upload(file);

@@ -1,89 +1,89 @@
 doctype html
 
 html
-	head
-		meta(name="viewport" content="width=device-width, initial-scale=1.0")
-		title="race_condition"
+  head
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title="race_condition"
 
-		link(href='/stylesheets/codemirror.css' rel='stylesheet')
-		link(href='/theme/dracula.css' rel='stylesheet')
-		link(href='/theme/base16-dark.css' rel='stylesheet')
-		link(href='/stylesheets/main.css' rel='stylesheet')
-		script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
-		script(type='text/javascript' src='/javascripts/lib/codemirror.js')
-		script(type='text/javascript' src='/javascripts/mode/python/python.js')
-		script(type='text/javascript' src='/javascripts/mode/scheme/scheme.js')
-		script(type='text/javascript' src='/javascripts/mode/javascript/javascript.js')
-		script(type='text/javascript' src='/javascripts/mode/haskell/haskell.js')
-		script(type='text/javascript' src='/javascripts/color.js')
-		script(type='text/javascript' src='/javascripts/work_on.js')
+    link(href='/stylesheets/codemirror.css' rel='stylesheet')
+    link(href='/theme/dracula.css' rel='stylesheet')
+    link(href='/theme/base16-dark.css' rel='stylesheet')
+    link(href='/stylesheets/main.css' rel='stylesheet')
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
+    script(type='text/javascript' src='/javascripts/lib/codemirror.js')
+    script(type='text/javascript' src='/javascripts/mode/python/python.js')
+    script(type='text/javascript' src='/javascripts/mode/scheme/scheme.js')
+    script(type='text/javascript' src='/javascripts/mode/javascript/javascript.js')
+    script(type='text/javascript' src='/javascripts/mode/haskell/haskell.js')
+    script(type='text/javascript' src='/javascripts/color.js')
+    script(type='text/javascript' src='/javascripts/work_on.js')
 
-	body
-
-
-		div(id="container")
-
-			include ./header.pug
-			div(id="body")
-
-				h(class="header1") #{puzzle.name}
-
-				h(class="header2") Difficulty: 
-				p(id="difficulty" style="margin-left:100px; margin-right:2%; margin-top: -50px; text-align: justify;") #{puzzle.difficulty}
-
-				h(class="header2") Description: 
-				p(style="margin-left:100px; margin-right:2%; margin-top: -50px; text-align: justify;") !{puzzle.description}
-
-				hr
-
-				div
-					div(class="code-container")
-						div(class="codebar-item" id="code_panel")
-							div(class="cell")
-								h(class="header3" style="margin-right: 20px") Language: 
-								select(id="language" name="language")
-									option(value="Python" selected) Python
-									option(value="Scheme") Scheme
-									option(value="JavaScript") JavaScript
-									option(value="Haskell") Haskell
-							div(class="cell" style="width:60px")
-								img(id="logo" src="/images/" + "python" + ".svg" alt='logo' width="50px" height="50px" style="float:left; margin: 0 20px")
-
-							div(class="cell")
-								h(class="header3" style="margin-right: 20px") Run:
-								button(id="run_button" class="round-button round-button-hover" style="margin 0 auto")
-									i(class="fa fa-play")
-
-											
-
-						div(class="codebar-item" id="stats")
-
-							div(class="cell")
-								p(id="time_stats" style="margin: auto")
-								// style="margin-bottom: -25px; margin-top: -10px")
-
-							div(class="cell")
-								p(id="length_stats" style="margin: auto")
-								//-bottom: -25px; margin-top: -10px")
-
-					div(class="code-container")
-						div(style="text-align:left")
-							div.input(style="font-size:15px;")
-								textarea(id="codeeditor")
-						div(style="text-align:left")
-							div.input(style="font-size:15px")
-								textarea(id="codeoutput")
-
-				br
-
-				button(id="edit_button" class="button-hover")
-					span Continue Editing
-				button(id="submit_button" class="button-hover")
-					span Save this Solution
+  body
 
 
-				script.
-					var solutions = !{JSON.stringify(solutions)};
-					var puzzle = !{JSON.stringify(puzzle)};
+    div(id="container")
 
-			include ./footer.pug
+      include ./header.pug
+      div(id="body")
+
+        h(class="header1") #{puzzle.name}
+
+        h(class="header2") Difficulty: 
+        p(id="difficulty" style="margin-left:100px; margin-right:2%; margin-top: -50px; text-align: justify;") #{puzzle.difficulty}
+
+        h(class="header2") Description: 
+        p(style="margin-left:100px; margin-right:2%; margin-top: -50px; text-align: justify;") !{puzzle.description}
+
+        hr
+
+        div
+          div(class="code-container")
+            div(class="codebar-item" id="code_panel")
+              div(class="cell")
+                h(class="header3" style="margin-right: 20px") Language: 
+                select(id="language" name="language")
+                  option(value="Python" selected) Python
+                  option(value="Scheme") Scheme
+                  option(value="JavaScript") JavaScript
+                  option(value="Haskell") Haskell
+              div(class="cell" style="width:60px")
+                img(id="logo" src="/images/" + "python" + ".svg" alt='logo' width="50px" height="50px" style="float:left; margin: 0 20px")
+
+              div(class="cell")
+                h(class="header3" style="margin-right: 20px") Run:
+                button(id="run_button" class="round-button round-button-hover" style="margin 0 auto")
+                  i(class="fa fa-play")
+
+                      
+
+            div(class="codebar-item" id="stats")
+
+              div(class="cell")
+                p(id="time_stats" style="margin: auto")
+                // style="margin-bottom: -25px; margin-top: -10px")
+
+              div(class="cell")
+                p(id="length_stats" style="margin: auto")
+                //-bottom: -25px; margin-top: -10px")
+
+          div(class="code-container")
+            div(style="text-align:left")
+              div.input(style="font-size:15px;")
+                textarea(id="codeeditor")
+            div(style="text-align:left")
+              div.input(style="font-size:15px")
+                textarea(id="codeoutput")
+
+        br
+
+        button(id="edit_button" class="button-hover")
+          span Continue Editing
+        button(id="submit_button" class="button-hover")
+          span Save this Solution
+
+
+        script.
+          var solutions = !{JSON.stringify(solutions)};
+          var puzzle = !{JSON.stringify(puzzle)};
+
+      include ./footer.pug

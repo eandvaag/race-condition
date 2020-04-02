@@ -1,3 +1,4 @@
+/* client-side javascript for the 'work-on' page */
 
 var myCodeMirror;
 var myOutput;
@@ -5,7 +6,7 @@ var solution_time;
 var solution_length;
 
 
-
+/* user selects a new language from the dropdown */
 function dropdown_update()  {
 
 
@@ -33,7 +34,7 @@ function dropdown_update()  {
   }
 }
 
-
+/* disable input when code is running */
 function disable_input(){
     myCodeMirror.setOption('readOnly', "nocursor");
     $("#run_button").attr("disabled", true);
@@ -45,6 +46,7 @@ function disable_input(){
     $("#run_button").css("cursor", "default");
 }
 
+/* re-enable input when code is finished running */
 function enable_input(){
   myCodeMirror.setOption('readOnly', false);
   $("#run_button").attr("disabled", false);
@@ -62,7 +64,7 @@ $(document).ready(function(){
   $("#difficulty").css("color", difficulty_color(puzzle.difficulty));
 
 
-  /* hide submit button */
+  /* hide submit button and edit buttons */
   $("#submit_button").hide();
   $("#edit_button").hide();
 

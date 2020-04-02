@@ -1,3 +1,5 @@
+/* d3 specific styling */
+
 .axis path,
 .axis line{
 	fill: none;
@@ -23,3 +25,4 @@ text {
 	background-color: #172027;
 	color: white;
 }
+

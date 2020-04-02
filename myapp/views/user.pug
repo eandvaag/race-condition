@@ -1,130 +1,130 @@
 doctype html
 
 html
-	head
-		meta(name="viewport" content="width=device-width, initial-scale=1.0")
-		title="race_condition"
-		link(href='/stylesheets/main.css' rel='stylesheet')
-		script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
-		script(type='text/javascript' src='/javascripts/user.js')
+  head
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title="race_condition"
+    link(href='/stylesheets/main.css' rel='stylesheet')
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
+    script(type='text/javascript' src='/javascripts/user.js')
 
-	body
+  body
 
-		div(id="container")
-			include ./header.pug
-			
-			div(id="body")
+    div(id="container")
+      include ./header.pug
+      
+      div(id="body")
 
-				h(class="header1") Profile
+        h(class="header1") Profile
 
-				div(class="grid-container")
-					div(class="half-round-item-1")
+        div(class="grid-container")
+          div(class="half-round-item-1")
 
-						br
-						code(style="font-size:24px") #{user.username}
-						br
+            br
+            code(style="font-size:24px") #{user.username}
+            br
 
-						if (user.picture == true)
-							br
-							img(id="profile_image" src="/user/" + user.username + "/picture_resized" alt="profile picture" width="120px")
-						else
-							br
-							img(id="profile_image" src="/images/profile_placeholder.png" alt="generic profile picture" width="120px")
+            if (user.picture == true)
+              br
+              img(id="profile_image" src="/user/" + user.username + "/picture_resized" alt="profile picture" width="120px")
+            else
+              br
+              img(id="profile_image" src="/images/profile_placeholder.png" alt="generic profile picture" width="120px")
 
-						br
-						input(type="file" id="file" name="profile_picture" accept="image/*" style="display: none;")
-						label(for="file" class="upload") Select File
+            br
+            input(type="file" id="file" name="profile_picture" accept="image/*" style="display: none;")
+            label(for="file" class="upload") Select File
 
-					div(class="half-round-item-2")
-						h2 Rank
-						br
-						img(id="rank_image" src="/images/ranks/" + user.rank.toLowerCase().split(' ').join('_') + ".png" alt='rank', style="max-width: 160px; margin-bottom:-35px; margin-top:-40px;")
+          div(class="half-round-item-2")
+            h2 Rank
+            br
+            img(id="rank_image" src="/images/ranks/" + user.rank.toLowerCase().split(' ').join('_') + ".png" alt='rank', style="max-width: 160px; margin-bottom:-35px; margin-top:-40px;")
 
-					div(class="half-round-item-2")
-						h2(style="padding: 0 10px") Games Played
-						table(style="width:90%; margin: 0 auto")
-								col(style="width:33%")
-								col(style="width:33%")
-								col(style="width:33%")
-								tr
-									th(id="total-header")  Total
-									th(id="win-header") Wins
-									th(id="loss-header") Losses
-								tr
-									td #{user.games_played}
-									td #{user.games_won}
-									td #{user.games_lost}
+          div(class="half-round-item-2")
+            h2(style="padding: 0 10px") Games Played
+            table(style="width:90%; margin: 0 auto")
+                col(style="width:33%")
+                col(style="width:33%")
+                col(style="width:33%")
+                tr
+                  th(id="total-header")  Total
+                  th(id="win-header") Wins
+                  th(id="loss-header") Losses
+                tr
+                  td #{user.games_played}
+                  td #{user.games_won}
+                  td #{user.games_lost}
 
-					div(class="half-round-item-1")
-						h2(style="padding: 0 10px") Puzzles Solved
-						table(style="width:90%; margin: 0 auto")
-								col(style="width:33%")
-								col(style="width:33%")
-								col(style="width:33%")
-								tr
-									th(id="easy-header") Easy
-									th(id="moderate-header") Moderate
-									th(id="challenging-header") Challenging
-								tr
-									td #{user.num_easy_solved}
-									td #{user.num_moderate_solved}
-									td #{user.num_difficult_solved}
-
-
-				br
-				br
-				
+          div(class="half-round-item-1")
+            h2(style="padding: 0 10px") Puzzles Solved
+            table(style="width:90%; margin: 0 auto")
+                col(style="width:33%")
+                col(style="width:33%")
+                col(style="width:33%")
+                tr
+                  th(id="easy-header") Easy
+                  th(id="moderate-header") Moderate
+                  th(id="challenging-header") Challenging
+                tr
+                  td #{user.num_easy_solved}
+                  td #{user.num_moderate_solved}
+                  td #{user.num_difficult_solved}
 
 
-				h(class="header1") Puzzle Index
+        br
+        br
+        
 
 
-				if user.num_solved == 0
-					p You haven't solved any puzzles yet!
-				else
-					div
-						table(style="display: table; overflow: scroll; width: 85%; margin: 0 auto;")
-							col(style="width:30%")
-							col(style="width:30%")
-							col(style="width:20%")
-							col(style="width:20%")
-							tr
-								th Name
-								th Languages
-								th(id="statistics-header") Statistics
-								th Develop
-							each langs, puzzle in lang_lookup
-								tr
-									td
-										code #{puzzle}
-									td
-										each lang in ['python', 'scheme', 'javascript', 'haskell']
-											if langs.includes(lang)
-
-												img(src="/images/" + lang + ".svg" alt='logo' width="30px" height="30px" align="middle" style="margin: 5px 10px")
-											else
-												img(src="/images/transparent.png" alt="empty" width="30px" height="30px" align="middle" style="margin: 5px 10px")
-									
-									td
-										div(class="wrapper")
-											svg(class="pointer" onclick="window.location.href = '/puzzle/" + puzzle + "'" width="18px" height="17px" viewBox="-1 0 18 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink")
-												g
-													polygon(class="arrow" points="16.3746667 8.33860465 7.76133333 15.3067621 6.904 14.3175671 14.2906667 8.34246869 6.908 2.42790698 7.76 1.43613596")
-													polygon class="arrow-fixed" points="16.3746667 8.33860465 7.76133333 15.3067621 6.904 14.3175671 14.2906667 8.34246869 6.908 2.42790698 7.76 1.43613596")
-													path(d="M-4.58892184e-16,0.56157424 L-4.58892184e-16,16.1929159 L9.708,8.33860465 L-1.64313008e-15,0.56157424 L-4.58892184e-16,0.56157424 Z M1.33333333,3.30246869 L7.62533333,8.34246869 L1.33333333,13.4327013 L1.33333333,3.30246869 L1.33333333,3.30246869 Z")
-										
-									td
-
-										div(class="wrapper")
-											svg(class="pointer" onclick="window.location.href='/puzzle/" + puzzle + "/" + user.username + "'" width="18px" height="17px" viewBox="-1 0 18 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink")
-												g
-													polygon(class="arrow" points="16.3746667 8.33860465 7.76133333 15.3067621 6.904 14.3175671 14.2906667 8.34246869 6.908 2.42790698 7.76 1.43613596")
-													polygon class="arrow-fixed" points="16.3746667 8.33860465 7.76133333 15.3067621 6.904 14.3175671 14.2906667 8.34246869 6.908 2.42790698 7.76 1.43613596")
-													path(d="M-4.58892184e-16,0.56157424 L-4.58892184e-16,16.1929159 L9.708,8.33860465 L-1.64313008e-15,0.56157424 L-4.58892184e-16,0.56157424 Z M1.33333333,3.30246869 L7.62533333,8.34246869 L1.33333333,13.4327013 L1.33333333,3.30246869 L1.33333333,3.30246869 Z")
+        h(class="header1") Puzzle Index
 
 
-				script.
-					var new_rank = !{JSON.stringify(new_rank)};
-					var user = !{JSON.stringify(user)};
-			
-			include ./footer.pug
+        if user.num_solved == 0
+          p You haven't solved any puzzles yet!
+        else
+          div
+            table(style="display: table; overflow: scroll; width: 85%; margin: 0 auto;")
+              col(style="width:30%")
+              col(style="width:30%")
+              col(style="width:20%")
+              col(style="width:20%")
+              tr
+                th Name
+                th Languages
+                th(id="statistics-header") Statistics
+                th Develop
+              each langs, puzzle in lang_lookup
+                tr
+                  td
+                    code #{puzzle}
+                  td
+                    each lang in ['python', 'scheme', 'javascript', 'haskell']
+                      if langs.includes(lang)
+
+                        img(src="/images/" + lang + ".svg" alt='logo' width="30px" height="30px" align="middle" style="margin: 5px 10px")
+                      else
+                        img(src="/images/transparent.png" alt="empty" width="30px" height="30px" align="middle" style="margin: 5px 10px")
+                  
+                  td
+                    div(class="wrapper")
+                      svg(class="pointer" onclick="window.location.href = '/puzzle/" + puzzle + "'" width="18px" height="17px" viewBox="-1 0 18 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink")
+                        g
+                          polygon(class="arrow" points="16.3746667 8.33860465 7.76133333 15.3067621 6.904 14.3175671 14.2906667 8.34246869 6.908 2.42790698 7.76 1.43613596")
+                          polygon class="arrow-fixed" points="16.3746667 8.33860465 7.76133333 15.3067621 6.904 14.3175671 14.2906667 8.34246869 6.908 2.42790698 7.76 1.43613596")
+                          path(d="M-4.58892184e-16,0.56157424 L-4.58892184e-16,16.1929159 L9.708,8.33860465 L-1.64313008e-15,0.56157424 L-4.58892184e-16,0.56157424 Z M1.33333333,3.30246869 L7.62533333,8.34246869 L1.33333333,13.4327013 L1.33333333,3.30246869 L1.33333333,3.30246869 Z")
+                    
+                  td
+
+                    div(class="wrapper")
+                      svg(class="pointer" onclick="window.location.href='/puzzle/" + puzzle + "/" + user.username + "'" width="18px" height="17px" viewBox="-1 0 18 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink")
+                        g
+                          polygon(class="arrow" points="16.3746667 8.33860465 7.76133333 15.3067621 6.904 14.3175671 14.2906667 8.34246869 6.908 2.42790698 7.76 1.43613596")
+                          polygon class="arrow-fixed" points="16.3746667 8.33860465 7.76133333 15.3067621 6.904 14.3175671 14.2906667 8.34246869 6.908 2.42790698 7.76 1.43613596")
+                          path(d="M-4.58892184e-16,0.56157424 L-4.58892184e-16,16.1929159 L9.708,8.33860465 L-1.64313008e-15,0.56157424 L-4.58892184e-16,0.56157424 Z M1.33333333,3.30246869 L7.62533333,8.34246869 L1.33333333,13.4327013 L1.33333333,3.30246869 L1.33333333,3.30246869 Z")
+
+
+        script.
+          var new_rank = !{JSON.stringify(new_rank)};
+          var user = !{JSON.stringify(user)};
+      
+      include ./footer.pug

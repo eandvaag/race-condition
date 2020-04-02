@@ -1,3 +1,5 @@
+/* server side socket io handler */
+
 const models = require('./models');
 var landing = require('./controllers/landing')
 var sequelize = require('sequelize');

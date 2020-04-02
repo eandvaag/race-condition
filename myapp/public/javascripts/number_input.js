@@ -1,3 +1,5 @@
+/* for custom number input elements */
+/* mostly from https://codepen.io/prasanthmj/pen/EWQPrK */
 
 $(document).ready(function(){
   $('<div class="quantity-nav"><div class="quantity-button quantity-up">+</div><div class="quantity-button quantity-down">-</div></div>').insertAfter('.quantity input');
@@ -8,8 +10,6 @@ $(document).ready(function(){
       btnDown = spinner.find('.quantity-down'),
       min = input.attr('min'),
       max = input.attr('max');
-      //disabled = input.attr('dis');
-      //console.log(min, max, disabled);
 
     btnUp.click(function() {
       if (input.attr('dis') !== "true") {

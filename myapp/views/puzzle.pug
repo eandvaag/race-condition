@@ -1,39 +1,39 @@
 doctype html
 
 html
-	head
-		title="race_condition"
-		link(href='/stylesheets/main.css' rel='stylesheet')
-		link(href='/stylesheets/d3.css' rel='stylesheet')
-		script(type='text/javascript' src='https://d3js.org/d3.v5.min.js')
-		script(type='text/javascript' src='/javascripts/puzzle.js')
-		script(type='text/javascript' src='/javascripts/color.js')
-		script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
-	body
+  head
+    title="race_condition"
+    link(href='/stylesheets/main.css' rel='stylesheet')
+    link(href='/stylesheets/d3.css' rel='stylesheet')
+    script(type='text/javascript' src='https://d3js.org/d3.v5.min.js')
+    script(type='text/javascript' src='/javascripts/puzzle.js')
+    script(type='text/javascript' src='/javascripts/color.js')
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
+  body
 
-		div(id="container")
-			include ./header.pug
+    div(id="container")
+      include ./header.pug
 
-			div(id="body")
-				h(class="header1") #{puzzle.name}
+      div(id="body")
+        h(class="header1") #{puzzle.name}
 
-				h(class="header2") Difficulty: 
-				p(id="difficulty" style="margin-left:100px; margin-right:2%; margin-top: -50px; text-align: justify;") #{puzzle.difficulty}	
+        h(class="header2") Difficulty: 
+        p(id="difficulty" style="margin-left:100px; margin-right:2%; margin-top: -50px; text-align: justify;") #{puzzle.difficulty} 
 
-				h(class="header2") Description: 
-				p(style="margin-left:100px; margin-right:2%; margin-top: -50px; text-align: justify;") !{puzzle.description}				
+        h(class="header2") Description: 
+        p(style="margin-left:100px; margin-right:2%; margin-top: -50px; text-align: justify;") !{puzzle.description}        
 
-				h(class="header2") Top 10 Solutions: 
+        h(class="header2") Top 10 Solutions: 
 
-				div(class="masonry")
-					div(class="masonry-legend" id="legend")
-					div(class="masonry-chart" id="chart")
-						select(id="drop")
+        div(class="masonry")
+          div(class="masonry-legend" id="legend")
+          div(class="masonry-chart" id="chart")
+            select(id="drop")
 
-				script.
-					var puzzle = !{JSON.stringify(puzzle)};
-					var fastest_solutions = !{JSON.stringify(fastest_solutions)};
-					var shortest_solutions = !{JSON.stringify(shortest_solutions)};
-					drawPlot();
+        script.
+          var puzzle = !{JSON.stringify(puzzle)};
+          var fastest_solutions = !{JSON.stringify(fastest_solutions)};
+          var shortest_solutions = !{JSON.stringify(shortest_solutions)};
+          drawPlot();
 
-			include ./footer.pug
+      include ./footer.pug

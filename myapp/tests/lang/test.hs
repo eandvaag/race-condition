@@ -4,6 +4,10 @@ import Data.List
 import System.Directory
 import Control.Monad
 
+
+-- Test Harness for Haskell
+
+
 slice begin end = take (end - begin) . drop begin
 
 chunks n = takeWhile (not.null) . unfoldr (Just . splitAt n)

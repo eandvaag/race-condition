@@ -1,3 +1,5 @@
+/* for submitting sign-in information to server */
+
 $(document).ready(function(){
 
   $("#error_message").hide();

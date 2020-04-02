@@ -73,6 +73,12 @@ module.exports = {
       difficulty: 'easy',
       createdAt: new Date(),
       updatedAt: new Date()
+    }, {
+      name: 'pse':
+      description: "Write a function <code>pse()</code> that takes a single integer argument and returns true if the argument is an even perfect square. A number is a perfect square if it is the square of some integer."
+      difficulty: 'easy',
+      createdAt: new Date(),
+      updatedAt: new Date()
     },
 
 

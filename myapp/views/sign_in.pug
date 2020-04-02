@@ -1,54 +1,58 @@
 doctype html
 
 html
-	head
-		meta(name="viewport" content="width=device-width, initial-scale=1")
-		title="race_condition"
-		link(href='/stylesheets/main.css' rel='stylesheet')
-		script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
-		script(type='text/javascript' src='/javascripts/sign_in.js')
-	body
+  head
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    title="race_condition"
+    link(href='/stylesheets/main.css' rel='stylesheet')
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
+    script(type='text/javascript' src='/javascripts/sign_in.js')
+    
+  body
 
-		div(id="container")
-
-
-			div(id="body")
+    div(id="container")
 
 
-				br
-				br
-				br
-
-				div(class="panel" style="max-width: 310px")
-
-					h(class="header2" style="text-align:center; font-size: 26px") Sign In
-
-					p(align="center" style="font-size: 18px") Welcome to <em>race_condition</em>!
-
-					form(action="")
-
-						label(for="username" class="label") Username
-
-						input(id="username" name="username" type="text" required)
-
-						label(for="password" class="label") Password
-
-						input(id="password" name="password" type="password" required)
-
-						button(class="button-hover")
-							span Sign In
-
-					p(id="error_message" class="error" align="center")
-
-					br(id="spacing")
-					hr
-					br
+      div(id="body")
 
 
-					div(align="center")
-						span New user? 
-						|
-						a(href='/sign-up') Create an account.
+        br
+        br
+        br
+
+        div(class="panel" style="max-width: 310px")
+
+          h(class="header2" style="text-align:center; font-size: 26px") Sign In
+
+          p(align="center" style="font-size: 18px") Welcome to <em>race_condition</em>!
+
+          form(action="")
+
+            label(for="username" class="label") Username
+
+            input(id="username" name="username" type="text" required)
+
+            label(for="password" class="label") Password
+
+            input(id="password" name="password" type="password" required)
+
+            br
+            br
+
+            button(class="button-hover")
+              span Sign In
+
+          p(id="error_message" class="error" align="center")
+
+          br(id="spacing")
+          hr
+          br
 
 
-			include ./footer.pug
+          div(align="center")
+            span New user? 
+            |
+            a(href='/sign-up') Create an account.
+
+
+      include ./footer.pug

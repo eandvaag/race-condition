@@ -1,129 +1,129 @@
 doctype html
 
 html
-	head
-		meta(name="viewport" content="width=device-width, initial-scale=1.0")
-		title="race_condition"
+  head
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title="race_condition"
 
-		link(href='/stylesheets/codemirror.css' rel='stylesheet')
-		link(href='/theme/dracula.css' rel='stylesheet')
-		link(href='/theme/base16-dark.css' rel='stylesheet')
-		link(href='/stylesheets/main.css' rel='stylesheet')
-		script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
-		script(type='text/javascript' src='/javascripts/lib/codemirror.js')
-		script(type='text/javascript' src='/javascripts/mode/python/python.js')
-		script(type='text/javascript' src='/javascripts/mode/scheme/scheme.js')
-		script(type='text/javascript' src='/javascripts/mode/javascript/javascript.js')
-		script(type='text/javascript' src='/javascripts/mode/haskell/haskell.js')
-		script(src="/socket.io/socket.io.js")
-		script(type='text/javascript' src='/javascripts/color.js')
-		script(type='text/javascript' src='/javascripts/time_attack.js')
-		script(type='text/javascript' src='/javascripts/game_shared.js')
-
-
-	body
+    link(href='/stylesheets/codemirror.css' rel='stylesheet')
+    link(href='/theme/dracula.css' rel='stylesheet')
+    link(href='/theme/base16-dark.css' rel='stylesheet')
+    link(href='/stylesheets/main.css' rel='stylesheet')
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
+    script(type='text/javascript' src='/javascripts/lib/codemirror.js')
+    script(type='text/javascript' src='/javascripts/mode/python/python.js')
+    script(type='text/javascript' src='/javascripts/mode/scheme/scheme.js')
+    script(type='text/javascript' src='/javascripts/mode/javascript/javascript.js')
+    script(type='text/javascript' src='/javascripts/mode/haskell/haskell.js')
+    script(src="/socket.io/socket.io.js")
+    script(type='text/javascript' src='/javascripts/color.js')
+    script(type='text/javascript' src='/javascripts/time_attack.js')
+    script(type='text/javascript' src='/javascripts/game_shared.js')
 
 
-		div(id="container")
-
-			include ./header.pug
-			div(id="body")
-
-				div
-					div(class="code-container")
-
-						div(id="progress-panel" class="codebar-item")
-
-							div
-								h(class="header3" style="display:block; text-align:center; padding: 10px 0") Time: 
-								
-								code(id="timer" class="timer")
-
-							div(class="progress-container")
-								div(class="progress")
-									div(style="display:flex")
-										if user.picture
-											img(src="/user/" + user.username + "/picture_resized" alt="profile picture" width="40px" height="40px" style="margin: 10px 10px")
-										else
-											img(src="/images/profile_placeholder.png" alt="generic profile picture" width="40px" height="40px" style="margin: 10px 10px")
-										div(class="progress-name") #{game.creator}
-									div(class="progress-bar")
-										div(id="progress_" + game.creator class="progress-per" per="0%")
-								div(class="progress-text-container")
-									div(id="progress_text_" + game.creator class="progress-per-text" per="0%")
+  body
 
 
+    div(id="container")
+
+      include ./header.pug
+      div(id="body")
+
+        div
+          div(class="code-container")
+
+            div(id="progress-panel" class="codebar-item")
+
+              div
+                h(class="header3" style="display:block; text-align:center; padding: 10px 0") Time: 
+                
+                code(id="timer" class="timer")
+
+              div(class="progress-container")
+                div(class="progress")
+                  div(style="display:flex")
+                    if user.picture
+                      img(src="/user/" + user.username + "/picture_resized" alt="profile picture" width="40px" height="40px" style="margin: 10px 10px")
+                    else
+                      img(src="/images/profile_placeholder.png" alt="generic profile picture" width="40px" height="40px" style="margin: 10px 10px")
+                    div(class="progress-name") #{game.creator}
+                  div(class="progress-bar")
+                    div(id="progress_" + game.creator class="progress-per" per="0%")
+                div(class="progress-text-container")
+                  div(id="progress_text_" + game.creator class="progress-per-text" per="0%")
 
 
 
-						div(class="puzzle-item" id="puzzle-panel")
-							
-							div
-								h(id="puzzle_header" class="header3" style="margin-right: 30px") Puzzle: 
-								select(id="puzzle" name="puzzle" style="width: 140px")
-
-								br(class="space")
-								br(class="space")
-								h(id="description_header" class="header3") Description: 
-								p(id="description" style="text-align: justify; margin: -20px 0px") 
 
 
-							div(style="height:100%; margin: 0 auto")
-								h(id="gameover" class="header1" style="font-size: 24px; text-align: center;")
-								p(id="unlocked" style="text-align: justify;")
-								p(id="new_lang" style="text-align: justify;")
+            div(class="puzzle-item" id="puzzle-panel")
+              
+              div
+                h(id="puzzle_header" class="header3" style="margin-right: 30px") Puzzle: 
+                select(id="puzzle" name="puzzle" style="width: 140px")
+
+                br(class="space")
+                br(class="space")
+                h(id="description_header" class="header3") Description: 
+                p(id="description" style="text-align: justify; margin: -20px 0px") 
+
+
+              div(style="height:100%; margin: 0 auto")
+                h(id="gameover" class="header1" style="font-size: 24px; text-align: center;")
+                p(id="unlocked" style="text-align: justify;")
+                p(id="new_lang" style="text-align: justify;")
 
 
 
-					div(class="code-container")
-						div(class="codebar-item" id="lang-panel")
+          div(class="code-container")
+            div(class="codebar-item" id="lang-panel")
 
-							div(class="cell")
-								h(class="header3" style="margin-right: 20px") Language: 
+              div(class="cell")
+                h(class="header3" style="margin-right: 20px") Language: 
 
-								select(id="language" name="language")
-									option(value="Python" selected) Python
-									option(value="Scheme") Scheme
-									option(value="JavaScript") JavaScript
-									option(value="Haskell") Haskell
+                select(id="language" name="language")
+                  option(value="Python" selected) Python
+                  option(value="Scheme") Scheme
+                  option(value="JavaScript") JavaScript
+                  option(value="Haskell") Haskell
 
-							div(class="cell")
-								img(id="logo" src="/images/" + "python" + ".svg" alt='logo' width="50px" height="50px" style="float:left; margin: 0 20px")
+              div(class="cell")
+                img(id="logo" src="/images/" + "python" + ".svg" alt='logo' width="50px" height="50px" style="float:left; margin: 0 20px")
 
-							div(id="lobby")
-								button(id="lobby_button" class="button-hover" onclick="window.location.href = '/play'" style="margin: 18px 0; width:200px")
-									span Return to Lobby
-
-
-											
-
-						div(class="codebar-item" id="run-panel")
-
-							div(class="cell")
-								h(class="header3" style="margin-right: 20px") Run:
-								button(id="run_button" class="round-button" class="round-button-hover" style="margin 0 auto")
-									i(class="fa fa-play")
+              div(id="lobby")
+                button(id="lobby_button" class="button-hover" onclick="window.location.href = '/play'" style="margin: 18px 0; width:200px")
+                  span Return to Lobby
 
 
-							div(id="rematch")
-								button(id="rematch_button" class="button-hover" onclick="play_again()" style="margin: 18px 0; width:200px")
-									span Play Again
+                      
+
+            div(class="codebar-item" id="run-panel")
+
+              div(class="cell")
+                h(class="header3" style="margin-right: 20px") Run:
+                button(id="run_button" class="round-button" class="round-button-hover" style="margin 0 auto")
+                  i(class="fa fa-play")
 
 
-					div(class="code-container")
-						div(style="text-align:left")
-							div.input(style="font-size:15px;")
-								textarea(id="codeeditor")
-						div(style="text-align:left")
-							div.input(style="font-size:15px")
-								textarea(id="codeoutput")
+              div(id="rematch")
+                button(id="rematch_button" class="button-hover" onclick="play_again()" style="margin: 18px 0; width:200px")
+                  span Play Again
 
 
-			include ./footer.pug
+          div(class="code-container")
+            div(style="text-align:left")
+              div.input(style="font-size:15px;")
+                textarea(id="codeeditor")
+            div(style="text-align:left")
+              div.input(style="font-size:15px")
+                textarea(id="codeoutput")
 
-				script.
-					var game = !{JSON.stringify(game)};
-					var user = !{JSON.stringify(user)};
-					var puzzles = !{JSON.stringify(puzzles)};
 
-					var points_needed = game.num_easy + (game.num_moderate * 3) + (game.num_challenging * 5);
+      include ./footer.pug
+
+        script.
+          var game = !{JSON.stringify(game)};
+          var user = !{JSON.stringify(user)};
+          var puzzles = !{JSON.stringify(puzzles)};
+
+          var points_needed = game.num_easy + (game.num_moderate * 3) + (game.num_challenging * 5);

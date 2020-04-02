@@ -1,192 +1,192 @@
 doctype html
 
 html
-	head
-		title="race_condition"
-		meta(name="viewport" content="width=device-width, initial-scale=1")
+  head
+    title="race_condition"
+    meta(name="viewport" content="width=device-width, initial-scale=1")
 
-		link(href='/stylesheets/main.css' rel='stylesheet')
-		link(rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css")
-
-
-		script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
-		script(type='text/javascript' src="https://code.jquery.com/ui/1.12.1/jquery-ui.js")
-		script(type='text/javascript' src="/socket.io/socket.io.js")
-		
-		script(type='text/javascript' src="/javascripts/number_input.js")
-		script(type='text/javascript' src="/javascripts/play.js")
+    link(href='/stylesheets/main.css' rel='stylesheet')
+    link(rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css")
 
 
-
-
-	body
-
-		div(id="container")
-
-			include ./header.pug
-
-
-			div(id="time_modal" class="modal")
-				div(class="modal-content")
-					div(class="modal-header")
-						span(class="close") &times;
-						p Time Attack
-					div(class="modal-body")
-
-						h(class="header1") Puzzle Mix
-
-						div(style="text-align:center; margin-top: -20px")
-							ul(class="image_ul" style="margin:0; padding: 0")
-
-								li(class="image_li")
-									p(style="margin: 5px 0; margin-top: 25px; padding: 0; font-size: 18px") Easy
-									div(class="quantity")
-										input(type="number" id="num_easy_time" min="0" max="5" step="1" value="1" maxlength="1")
-
-								li(class="image_li")
-									p(style="margin: 5px 0; margin-top: 25px; padding: 0; font-size: 18px") Moderate
-									div(class="quantity")
-										input(type="number" id="num_moderate_time" min="0" max="5" value="0" maxlength="1")
-
-								li(class="image_li")
-									p(style="margin: 5px 0; margin-top: 25px; padding: 0; font-size: 18px") Challenging
-									div(class="quantity")
-										input(type="number" id="num_challenging_time" min="0" max="5" value="0" maxlength="1")
-
-								br
-								br
-								br
-								br
-
-
-						div(style="text-align:center")
-							button(id="submit_time_game" class="button-hover" style="width:200px")
-								span Start
-
-
-						p(id="error_message_time" align="center" class="error")
-
-
-					div(class="modal-footer")
-
-
-			div(id="join_modal" class="modal")
-				div(class="modal-content")
-					div(class="modal-header")
-						span(class="close") &times;
-						p Join Game
-
-					div(class="modal-body")
-
-						h(class="header1") Waiting for Invitations
-						div(class="loader")
-
-
-						div(id="invitation_list" style="text-align:center")
-
-					div(class="modal-footer")
-
-			div(id="create_modal" class="modal")
-				div(class="modal-content")
-					div(class="modal-header")
-						span(id="join_close" class="close") &times;
-						p Create Game
-
-					div(class="modal-body")
-
-						h(class="header1") Languages
-
-						div(style="text-align:center")
-							ul(class="image_ul")
-								li(class="image_li")
-									input(type="checkbox" id="image_checkbox_python" value="Python")
-									label(class="image_label" for="image_checkbox_python")
-										img(id="python_img" class="check_image" src="/images/python.svg" alt='logo')
-								li(class="image_li")
-									input(type="checkbox" id="image_checkbox_scheme" value="Scheme")
-									label(class="image_label" for="image_checkbox_scheme")
-										img(src="/images/scheme.svg" class="check_image" alt='logo')
-								li(class="image_li")
-									input(type="checkbox" id="image_checkbox_javascript" value="JavaScript")
-									label(class="image_label" for="image_checkbox_javascript")
-										img(src="/images/javascript.svg" class="check_image" alt='logo')
-								li(class="image_li")
-									input(type="checkbox" id="image_checkbox_haskell" value="Haskell")
-									label(class="image_label" for="image_checkbox_haskell")
-										img(src="/images/haskell.svg" class="check_image" alt='logo')
-						
-						h(class="header1") Puzzle Mix
-
-						div(style="text-align:center; margin-top: -20px")
-							ul(class="image_ul" style="margin:0; padding: 0")
-
-								li(class="image_li")
-									p(style="margin: 5px 0; margin-top: 25px; padding: 0; font-size: 18px") Easy
-									div(class="quantity")
-										input(type="number" id="num_easy" name="num_easy" min="0" max="5" step="1" value="1" dis="false" maxlength="1")
-
-								li(class="image_li")
-									p(style="margin: 5px 0; margin-top: 25px; padding: 0; font-size: 18px") Moderate
-									div(class="quantity")
-										input(type="number" id="num_moderate" name="num_moderate" min="0" max="5" value="0" dis="false" maxlength="1")
-
-								li(class="image_li")
-									p(style="margin: 5px 0; margin-top: 25px; padding: 0; font-size: 18px") Challenging
-									div(class="quantity")
-										input(type="number" id="num_challenging" name="num_challenging" min="0" max="5" value="0" dis="false" maxlength="1")
-						
-
-						h(class="header1") Opponent
-
-						div(style="text-align:center")
-							div(class="ui-widget")
-								input(id="usernames" type="text" style="width:200px" placeholder="Enter a username")
-
-						
-						br
-
-						div(style="text-align:center")
-							button(id="submit_game" style="width:200px" class="button-hover")
-								span(id="submit_game_text") Create Game
-						div(style="text-align:center" id="create_loader")
-							p(id="sent_message")
-							div(class="loader")
-
-						p(id="error_message" align="center" class="error")
-
-					div(class="modal-footer")
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
+    script(type='text/javascript' src="https://code.jquery.com/ui/1.12.1/jquery-ui.js")
+    script(type='text/javascript' src="/socket.io/socket.io.js")
+    
+    script(type='text/javascript' src="/javascripts/number_input.js")
+    script(type='text/javascript' src="/javascripts/play.js")
 
 
 
 
+  body
 
-			div(id="body")
+    div(id="container")
 
-				div(class="panel")
-
-					h(class="header1") Solo
-
-					div(style="text-align:center")
-						button(id="time_game" style="width:80%" class="button-hover")
-							span Time Attack
-
-					br
-
-					h(class="header1") Play with a Friend
-
-					div(style="text-align:center")
-						button(id="create_game" style="width:80%" class="button-hover")
-							span Create Game
-
-					div(style="text-align:center")
-						button(id="join_game" style="width:80%" class="button-hover") 
-							span Join Game
+      include ./header.pug
 
 
-			include ./footer.pug
+      div(id="time_modal" class="modal")
+        div(class="modal-content")
+          div(class="modal-header")
+            span(class="close") &times;
+            p Time Attack
+          div(class="modal-body")
 
-		
-			script.
-				var user = !{JSON.stringify(user)};
-				var usernames = !{JSON.stringify(usernames)};
-				start_play(user, usernames);
+            h(class="header1") Puzzle Mix
+
+            div(style="text-align:center; margin-top: -20px")
+              ul(class="image_ul" style="margin:0; padding: 0")
+
+                li(class="image_li")
+                  p(style="margin: 5px 0; margin-top: 25px; padding: 0; font-size: 18px") Easy
+                  div(class="quantity")
+                    input(type="number" id="num_easy_time" min="0" max="5" step="1" value="1" maxlength="1")
+
+                li(class="image_li")
+                  p(style="margin: 5px 0; margin-top: 25px; padding: 0; font-size: 18px") Moderate
+                  div(class="quantity")
+                    input(type="number" id="num_moderate_time" min="0" max="5" value="0" maxlength="1")
+
+                li(class="image_li")
+                  p(style="margin: 5px 0; margin-top: 25px; padding: 0; font-size: 18px") Challenging
+                  div(class="quantity")
+                    input(type="number" id="num_challenging_time" min="0" max="5" value="0" maxlength="1")
+
+                br
+                br
+                br
+                br
+
+
+            div(style="text-align:center")
+              button(id="submit_time_game" class="button-hover" style="width:200px")
+                span Start
+
+
+            p(id="error_message_time" align="center" class="error")
+
+
+          div(class="modal-footer")
+
+
+      div(id="join_modal" class="modal")
+        div(class="modal-content")
+          div(class="modal-header")
+            span(class="close") &times;
+            p Join Game
+
+          div(class="modal-body")
+
+            h(class="header1") Waiting for Invitations
+            div(class="loader")
+
+
+            div(id="invitation_list" style="text-align:center")
+
+          div(class="modal-footer")
+
+      div(id="create_modal" class="modal")
+        div(class="modal-content")
+          div(class="modal-header")
+            span(id="join_close" class="close") &times;
+            p Create Game
+
+          div(class="modal-body")
+
+            h(class="header1") Languages
+
+            div(style="text-align:center")
+              ul(class="image_ul")
+                li(class="image_li")
+                  input(type="checkbox" id="image_checkbox_python" value="Python")
+                  label(class="image_label" for="image_checkbox_python")
+                    img(id="python_img" class="check_image" src="/images/python.svg" alt='logo')
+                li(class="image_li")
+                  input(type="checkbox" id="image_checkbox_scheme" value="Scheme")
+                  label(class="image_label" for="image_checkbox_scheme")
+                    img(src="/images/scheme.svg" class="check_image" alt='logo')
+                li(class="image_li")
+                  input(type="checkbox" id="image_checkbox_javascript" value="JavaScript")
+                  label(class="image_label" for="image_checkbox_javascript")
+                    img(src="/images/javascript.svg" class="check_image" alt='logo')
+                li(class="image_li")
+                  input(type="checkbox" id="image_checkbox_haskell" value="Haskell")
+                  label(class="image_label" for="image_checkbox_haskell")
+                    img(src="/images/haskell.svg" class="check_image" alt='logo')
+            
+            h(class="header1") Puzzle Mix
+
+            div(style="text-align:center; margin-top: -20px")
+              ul(class="image_ul" style="margin:0; padding: 0")
+
+                li(class="image_li")
+                  p(style="margin: 5px 0; margin-top: 25px; padding: 0; font-size: 18px") Easy
+                  div(class="quantity")
+                    input(type="number" id="num_easy" name="num_easy" min="0" max="5" step="1" value="1" dis="false" maxlength="1")
+
+                li(class="image_li")
+                  p(style="margin: 5px 0; margin-top: 25px; padding: 0; font-size: 18px") Moderate
+                  div(class="quantity")
+                    input(type="number" id="num_moderate" name="num_moderate" min="0" max="5" value="0" dis="false" maxlength="1")
+
+                li(class="image_li")
+                  p(style="margin: 5px 0; margin-top: 25px; padding: 0; font-size: 18px") Challenging
+                  div(class="quantity")
+                    input(type="number" id="num_challenging" name="num_challenging" min="0" max="5" value="0" dis="false" maxlength="1")
+            
+
+            h(class="header1") Opponent
+
+            div(style="text-align:center")
+              div(class="ui-widget")
+                input(id="usernames" type="text" style="width:200px" placeholder="Enter a username")
+
+            
+            br
+
+            div(style="text-align:center")
+              button(id="submit_game" style="width:200px" class="button-hover")
+                span(id="submit_game_text") Create Game
+            div(style="text-align:center" id="create_loader")
+              p(id="sent_message")
+              div(class="loader")
+
+            p(id="error_message" align="center" class="error")
+
+          div(class="modal-footer")
+
+
+
+
+
+      div(id="body")
+
+        div(class="panel")
+
+          h(class="header1") Solo
+
+          div(style="text-align:center")
+            button(id="time_game" style="width:80%" class="button-hover")
+              span Time Attack
+
+          br
+
+          h(class="header1") Play with a Friend
+
+          div(style="text-align:center")
+            button(id="create_game" style="width:80%" class="button-hover")
+              span Create Game
+
+          div(style="text-align:center")
+            button(id="join_game" style="width:80%" class="button-hover") 
+              span Join Game
+
+
+      include ./footer.pug
+
+    
+      script.
+        var user = !{JSON.stringify(user)};
+        var usernames = !{JSON.stringify(usernames)};
+        start_play(user, usernames);
