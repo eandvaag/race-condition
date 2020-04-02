@@ -1,6 +1,6 @@
 # race_condition
 
-race_condition is a web game where users compete against each other to solve small programming puzzles.
+*race_condition* is a web game where users compete against each other to solve small programming puzzles.
 
 
 ## Video
@@ -10,11 +10,17 @@ alt="race-condition video" width="240" height="180" border="10" /></a>
 
 ## Installation instructions: 
 
-git clone https://github.com/eandvaag/race-condition.git
-cd myapp
-npm install
-cd docker
-sudo bash build-images
-sudo bash run-containers
-cd ..
-nodemon
+  * git clone https://github.com/eandvaag/race-condition.git
+  * cd myapp
+  * npm install
+  * cd docker
+  * sudo bash build-images
+  * sudo bash run-containers
+  * change mysql password in config.js
+  * mysql -u root -p
+  * create database race_condition;
+  * run nodemon to create database
+  * kill nodemon
+  * seed database with npx sequelize-cli db:seed:all
+  * run nodemon again
+  * install systemd unit file, if desired
